@@ -15,6 +15,26 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    @auth
+                        @if(Auth::user()->isAdmin())
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                                {{ __('Admin Panel') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                                {{ __('Users') }}
+                            </x-nav-link>
+                        @endif
+                        
+                        @if(Auth::user()->isEducator() || Auth::user()->isAdmin())
+                            <x-nav-link :href="route('educator.dashboard')" :active="request()->routeIs('educator.*')">
+                                {{ __('Educator Panel') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('educator.classes')" :active="request()->routeIs('educator.classes')">
+                                {{ __('My Classes') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
@@ -37,6 +57,24 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
+                        @auth
+                            <!-- Role-based dropdown links -->
+                            @if(Auth::user()->isAdmin())
+                                <x-dropdown-link :href="route('admin.dashboard')">
+                                    {{ __('Admin Dashboard') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.settings')">
+                                    {{ __('System Settings') }}
+                                </x-dropdown-link>
+                            @endif
+                            
+                            @if(Auth::user()->isEducator() || Auth::user()->isAdmin())
+                                <x-dropdown-link :href="route('educator.dashboard')">
+                                    {{ __('Educator Dashboard') }}
+                                </x-dropdown-link>
+                            @endif
+                        @endauth
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -70,6 +108,26 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            
+            @auth
+                @if(Auth::user()->isAdmin())
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                        {{ __('Admin Panel') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                        {{ __('Users') }}
+                    </x-responsive-nav-link>
+                @endif
+                
+                @if(Auth::user()->isEducator() || Auth::user()->isAdmin())
+                    <x-responsive-nav-link :href="route('educator.dashboard')" :active="request()->routeIs('educator.*')">
+                        {{ __('Educator Panel') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('educator.classes')" :active="request()->routeIs('educator.classes')">
+                        {{ __('My Classes') }}
+                    </x-responsive-nav-link>
+                @endif
+            @endauth
         </div>
 
         <!-- Responsive Settings Options -->
