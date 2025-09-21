@@ -99,31 +99,6 @@
         </div>
     </form>
 
-    <!-- Compact Social Login -->
-    <div class="mt-6">
-        <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-200"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-4 bg-white text-gray-500 font-medium">atau</span>
-            </div>
-        </div>
-
-        <div class="mt-4 grid grid-cols-2 gap-3">
-            <button type="button" 
-                class="group relative overflow-hidden inline-flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-lg bg-white text-sm font-semibold text-gray-700 hover:border-red-300 hover:bg-red-50 transition-all duration-300 transform hover:scale-105">
-                <i class="fab fa-google text-red-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="group-hover:text-red-600 transition-colors duration-300">Google</span>
-            </button>
-            <button type="button" 
-                class="group relative overflow-hidden inline-flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-lg bg-white text-sm font-semibold text-gray-700 hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 transform hover:scale-105">
-                <i class="fab fa-facebook text-blue-600 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                <span class="group-hover:text-blue-600 transition-colors duration-300">Facebook</span>
-            </button>
-        </div>
-    </div>
-
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');

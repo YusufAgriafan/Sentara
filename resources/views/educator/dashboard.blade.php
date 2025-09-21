@@ -1,9 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.educator')
+
+@section('page-title', 'Beranda')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white shadow rounded-lg p-6">
-        <h1 class="text-2xl font-bold text-gray-900 mb-6">Educator Dashboard</h1>
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">Beranda Pengajar</h1>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- My Classes Card -->
@@ -15,7 +17,7 @@
                         </svg>
                     </div>
                     <div class="ml-4">
-                        <dt class="text-sm font-medium text-gray-500 truncate">My Classes</dt>
+                        <dt class="text-sm font-medium text-gray-500 truncate">Kelas Saya</dt>
                         <dd class="text-lg font-medium text-gray-900">5</dd>
                     </div>
                 </div>
@@ -30,7 +32,7 @@
                         </svg>
                     </div>
                     <div class="ml-4">
-                        <dt class="text-sm font-medium text-gray-500 truncate">Total Students</dt>
+                        <dt class="text-sm font-medium text-gray-500 truncate">Total Siswa</dt>
                         <dd class="text-lg font-medium text-gray-900">125</dd>
                     </div>
                 </div>
@@ -39,13 +41,23 @@
 
         <!-- Quick Actions -->
         <div class="mt-8">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Menu Cepat</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="{{ route('educator.classes') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                    Manage Classes
+                    <i class="fas fa-chalkboard-teacher mr-2"></i>
+                    Kelola Kelas
+                </a>
+                <a href="{{ route('educator.discussions.index') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700">
+                    <i class="fas fa-comments mr-2"></i>
+                    Diskusi Kelas
+                </a>
+                <a href="{{ route('educator.content.library') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700">
+                    <i class="fas fa-book mr-2"></i>
+                    Perpustakaan Materi
                 </a>
                 <a href="{{ route('educator.students') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
-                    View Students
+                    <i class="fas fa-users mr-2"></i>
+                    Lihat Siswa
                 </a>
             </div>
         </div>
