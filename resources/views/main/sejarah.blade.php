@@ -130,71 +130,52 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Story Card 1 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up">
-                    <div class="text-5xl mb-6">👑</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Ratu Kalinyamat: Wonder Woman Jawa</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Kisah seorang ratu yang memimpin armada laut melawan Portugis. Keren banget kan?</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">Trending</span>
-                        <button class="text-primary hover:text-primary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                @if(isset($stories) && $stories->isNotEmpty())
+                    @foreach($stories as $index => $story)
+                        <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: {{ $index * 0.2 }}s;">
+                            <div class="text-5xl mb-6">📚</div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ $story->title }}</h3>
+                            <p class="text-gray-600 leading-relaxed mb-6">{{ Str::limit($story->content, 120) }}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">Cerita</span>
+                                <a href="{{ route('story.show', $story) }}" class="text-primary hover:text-primary/80 font-semibold">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <!-- Default/Fallback Static Stories -->
+                    <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up">
+                        <div class="text-5xl mb-6">�</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Ratu Kalinyamat: Wonder Woman Jawa</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">Kisah seorang ratu yang memimpin armada laut melawan Portugis. Keren banget kan?</p>
+                        <div class="flex items-center justify-between">
+                            <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">Trending</span>
+                            <button class="text-primary hover:text-primary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Story Card 2 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.2s;">
-                    <div class="text-5xl mb-6">⚔️</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Pangeran Diponegoro: Rebel with a Cause</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Perjuangan seorang pangeran yang menentang kolonial demi rakyatnya. Inspiratif!</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm font-medium">Popular</span>
-                        <button class="text-secondary hover:text-secondary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                    <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.2s;">
+                        <div class="text-5xl mb-6">⚔️</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Pangeran Diponegoro: Rebel with a Cause</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">Perjuangan seorang pangeran yang menentang kolonial demi rakyatnya. Inspiratif!</p>
+                        <div class="flex items-center justify-between">
+                            <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm font-medium">Popular</span>
+                            <button class="text-secondary hover:text-secondary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Story Card 3 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.4s;">
-                    <div class="text-5xl mb-6">🚢</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Laksamana Cheng Ho: Admiral dari Tiongkok</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Petualangan laksamana legendaris yang menjelajahi Nusantara. Epic!</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm font-medium">Epic</span>
-                        <button class="text-tertiary hover:text-tertiary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                    <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.4s;">
+                        <div class="text-5xl mb-6">🚢</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Laksamana Cheng Ho: Admiral dari Tiongkok</h3>
+                        <p class="text-gray-600 leading-relaxed mb-6">Petualangan laksamana legendaris yang menjelajahi Nusantara. Epic!</p>
+                        <div class="flex items-center justify-between">
+                            <span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm font-medium">Epic</span>
+                            <button class="text-tertiary hover:text-tertiary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Story Card 4 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.6s;">
-                    <div class="text-5xl mb-6">📜</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Sumpah Palapa: Netflix Series Majapahit</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Drama politik dan intriga kerajaan yang lebih seru dari K-Drama!</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-quaternary text-primary px-3 py-1 rounded-full text-sm font-medium">Viral</span>
-                        <button class="text-primary hover:text-primary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
-                    </div>
-                </div>
-
-                <!-- Story Card 5 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.8s;">
-                    <div class="text-5xl mb-6">💎</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Rempah-Rempah: Gold Rush Indonesia</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Cerita gimana rempah Indonesia bikin dunia berebut datang ke sini!</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm font-medium">Amazing</span>
-                        <button class="text-secondary hover:text-secondary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
-                    </div>
-                </div>
-
-                <!-- Story Card 6 -->
-                <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 1s;">
-                    <div class="text-5xl mb-6">🎭</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Kebudayaan Nusantara: Diversity Goals</h3>
-                    <p class="text-gray-600 leading-relaxed mb-6">Kekayaan budaya Indonesia yang bikin bangga jadi anak bangsa!</p>
-                    <div class="flex items-center justify-between">
-                        <span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm font-medium">Cultural</span>
-                        <button class="text-tertiary hover:text-tertiary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
     </section>

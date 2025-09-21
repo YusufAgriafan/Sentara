@@ -43,8 +43,40 @@ Route::middleware('auth')->group(function () {
 // Admin routes - only accessible by admin role
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    
+    // User Management
     Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('users.show');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+    Route::post('/users/bulk-action', [AdminController::class, 'bulkActionUsers'])->name('users.bulk-action');
+    
+    // Content Management
+    Route::get('/content', [AdminController::class, 'contentManagement'])->name('content');
+    Route::post('/geography-models/{model}/toggle-status', [AdminController::class, 'toggleGeographyModelStatus'])->name('geography-models.toggle-status');
+    Route::post('/geography-models/{model}/toggle-public', [AdminController::class, 'toggleGeographyModelPublic'])->name('geography-models.toggle-public');
+    Route::delete('/geography-models/{model}', [AdminController::class, 'deleteGeographyModel'])->name('geography-models.delete');
+    Route::delete('/stories/{story}', [AdminController::class, 'deleteStory'])->name('stories.delete');
+    Route::delete('/places/{place}', [AdminController::class, 'deletePlace'])->name('places.delete');
+    
+    // Class Management
+    Route::get('/classes', [AdminController::class, 'classes'])->name('classes');
+    Route::post('/classes', [AdminController::class, 'storeClass'])->name('classes.store');
+    Route::get('/classes/{class}', [AdminController::class, 'showClass'])->name('classes.show');
+    Route::get('/classes/{class}/edit', [AdminController::class, 'editClass'])->name('classes.edit');
+    Route::put('/classes/{class}', [AdminController::class, 'updateClass'])->name('classes.update');
+    Route::delete('/classes/{class}', [AdminController::class, 'deleteClass'])->name('classes.delete');
+    
+    // Reports
+    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    
+    // Content Fallback Settings
+    Route::post('/content-fallback', [AdminController::class, 'updateContentFallback'])->name('content-fallback.update');
+    Route::get('/content-fallback/api', [AdminController::class, 'getContentFallbackSettings'])->name('content-fallback.api');
 });
 
 // Educator routes - only accessible by educator and admin roles

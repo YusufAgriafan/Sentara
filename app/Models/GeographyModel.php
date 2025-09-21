@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\UserTrackable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GeographyModel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, UserTrackable;
 
     protected $fillable = [
         'title',
@@ -20,7 +22,9 @@ class GeographyModel extends Model
         'assigned_classes',
         'is_public',
         'is_active',
-        'views'
+        'views',
+        'updated_by',
+        'deleted_by'
     ];
 
     protected $casts = [
@@ -30,10 +34,26 @@ class GeographyModel extends Model
         'assigned_classes' => 'array'
     ];
 
+    protected $dates = ['deleted_at'];
+
+    /**
+     * Override created_by to use educator_id for existing functionality
+     */
+    public function getCreatedByAttribute()
+    {
+        return $this->educator_id;
+    }
+
     /**
      * Get the educator that owns the geography model
      */
     public function educator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'educator_id');
+    }
+
+    // Keep backward compatibility
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'educator_id');
     }
@@ -127,5 +147,18 @@ class GeographyModel extends Model
     public function assignedClasses()
     {
         return \App\Models\ClassModel::whereIn('id', $this->assigned_classes ?? []);
+    }
+
+    /**
+     * Override educator edit permission for geography models
+     */
+    protected function canEducatorEdit($user): bool
+    {
+        if (!$user->isEducator()) {
+            return false;
+        }
+
+        // Only the educator who created it can edit
+        return $this->educator_id === $user->id;
     }
 }

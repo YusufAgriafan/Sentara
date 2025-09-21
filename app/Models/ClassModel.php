@@ -2,22 +2,44 @@
 
 namespace App\Models;
 
+use App\Traits\UserTrackable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClassModel extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, UserTrackable;
+    
     protected $table = 'class';
+    
     protected $fillable = [
         'name',
         'token',
         'educator_id',
         'grade',
         'subject',
+        'updated_by',
+        'deleted_by',
     ];
 
+    protected $dates = ['deleted_at'];
+
+    /**
+     * Override created_by to use educator_id for existing functionality
+     */
+    public function getCreatedByAttribute()
+    {
+        return $this->educator_id;
+    }
+
     public function educator()
+    {
+        return $this->belongsTo(User::class, 'educator_id');
+    }
+
+    // Keep backward compatibility
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'educator_id');
     }
@@ -134,5 +156,18 @@ class ClassModel extends Model
     public function getStudents()
     {
         return $this->classLists()->with('student')->get()->pluck('student');
+    }
+
+    /**
+     * Override educator edit permission for classes
+     */
+    protected function canEducatorEdit($user): bool
+    {
+        if (!$user->isEducator()) {
+            return false;
+        }
+
+        // Only the educator who created the class can edit
+        return $this->educator_id === $user->id;
     }
 }

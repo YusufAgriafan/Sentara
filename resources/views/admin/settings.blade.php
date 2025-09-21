@@ -4,9 +4,99 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <form class="space-y-8">
+    @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form action="{{ route('admin.content-fallback.update') }}" method="POST" class="space-y-8">
         @csrf
         
+        <!-- Content Fallback Settings -->
+        <div class="bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden">
+            <div class="px-6 py-4 bg-gradient-to-r from-primary to-secondary">
+                <h3 class="text-lg font-semibold text-white">Content Fallback Settings</h3>
+                <p class="text-sm text-white text-opacity-90 mt-1">Configure default content when classes have no assigned content</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-6">
+                    <!-- Enable Content Fallback -->
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input type="checkbox" id="content_fallback_enabled" name="content_fallback_enabled" value="1"
+                                   {{ ($settings['content_fallback_enabled'] ?? true) ? 'checked' : '' }}
+                                   class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div class="ml-3">
+                            <label for="content_fallback_enabled" class="text-sm font-medium text-gray-700">Enable Content Fallback</label>
+                            <p class="text-sm text-gray-500">Show admin-selected content when classes have no assigned content</p>
+                        </div>
+                    </div>
+
+                    <!-- Geography Models Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Fallback Geography Models</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                            @foreach($availableContent['geography_models'] as $model)
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" id="geo_model_{{ $model->id }}" name="fallback_geography_models[]" value="{{ $model->id }}"
+                                               {{ in_array($model->id, $settings['fallback_geography_models'] ?? []) ? 'checked' : '' }}
+                                               class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div class="ml-3">
+                                        <label for="geo_model_{{ $model->id }}" class="text-sm font-medium text-gray-700">{{ $model->title }}</label>
+                                        <p class="text-xs text-gray-500">by {{ $model->educator->name }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Places Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Fallback Places</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                            @foreach($availableContent['places'] as $place)
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" id="place_{{ $place->id }}" name="fallback_places[]" value="{{ $place->id }}"
+                                               {{ in_array($place->id, $settings['fallback_places'] ?? []) ? 'checked' : '' }}
+                                               class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div class="ml-3">
+                                        <label for="place_{{ $place->id }}" class="text-sm font-medium text-gray-700">{{ $place->name }}</label>
+                                        <p class="text-xs text-gray-500">{{ $place->location }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Stories Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Fallback Stories</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4">
+                            @foreach($availableContent['stories'] as $story)
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input type="checkbox" id="story_{{ $story->id }}" name="fallback_stories[]" value="{{ $story->id }}"
+                                               {{ in_array($story->id, $settings['fallback_stories'] ?? []) ? 'checked' : '' }}
+                                               class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary">
+                                    </div>
+                                    <div class="ml-3">
+                                        <label for="story_{{ $story->id }}" class="text-sm font-medium text-gray-700">{{ $story->title }}</label>
+                                        <p class="text-xs text-gray-500">{{ Str::limit($story->content, 50) }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- General Settings -->
         <div class="bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden">
             <div class="px-6 py-4 bg-gradient-to-r from-primary to-secondary">

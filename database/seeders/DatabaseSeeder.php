@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             ClassPlacesSeeder::class,
             PlaceSeeder::class,
             GeographyModelSeeder::class,
+            AdminSettingSeeder::class,
+            AdminDataSeeder::class
         ]);
     }
 }

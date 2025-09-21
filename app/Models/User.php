@@ -122,4 +122,63 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(ClassModel::class, ClassList::class, 'student_id', 'id', 'id', 'class_id');
     }
+
+    /**
+     * Get places created by this user
+     */
+    public function createdPlaces()
+    {
+        return $this->hasMany(Place::class, 'created_by');
+    }
+
+    /**
+     * Get stories created by this user
+     */
+    public function createdStories()
+    {
+        return $this->hasMany(Story::class, 'created_by');
+    }
+
+    /**
+     * Get geography models created by this user (educator)
+     */
+    public function createdGeographyModels()
+    {
+        return $this->hasMany(GeographyModel::class, 'educator_id');
+    }
+
+    /**
+     * Get discussions created by this user
+     */
+    public function createdDiscussions()
+    {
+        return $this->hasMany(ClassDiscussion::class, 'user_id');
+    }
+
+    /**
+     * Get all content created by this user
+     */
+    public function getAllCreatedContentAttribute()
+    {
+        $content = collect();
+        
+        if ($this->isEducator() || $this->isAdmin()) {
+            $content = $content->merge($this->createdPlaces);
+            $content = $content->merge($this->createdStories);
+            $content = $content->merge($this->createdGeographyModels);
+            $content = $content->merge($this->teachingClasses);
+        }
+        
+        $content = $content->merge($this->createdDiscussions);
+        
+        return $content;
+    }
+
+    /**
+     * Check if user can manage content (create, edit, delete)
+     */
+    public function canManageContent(): bool
+    {
+        return $this->isEducator() || $this->isAdmin();
+    }
 }

@@ -21,7 +21,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <dt class="text-sm font-medium text-gray-600 truncate">Total Users</dt>
-                        <dd class="text-2xl font-bold text-primary">{{ \App\Models\User::count() }}</dd>
+                        <dd class="text-2xl font-bold text-primary">{{ $stats['total_users'] ?? 0 }}</dd>
                         <div class="text-xs text-green-600 font-medium flex items-center mt-1">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <dt class="text-sm font-medium text-gray-600 truncate">Educators</dt>
-                        <dd class="text-2xl font-bold text-secondary">{{ \App\Models\User::where('role', 'educator')->count() }}</dd>
+                        <dd class="text-2xl font-bold text-secondary">{{ $stats['total_educators'] ?? 0 }}</dd>
                         <div class="text-xs text-green-600 font-medium flex items-center mt-1">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="ml-4 flex-1">
                         <dt class="text-sm font-medium text-gray-600 truncate">Students</dt>
-                        <dd class="text-2xl font-bold text-tertiary">{{ \App\Models\User::where('role', 'student')->count() }}</dd>
+                        <dd class="text-2xl font-bold text-tertiary">{{ $stats['total_students'] ?? 0 }}</dd>
                         <div class="text-xs text-green-600 font-medium flex items-center mt-1">
                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
@@ -79,25 +79,112 @@
             </div>
         </div>
 
+        <!-- Additional Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
+            <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chalkboard-teacher text-blue-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Classes</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $stats['total_classes'] ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-green-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active Classes</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $stats['active_classes'] ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-globe text-purple-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Geography Models</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $stats['total_geography_models'] ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-yellow-600"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Stories</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $stats['total_stories'] ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Recent Activity & Quick Actions -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
             <!-- Recent Activity -->
             <div class="bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden">
                 <div class="px-6 py-4 bg-gradient-to-r from-primary to-secondary">
-                    <h3 class="text-lg font-semibold text-white">Recent Activity</h3>
+                    <h3 class="text-lg font-semibold text-white">Recent Users</h3>
                 </div>
                 <div class="p-6">
                     <div class="space-y-4">
+                        @forelse($stats['recent_users'] as $user)
                         <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
                             <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-sm">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                                <span class="text-xs font-semibold text-white">{{ substr($user->name, 0, 1) }}</span>
                             </div>
                             <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">New user registered</p>
-                                <p class="text-xs text-gray-500">2 minutes ago</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $user->name }}</p>
+                                <p class="text-xs text-gray-500">{{ $user->role }} • {{ $user->created_at->diffForHumans() }}</p>
                             </div>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                {{ $user->role === 'admin' ? 'bg-red-100 text-red-800' : 
+                                   ($user->role === 'educator' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
+                                {{ ucfirst($user->role) }}
+                            </span>
+                        </div>
+                        @empty
+                        <p class="text-gray-500 text-center py-4">No recent users</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Geography Models -->
+            <div class="bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gradient-to-r from-secondary to-tertiary">
+                    <h3 class="text-lg font-semibold text-white">Recent Geography Models</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        @forelse($recentGeographyModels as $model)
+                        <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                            <div class="w-8 h-8 bg-gradient-to-br from-secondary to-tertiary rounded-full flex items-center justify-center shadow-sm">
+                                <i class="fas fa-globe text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">{{ Str::limit($model->title, 30) }}</p>
+                                <p class="text-xs text-gray-500">by {{ $model->educator->name }} • {{ $model->created_at->diffForHumans() }}</p>
+                            </div>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                {{ $model->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                {{ $model->is_active ? 'Active' : 'Inactive' }}
+                            </span>
+                        </div>
+                        @empty
+                        <p class="text-gray-500 text-center py-4">No recent geography models</p>
+                        @endforelse
                         </div>
                         
                         <div class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">

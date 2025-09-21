@@ -57,25 +57,25 @@
                     Users
                 </a>
 
+                <!-- Content Management -->
+                <a href="{{ route('admin.content') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.content*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
+                    <i class="fas fa-file-alt mr-3"></i>
+                    Content Management
+                </a>
+
+                <!-- Reports & Analytics -->
+                <a href="{{ route('admin.reports') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.reports*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    Reports & Analytics
+                </a>
+
                 <!-- Classes -->
-                <a href="#" 
-                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary">
+                <a href="{{ route('admin.classes') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.classes*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
                     <i class="fas fa-chalkboard-teacher mr-3"></i>
                     Classes
-                </a>
-
-                <!-- Stories -->
-                <a href="#" 
-                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary">
-                    <i class="fas fa-book-open mr-3"></i>
-                    Stories
-                </a>
-
-                <!-- Places -->
-                <a href="#" 
-                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary">
-                    <i class="fas fa-map-marker-alt mr-3"></i>
-                    Places
                 </a>
 
                 <!-- Settings -->
