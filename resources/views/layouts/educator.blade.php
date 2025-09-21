@@ -108,6 +108,13 @@
                     Cerita & Materi
                 </a>
 
+                <!-- Geography 3D Models -->
+                <a href="{{ route('educator.geography-models.index') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('educator.geography-models*') ? 'bg-white text-blue-600 shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-white' }}">
+                    <i class="fas fa-globe-americas mr-3"></i>
+                    Model 3D Geografi
+                </a>
+
                 <!-- Divider -->
                 <div class="border-t border-white border-opacity-20 my-3"></div>
 

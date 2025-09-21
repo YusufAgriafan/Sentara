@@ -102,6 +102,17 @@ Route::middleware(['auth', 'verified', 'role:educator,admin'])->prefix('educator
         Route::get('/{story}/classes', [StoryController::class, 'getClasses'])->name('get-classes');
         Route::post('/{story}/assign-classes', [StoryController::class, 'assignClasses'])->name('assign-classes');
     });
+
+    // Geography 3D Models Management
+    Route::prefix('geography-models')->name('geography-models.')->group(function () {
+        Route::get('/', [EducatorController::class, 'geographyModels'])->name('index');
+        Route::post('/', [EducatorController::class, 'storeGeographyModel'])->name('store');
+        Route::get('/{model}', [EducatorController::class, 'showGeographyModel'])->name('show');
+        Route::get('/{model}/edit', [EducatorController::class, 'editGeographyModel'])->name('edit');
+        Route::put('/{model}', [EducatorController::class, 'updateGeographyModel'])->name('update');
+        Route::delete('/{model}', [EducatorController::class, 'destroyGeographyModel'])->name('destroy');
+        Route::post('/{model}/toggle-status', [EducatorController::class, 'toggleGeographyModelStatus'])->name('toggle-status');
+    });
     
     // Discussions Management
     Route::prefix('discussions')->name('discussions.')->group(function () {
@@ -138,6 +149,11 @@ Route::middleware(['auth', 'verified', 'role:student'])->prefix('student')->name
     Route::post('/classes/join', [ClassJoinController::class, 'joinClass'])->name('classes.join.submit');
     Route::post('/classes/leave', [ClassJoinController::class, 'leaveClass'])->name('classes.leave');
     Route::get('/classes/details', [ClassJoinController::class, 'showClassDetails'])->name('classes.details')->middleware('class.access');
+});
+
+// API Routes for Geography Models (public access)
+Route::prefix('api')->name('api.')->group(function () {
+    Route::get('/geography-models/{model}/embed', [MainController::class, 'getGeographyModelEmbed'])->name('geography-models.embed');
 });
 
 require __DIR__.'/auth.php';

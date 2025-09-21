@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ClassListSeeder::class,
             ClassPlacesSeeder::class,
             PlaceSeeder::class,
+            GeographyModelSeeder::class,
         ]);
     }
 }
