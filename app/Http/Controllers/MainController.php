@@ -157,8 +157,7 @@ class MainController extends Controller
                 $currentClass = $classListEntry->class;
             } else {
                 // Get available classes jika user belum join
-                $availableClasses = ClassModel::where('is_active', true)
-                                            ->orderBy('name')
+                $availableClasses = ClassModel::orderBy('name')
                                             ->get();
             }
         }

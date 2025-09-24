@@ -200,6 +200,17 @@ Route::middleware(['auth', 'verified', 'role:student'])->prefix('student')->name
     Route::get('/classes/details', [ClassJoinController::class, 'showClassDetails'])->name('classes.details')->middleware('class.access');
 });
 
+// Educational Games Routes
+Route::prefix('game')->name('game.')->group(function () {
+    Route::get('/', [App\Http\Controllers\GameController::class, 'index'])->name('index');
+    Route::get('/{game:slug}', [App\Http\Controllers\GameController::class, 'show'])->name('show');
+    Route::get('/{game:slug}/play', [App\Http\Controllers\GameController::class, 'play'])->name('play')->middleware('auth');
+    Route::post('/{game:slug}/progress', [App\Http\Controllers\GameController::class, 'updateProgress'])->name('progress')->middleware('auth');
+    Route::post('/{game:slug}/complete', [App\Http\Controllers\GameController::class, 'complete'])->name('complete')->middleware('auth');
+    Route::get('/{game:slug}/leaderboard', [App\Http\Controllers\GameController::class, 'leaderboard'])->name('leaderboard');
+    Route::get('/stats/user', [App\Http\Controllers\GameController::class, 'stats'])->name('stats')->middleware('auth');
+});
+
 // API Routes for Geography Models (public access)
 Route::prefix('api')->name('api.')->group(function () {
     Route::get('/geography-models/{model}/embed', [MainController::class, 'getGeographyModelEmbed'])->name('geography-models.embed');

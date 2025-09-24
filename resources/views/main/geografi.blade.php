@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Hero Section for Geografi -->
-    <section class="pt-32 pb-20 px-6 lg:px-8 bg-gradient-to-br from-emerald-600 to-teal-600 text-white">
+    <section class="pt-32 pb-20 px-6 lg:px-8 bg-gradient-to-br from-primary to-secondary text-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center fade-in-up">
                 <div class="text-8xl mb-8">🌍</div>
@@ -15,7 +15,7 @@
                     Jelajahi geografi Indonesia dengan teknologi 3D interaktif! Pembelajaran yang lebih mendalam dan menarik.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button onclick="scrollToSection('models')" class="bg-white hover:bg-gray-100 text-emerald-600 px-8 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+                    <button onclick="scrollToSection('models')" class="bg-white hover:bg-gray-100 text-primary px-8 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
                         <i class="fas fa-cube mr-3"></i>
                         Lihat Model 3D
                     </button>
@@ -26,7 +26,7 @@
 
     <!-- Geography Content Section -->
     @if(isset($geographyContents) && $geographyContents->count() > 0)
-    <section class="py-20 px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <section class="py-20 px-6 lg:px-8 bg-gradient-to-br from-quaternary/20 to-quaternary/40">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-20 fade-in-up">
                 <h2 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">Penjelasan Geografi 📚</h2>
@@ -39,16 +39,16 @@
             <div class="max-w-4xl mx-auto fade-in-up">
                 <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
                     <!-- Dropdown Header -->
-                    <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white">
+                    <div class="bg-gradient-to-r from-tertiary to-primary p-6 text-white">
                         <h3 class="text-2xl font-bold mb-2">Pilih Topik Geografi</h3>
-                        <p class="text-indigo-100">Klik dropdown untuk memilih materi yang ingin dipelajari</p>
+                        <p class="text-orange-100">Klik dropdown untuk memilih materi yang ingin dipelajari</p>
                     </div>
 
                     <!-- Dropdown Selector -->
                     <div class="p-6">
                         <div class="relative">
                             <select id="geography-selector" onchange="showSelectedGeographyContent()" 
-                                    class="w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-lg font-medium text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all duration-300">
+                                    class="w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-lg font-medium text-gray-700 focus:border-tertiary focus:outline-none focus:ring-2 focus:ring-tertiary/20 transition-all duration-300">
                                 <option value="">-- Pilih Topik Geografi --</option>
                                 @foreach($geographyContents as $content)
                                     <option value="{{ $content->slug }}" 
@@ -71,7 +71,7 @@
                 <div id="geography-content-area" class="mt-8 hidden">
                     <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
                         <!-- Content Header -->
-                        <div id="content-header" class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+                        <div id="content-header" class="bg-gradient-to-r from-tertiary to-primary p-6 text-white">
                             <div class="flex items-center mb-4">
                                 <div id="content-icon" class="text-6xl mr-4">🌍</div>
                                 <div>
@@ -101,7 +101,7 @@
                                 Konten pembelajaran geografi Indonesia
                             </div>
                             <button onclick="showFullContent()" 
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+                                    class="bg-tertiary hover:bg-primary text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:scale-105">
                                 <i class="fas fa-expand mr-2"></i>Baca Lengkap
                             </button>
                         </div>
@@ -117,19 +117,19 @@
                     </p>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto text-sm text-gray-500">
                         <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-mountain text-green-600 mb-1"></i>
+                            <i class="fas fa-mountain text-primary mb-1"></i>
                             <div class="font-medium">Topografi</div>
                         </div>
                         <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-water text-blue-600 mb-1"></i>
+                            <i class="fas fa-water text-secondary mb-1"></i>
                             <div class="font-medium">Hidrologi</div>
                         </div>
                         <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-cloud-sun text-orange-600 mb-1"></i>
+                            <i class="fas fa-cloud-sun text-tertiary mb-1"></i>
                             <div class="font-medium">Klimatologi</div>
                         </div>
                         <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-seedling text-emerald-600 mb-1"></i>
+                            <i class="fas fa-seedling text-primary mb-1"></i>
                             <div class="font-medium">Biogeografi</div>
                         </div>
                     </div>
@@ -199,7 +199,7 @@
                             </div>
                             
                             <button onclick="view3DModel({{ $model->id }}, '{{ addslashes($model->title) }}', '{{ addslashes($model->description) }}')" 
-                                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105">
+                                    class="w-full bg-primary hover:bg-secondary text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105">
                                 <i class="fas fa-expand mr-2"></i>Tampilkan Fullscreen
                             </button>
                         </div>
@@ -210,7 +210,7 @@
             <!-- View All Models Button -->
             <div class="text-center mt-12 fade-in-up">
                 <p class="text-gray-600 mb-6">Ada lebih banyak model 3D menarik lainnya!</p>
-                <button onclick="loadMore3DModels()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+                <button onclick="loadMore3DModels()" class="bg-primary hover:bg-secondary text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
                     <i class="fas fa-plus mr-3"></i>Lihat Semua Model 3D
                 </button>
             </div>
@@ -220,17 +220,17 @@
     <!-- No Models Available -->
     <section id="models" class="py-20 px-6 lg:px-8 bg-white">
         <div class="max-w-7xl mx-auto text-center">
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-12">
+            <div class="bg-gradient-to-br from-quaternary/20 to-quaternary/40 rounded-3xl p-12">
                 <div class="text-8xl mb-6">🌍</div>
                 <h2 class="text-3xl font-bold text-gray-900 mb-4">Model 3D Segera Hadir!</h2>
                 <p class="text-xl text-gray-600 mb-8">Tim educator kami sedang mempersiapkan model 3D geografi yang menarik untuk pembelajaran yang lebih interaktif.</p>
                 <div class="bg-white rounded-2xl p-6 shadow-lg max-w-md mx-auto">
                     <h3 class="text-lg font-bold text-gray-900 mb-3">Yang Akan Datang:</h3>
                     <ul class="text-left text-gray-600 space-y-2">
-                        <li><i class="fas fa-mountain text-emerald-600 mr-2"></i>Model 3D Gunung Berapi</li>
-                        <li><i class="fas fa-water text-blue-600 mr-2"></i>Ekosistem Laut Indonesia</li>
-                        <li><i class="fas fa-tree text-green-600 mr-2"></i>Hutan Hujan Tropis</li>
-                        <li><i class="fas fa-globe-asia text-amber-600 mr-2"></i>Formasi Geologis</li>
+                        <li><i class="fas fa-mountain text-primary mr-2"></i>Model 3D Gunung Berapi</li>
+                        <li><i class="fas fa-water text-secondary mr-2"></i>Ekosistem Laut Indonesia</li>
+                        <li><i class="fas fa-tree text-tertiary mr-2"></i>Hutan Hujan Tropis</li>
+                        <li><i class="fas fa-globe-asia text-primary mr-2"></i>Formasi Geologis</li>
                     </ul>
                 </div>
             </div>
@@ -242,10 +242,10 @@
     <div id="model3d-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-6xl max-h-[90vh] w-full overflow-hidden shadow-2xl">
             <!-- Modal Header -->
-            <div class="bg-emerald-600 text-white p-6 flex items-center justify-between">
+            <div class="bg-primary text-white p-6 flex items-center justify-between">
                 <div>
                     <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                    <p id="modal-description" class="text-emerald-100 mt-1"></p>
+                    <p id="modal-description" class="text-red-100 mt-1"></p>
                 </div>
                 <button onclick="close3DModal()" class="text-white hover:text-gray-300 transition-colors">
                     <i class="fas fa-times text-2xl"></i>
@@ -274,10 +274,10 @@
     <div id="geography-content-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-4xl max-h-[90vh] w-full overflow-hidden shadow-2xl">
             <!-- Modal Header -->
-            <div class="bg-indigo-600 text-white p-6 flex items-center justify-between">
+            <div class="bg-tertiary text-white p-6 flex items-center justify-between">
                 <div>
                     <h3 id="content-modal-title" class="text-2xl font-bold"></h3>
-                    <p class="text-indigo-100 mt-1">Penjelasan Materi Geografi</p>
+                    <p class="text-orange-100 mt-1">Penjelasan Materi Geografi</p>
                 </div>
                 <button onclick="closeGeographyContentModal()" class="text-white hover:text-gray-300 transition-colors">
                     <i class="fas fa-times text-2xl"></i>
@@ -300,7 +300,7 @@
                     Konten ini disusun khusus untuk pembelajaran geografi Indonesia
                 </div>
                 <button onclick="closeGeographyContentModal()" 
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        class="bg-tertiary hover:bg-primary text-white px-4 py-2 rounded-lg font-medium transition-colors">
                     Tutup
                 </button>
             </div>
@@ -335,12 +335,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #10b981;
+            background: rgb(106, 38, 52); /* primary color */
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #059669;
+            background: rgb(148, 57, 57); /* secondary color */
         }
     </style>
 
@@ -355,16 +355,16 @@
             
             // Loading state
             document.getElementById('modal-content').innerHTML = `
-                <div class="w-full h-full bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center">
+                <div class="w-full h-full bg-gradient-to-br from-quaternary/20 to-quaternary/40 rounded-xl flex items-center justify-center">
                     <div class="text-center">
                         <div class="text-6xl mb-4 animate-spin">🌐</div>
                         <h4 class="text-xl font-bold text-gray-700 mb-2">Loading 3D Model...</h4>
                         <p class="text-gray-600">Model "${title}" sedang dimuat</p>
                         <div class="mt-4 bg-white rounded-lg p-3 shadow-sm">
                             <div class="flex items-center justify-center space-x-2">
-                                <div class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse"></div>
-                                <div class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
-                                <div class="w-2 h-2 bg-emerald-600 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
                             </div>
                         </div>
                     </div>
@@ -380,7 +380,7 @@
                     } else {
                         // Fallback content
                         document.getElementById('modal-content').innerHTML = `
-                            <div class="w-full h-full bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl flex items-center justify-center border-2 border-dashed border-emerald-300">
+                            <div class="w-full h-full bg-gradient-to-br from-quaternary/10 to-quaternary/30 rounded-xl flex items-center justify-center border-2 border-dashed border-primary/30">
                                 <div class="text-center max-w-md">
                                     <div class="text-8xl mb-4">🌍</div>
                                     <h4 class="text-2xl font-bold text-emerald-700 mb-2">${title}</h4>
@@ -441,7 +441,7 @@
             // Show loading state
             modalContent.innerHTML = `
                 <div class="text-center py-8">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-tertiary mx-auto mb-4"></div>
                     <p class="text-gray-600">Memuat konten...</p>
                 </div>
             `;
@@ -453,7 +453,7 @@
                     modalTitle.textContent = data.title;
                     modalContent.innerHTML = `
                         <div class="prose prose-lg max-w-none">
-                            ${data.description ? `<div class="bg-indigo-50 border-l-4 border-indigo-400 p-4 mb-6">
+                            ${data.description ? `<div class="bg-tertiary/10 border-l-4 border-tertiary p-4 mb-6">
                                 <p class="text-indigo-700 font-medium">${data.description}</p>
                             </div>` : ''}
                             <div class="text-gray-700 leading-relaxed">
@@ -552,7 +552,7 @@
             // Show loading in content body
             document.getElementById('content-body').innerHTML = `
                 <div class="text-center py-12">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-tertiary mx-auto mb-4"></div>
                     <p class="text-gray-500 text-lg">Memuat konten...</p>
                 </div>
             `;

@@ -17,6 +17,9 @@
                     <a href="{{ route('index') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('index') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Beranda</a>
                     <a href="{{ route('sejarah') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('sejarah') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Sejarah</a>
                     <a href="{{ route('geografi') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('geografi') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Geografi</a>
+                    @if (Route::has('login'))
+                        <a href="{{ route('game.index') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('game.*') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Game</a>
+                    @endif
                     <a href="{{ route('kelas') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('kelas') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Kelas</a>
                 </div>
             </div>
@@ -53,6 +56,7 @@
                 <a href="{{ route('index') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('index') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Beranda</a>
                 <a href="{{ route('sejarah') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('sejarah') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Sejarah</a>
                 <a href="{{ route('geografi') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('geografi') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Geografi</a>
+                <a href="{{ route('game.index') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('game.*') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Game</a>
                 <a href="{{ route('kelas') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('kelas') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Kelas</a>
             </div>
             

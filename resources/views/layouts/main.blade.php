@@ -20,6 +20,9 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -228,6 +231,8 @@
 
         @yield('scripts')
     </script>
+    
+    @stack('scripts')
     
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
