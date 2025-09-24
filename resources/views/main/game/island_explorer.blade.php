@@ -1,4 +1,8 @@
-@ext    <!-- Game Header -->
+@extends('layouts.main')
+
+@section('content')
+<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 text-white" id="game-container">
+    <!-- Game Header -->
     <div class="bg-black bg-opacity-30 backdrop-blur-sm border-b border-primary/50">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
@@ -6,148 +10,769 @@
                     <a href="{{ route('game.index') }}" class="text-red-200 hover:text-white transition-colors text-sm sm:text-base">
                         ← Kembali ke Games
                     </a>
-                    <h1 class="text-lg sm:text-2xl font-bold">🏖️ {{ $game->title }}</h1>
-                </div>outs.main')
-
-@s    <div class="max-w-6xl mx-auto px-4 py-4 md:py-8 text-center">
-        <div class="bg-black bg-opacity-40 rounded-xl md:rounded-2xl shadow-2xl border border-primary/50 p-6 md:p-12">
-            <div class="text-6xl md:text-8xl mb-6">🏖️</div>
-            <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-red-200">Island Explorer</h2>
-            <p class="text-base md:text-xl text-red-100 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
-                Petualangan eksplorasi Nusantara sedang dalam tahap pengembangan. 
-                Segera Anda akan dapat menjelajahi keindahan dan keunikan setiap pulau di Indonesia!
-            </p>
-            
-            <!-- Islands Preview -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">tent')
-<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 text-white">
-    <!-- Game Header -->
-    <div class="bg-black bg-opacity-30 backdrop-blur-sm border-b border-primary/50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('game.index') }}" class="text-red-200 hover:text-white transition-colors">
-                    ← Kembali ke Games
-                </a>
-                <h1 class="text-2xl font-bold">🏝️ {{ $game->title }}</h1>
-            </div>
-            <div class="flex items-center space-x-6 text-sm">
-                <div class="flex items-center space-x-2">
-                    <span class="text-teal-300">Artefak:</span>
-                    <span id="artifacts-collected" class="font-bold">0</span>/<span>{{ $game->settings['collection_goal'] }}</span>
+                    <h1 class="text-lg sm:text-2xl font-bold">🏝️ {{ $game->title }}</h1>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-teal-300">Waktu:</span>
-                    <span id="game-timer" class="font-bold">00:00</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-teal-300">Pulau:</span>
-                    <span id="current-island" class="font-bold">Jawa</span>
+                <div class="flex items-center space-x-4 sm:space-x-6 text-xs sm:text-sm">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-teal-300">Artefak:</span>
+                        <span id="artifacts-collected" class="font-bold">0</span>/<span id="total-artifacts">15</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-teal-300">Skor:</span>
+                        <span id="game-score" class="font-bold">0</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-teal-300">Waktu:</span>
+                        <span id="game-timer" class="font-bold">00:00</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 py-8 text-center">
-        <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-12">
-            <div class="text-8xl mb-6">🏝️</div>
-            <h2 class="text-4xl font-bold mb-6 text-red-200">Island Explorer</h2>
-            <p class="text-xl text-red-100 mb-8 max-w-3xl mx-auto">
-                Petualangan eksplorasi Nusantara sedang dalam tahap pengembangan. 
-                Segera Anda akan dapat menjelajahi keindahan dan keunikan setiap pulau di Indonesia!
-            </p>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Game Area -->
+            <div class="lg:col-span-3">
+                <!-- Current Island Display -->
+                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-6 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold" id="current-island-title">🏛️ Pulau Jawa</h2>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-teal-300">Progress:</span>
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="bg-teal-500 h-2 rounded-full transition-all duration-300" id="island-progress" style="width: 0%"></div>
+                            </div>
+                            <span class="text-sm text-white" id="island-progress-text">0%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Island Map Area -->
+                    <div class="relative bg-gradient-to-br from-green-800 to-blue-800 rounded-xl p-8 mb-4" id="island-map">
+                        <div class="grid grid-cols-4 gap-4 h-64" id="exploration-grid">
+                            <!-- Exploration spots will be generated by JavaScript -->
+                        </div>
+                        
+                        <!-- Explorer Character -->
+                        <div class="absolute bottom-4 left-4 text-4xl transition-all duration-500" id="explorer-character">🚶‍♂️</div>
+                    </div>
+                    
+                    <!-- Island Description -->
+                    <div class="bg-secondary/20 rounded-lg p-4 mb-4">
+                        <p class="text-red-100" id="island-description">
+                            Jelajahi Pulau Jawa, pulau paling padat penduduknya di Indonesia. Temukan candi-candi bersejarah, 
+                            pelajari budaya Jawa yang kaya, dan kumpulkan artefak budaya yang berharga!
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3">
+                        <button id="explore-btn" class="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                            <span>🔍</span>
+                            <span>Jelajahi Area</span>
+                        </button>
+                        <button id="minigame-btn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                            <span>🎮</span>
+                            <span>Mini Game</span>
+                        </button>
+                        <button id="collection-btn" class="bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                            <span>🏺</span>
+                            <span>Koleksi</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Island Navigator -->
+                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-3 flex items-center space-x-2">
+                        <span>🗺️</span>
+                        <span>Navigator</span>
+                    </h3>
+                    <div class="space-y-2" id="island-navigator">
+                        <button class="island-nav-btn active w-full text-left p-3 rounded-lg bg-teal-600 hover:bg-teal-700 transition-all" data-island="jawa">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🏛️</span>
+                                <div>
+                                    <div class="font-semibold">Jawa</div>
+                                    <div class="text-xs text-teal-200">Candi & Budaya</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="island-nav-btn w-full text-left p-3 rounded-lg bg-gray-700 hover:bg-teal-700 transition-all" data-island="bali">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🛕</span>
+                                <div>
+                                    <div class="font-semibold">Bali</div>
+                                    <div class="text-xs text-teal-200">Pulau Dewata</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="island-nav-btn w-full text-left p-3 rounded-lg bg-gray-700 hover:bg-teal-700 transition-all" data-island="sumatera">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🌋</span>
+                                <div>
+                                    <div class="font-semibold">Sumatera</div>
+                                    <div class="text-xs text-teal-200">Danau & Gunung</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="island-nav-btn w-full text-left p-3 rounded-lg bg-gray-700 hover:bg-teal-700 transition-all" data-island="kalimantan">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🦜</span>
+                                <div>
+                                    <div class="font-semibold">Kalimantan</div>
+                                    <div class="text-xs text-teal-200">Hutan Hujan</div>
+                                </div>
+                            </div>
+                        </button>
+                        <button class="island-nav-btn w-full text-left p-3 rounded-lg bg-gray-700 hover:bg-teal-700 transition-all" data-island="sulawesi">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">🐂</span>
+                                <div>
+                                    <div class="font-semibold">Sulawesi</div>
+                                    <div class="text-xs text-teal-200">Toraja Land</div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Artifact Collection -->
+                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-3 flex items-center space-x-2">
+                        <span>🏺</span>
+                        <span>Koleksi Artefak</span>
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2" id="artifact-collection">
+                        <!-- Artifacts will be populated by JavaScript -->
+                    </div>
+                    <div class="mt-3 text-xs text-teal-200">
+                        Kumpulkan semua artefak untuk membuka pulau baru!
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-4">
+                    <h3 class="text-lg font-bold mb-3">📊 Statistik</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Pulau Terjelajahi:</span>
+                            <span id="islands-explored">1/5</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Mini-games Dimainkan:</span>
+                            <span id="minigames-played">0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Skor Tertinggi:</span>
+                            <span id="highest-score">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Modals -->
+    
+    <!-- Exploration Result Modal -->
+    <div id="exploration-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 max-w-md mx-4 border border-primary/50">
+            <div class="text-center">
+                <div class="text-6xl mb-4" id="exploration-icon">🏺</div>
+                <h3 class="text-2xl font-bold mb-2" id="exploration-title">Artefak Ditemukan!</h3>
+                <p class="text-red-100 mb-4" id="exploration-description">
+                    Anda menemukan keris kuno dari era Majapahit!
+                </p>
+                <div class="flex justify-center space-x-3">
+                    <button id="exploration-close" class="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold transition-all">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini-game Modal -->
+    <div id="minigame-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 max-w-lg mx-4 border border-primary/50">
+            <div class="text-center mb-4">
+                <h3 class="text-2xl font-bold mb-2">🎮 Mini Game</h3>
+                <p class="text-red-100" id="minigame-description">Cocokkan pola batik yang benar!</p>
+            </div>
             
-            <!-- Islands Preview -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                @foreach($game->settings['islands'] as $island)
-                <div class="bg-teal-600 bg-opacity-20 rounded-xl p-6 border border-teal-400">
-                    <div class="text-4xl mb-3">
-                        @switch($island['name'])
-                            @case('Jawa')
-                                🏛️
-                                @break
-                            @case('Bali')
-                                🛕
-                                @break
-                            @case('Sumatera')
-                                🌋
-                                @break
-                            @default
-                                🏝️
-                        @endswitch
+            <div id="minigame-content" class="mb-4">
+                <!-- Mini-game content will be generated by JavaScript -->
+            </div>
+            
+            <div class="flex justify-center space-x-3">
+                <button id="minigame-close" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg font-semibold transition-all">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Complete Modal -->
+    <div id="complete-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 max-w-md mx-4 border border-primary/50">
+            <div class="text-center">
+                <div class="text-6xl mb-4">🏆</div>
+                <h3 class="text-2xl font-bold mb-2">Selamat!</h3>
+                <p class="text-red-100 mb-4">
+                    Anda telah menyelesaikan eksplorasi Island Explorer!
+                </p>
+                <div class="bg-black bg-opacity-30 rounded-lg p-4 mb-4">
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <div class="text-teal-300">Artefak Terkumpul:</div>
+                            <div class="font-bold" id="final-artifacts">0</div>
+                        </div>
+                        <div>
+                            <div class="text-teal-300">Skor Akhir:</div>
+                            <div class="font-bold" id="final-score">0</div>
+                        </div>
+                        <div>
+                            <div class="text-teal-300">Waktu Bermain:</div>
+                            <div class="font-bold" id="final-time">00:00</div>
+                        </div>
+                        <div>
+                            <div class="text-teal-300">Pulau Terjelajahi:</div>
+                            <div class="font-bold" id="final-islands">1/5</div>
+                        </div>
                     </div>
-                    <h3 class="font-bold text-teal-300 mb-2">Pulau {{ $island['name'] }}</h3>
-                    <p class="text-teal-200 text-sm mb-3">{{ $island['artifacts'] }} Artefak Budaya</p>
-                    <div class="text-xs text-teal-100">
-                        <div>Mini-games: {{ count($island['mini_games']) }}</div>
-                        <div>Situs: {{ count($island['cultural_sites']) }}</div>
-                    </div>
                 </div>
-                @endforeach
-            </div>
-
-            <!-- Features Preview -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
-                <div class="bg-secondary/20 rounded-xl p-4 md:p-6 border border-secondary/40">
-                    <div class="text-2xl md:text-3xl mb-3">🗺️</div>
-                    <h3 class="font-bold text-red-200 mb-2 text-sm md:text-base">Interactive Map</h3>
-                    <p class="text-red-100 text-xs md:text-sm">Jelajahi peta Indonesia dengan detail setiap pulau</p>
+                <div class="flex justify-center space-x-3">
+                    <a href="{{ route('game.index') }}" class="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold transition-all">
+                        Kembali ke Menu
+                    </a>
+                    <button id="play-again" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-semibold transition-all">
+                        Main Lagi
+                    </button>
                 </div>
-                <div class="bg-secondary/20 rounded-xl p-6 border border-secondary/40">
-                    <div class="text-3xl mb-3">🏺</div>
-                    <h3 class="font-bold text-red-200 mb-2">Collect Artifacts</h3>
-                    <p class="text-red-100 text-sm">Kumpulkan artefak budaya dari setiap daerah</p>
-                </div>
-                <div class="bg-secondary/20 rounded-xl p-6 border border-secondary/40">
-                    <div class="text-3xl mb-3">🎮</div>
-                    <h3 class="font-bold text-red-200 mb-2">Mini-Games</h3>
-                    <p class="text-red-100 text-sm">Berbagai mini-games unik untuk setiap pulau</p>
-                </div>
-                <div class="bg-secondary/20 rounded-xl p-6 border border-secondary/40">
-                    <div class="text-3xl mb-3">📚</div>
-                    <h3 class="font-bold text-red-200 mb-2">Cultural Learning</h3>
-                    <p class="text-red-100 text-sm">Pelajari budaya dan sejarah setiap daerah</p>
-                </div>
-            </div>
-
-            <!-- Coming Soon Features -->
-            <div class="bg-tertiary/20 rounded-xl p-6 border border-tertiary/40 mb-8">
-                <h3 class="text-2xl font-bold text-orange-200 mb-4">🚧 Fitur yang Akan Datang:</h3>
-                <ul class="text-left text-orange-100 space-y-2 max-w-2xl mx-auto">
-                    <li class="flex items-center space-x-2">
-                        <span class="text-tertiary">•</span>
-                        <span>Eksplorasi virtual Candi Borobudur dan Prambanan</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span class="text-tertiary">•</span>
-                        <span>Mini-game Batik Pattern di Pulau Jawa</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span class="text-tertiary">•</span>
-                        <span>Petualangan Danau Toba di Sumatera Utara</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span class="text-tertiary">•</span>
-                        <span>Ritual persembahan virtual di Bali</span>
-                    </li>
-                    <li class="flex items-center space-x-2">
-                        <span class="text-tertiary">•</span>
-                        <span>Collection system dengan museum virtual</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                <a href="{{ route('game.index') }}" 
-                   class="bg-primary hover:bg-secondary px-6 md:px-8 py-3 rounded-xl font-semibold transition-all text-center text-sm md:text-base">
-                    🏠 Kembali ke Menu
-                </a>
-                <a href="{{ route('game.play', 'time-travel-adventure') }}" 
-                   class="bg-secondary hover:bg-primary px-6 md:px-8 py-3 rounded-xl font-semibold transition-all text-center text-sm md:text-base">
-                    🕰️ Coba Time Travel
-                </a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+// Island Explorer Game Logic
+class IslandExplorer {
+    constructor() {
+        this.currentIsland = 'jawa';
+        this.gameTime = 0;
+        this.score = 0;
+        this.artifactsCollected = [];
+        this.exploredSpots = [];
+        this.islandsExplored = ['jawa'];
+        this.minigamesPlayed = 0;
+        this.timer = null;
+        this.gameSession = @json($session ?? null);
+        this.gameData = @json($game);
+        
+        this.islands = {
+            jawa: {
+                name: 'Jawa',
+                icon: '🏛️',
+                title: '🏛️ Pulau Jawa',
+                description: 'Jelajahi Pulau Jawa, pulau paling padat penduduknya di Indonesia. Temukan candi-candi bersejarah, pelajari budaya Jawa yang kaya, dan kumpulkan artefak budaya yang berharga!',
+                artifacts: [
+                    {id: 1, name: 'Keris Majapahit', icon: '⚔️', description: 'Senjata tradisional kuno dari era Kerajaan Majapahit'},
+                    {id: 2, name: 'Arca Ganesha', icon: '🗿', description: 'Patung dewa Ganesha dari Candi Prambanan'},
+                    {id: 3, name: 'Batik Solo', icon: '🎨', description: 'Kain batik khas Solo dengan motif tradisional'}
+                ],
+                minigame: {
+                    type: 'pattern_match',
+                    name: 'Batik Pattern Match',
+                    description: 'Cocokkan pola batik yang benar!'
+                }
+            },
+            bali: {
+                name: 'Bali',
+                icon: '🛕',
+                title: '🛕 Pulau Bali',
+                description: 'Pulau Dewata dengan keindahan alam dan budaya Hindu yang kental. Temukan pura-pura suci dan tradisi unik Bali.',
+                artifacts: [
+                    {id: 4, name: 'Pura Miniatur', icon: '🛕', description: 'Miniatur Pura Besakih, pura terbesar di Bali'},
+                    {id: 5, name: 'Topeng Barong', icon: '🎭', description: 'Topeng Barong untuk tarian tradisional Bali'},
+                    {id: 6, name: 'Ukiran Kayu', icon: '🪵', description: 'Ukiran kayu khas Ubud dengan motif tradisional'}
+                ],
+                minigame: {
+                    type: 'memory',
+                    name: 'Temple Memory',
+                    description: 'Ingat urutan ritual di pura!'
+                }
+            },
+            sumatera: {
+                name: 'Sumatera',
+                icon: '🌋',
+                title: '🌋 Pulau Sumatera',
+                description: 'Pulau dengan keindahan alam yang menakjubkan, dari Danau Toba hingga hutan tropis yang lebat.',
+                artifacts: [
+                    {id: 7, name: 'Ulos Batak', icon: '🧣', description: 'Kain tradisional Batak dengan makna filosofis'},
+                    {id: 8, name: 'Ukiran Batak', icon: '🗿', description: 'Patung ukiran tradisional suku Batak'},
+                    {id: 9, name: 'Songket Minang', icon: '✨', description: 'Kain songket khas Minangkabau'}
+                ],
+                minigame: {
+                    type: 'quiz',
+                    name: 'Cultural Quiz',
+                    description: 'Jawab pertanyaan tentang budaya Sumatera!'
+                }
+            },
+            kalimantan: {
+                name: 'Kalimantan',
+                icon: '🦜',
+                title: '🦜 Pulau Kalimantan',
+                description: 'Pulau dengan hutan hujan terluas di Indonesia, rumah bagi orangutan dan keanekaragaman hayati yang luar biasa.',
+                artifacts: [
+                    {id: 10, name: 'Mandau Dayak', icon: '⚔️', description: 'Senjata tradisional suku Dayak'},
+                    {id: 11, name: 'Topeng Hudoq', icon: '🎭', description: 'Topeng ritual suku Dayak Kenyah'},
+                    {id: 12, name: 'Anyaman Rotan', icon: '🧺', description: 'Kerajinan anyaman rotan khas Kalimantan'}
+                ],
+                minigame: {
+                    type: 'forest_explorer',
+                    name: 'Forest Explorer',
+                    description: 'Jelajahi hutan dan temukan hewan langka!'
+                }
+            },
+            sulawesi: {
+                name: 'Sulawesi',
+                icon: '🐂',
+                title: '🐂 Pulau Sulawesi',
+                description: 'Pulau dengan bentuk unik seperti anggrek, terkenal dengan budaya Toraja dan keindahan Tana Toraja.',
+                artifacts: [
+                    {id: 13, name: 'Tongkonan Model', icon: '🏠', description: 'Miniatur rumah adat Toraja'},
+                    {id: 14, name: 'Patung Tau-tau', icon: '🗿', description: 'Patung kayu penjaga makam Toraja'},
+                    {id: 15, name: 'Kain Sarita', icon: '🎨', description: 'Kain tenun tradisional Toraja'}
+                ],
+                minigame: {
+                    type: 'building',
+                    name: 'Tongkonan Builder',
+                    description: 'Bangun rumah adat Tongkonan!'
+                }
+            }
+        };
+        
+        this.init();
+    }
+    
+    init() {
+        this.startTimer();
+        this.bindEvents();
+        this.generateExplorationGrid();
+        this.updateArtifactCollection();
+        this.updateStats();
+        this.loadGameProgress();
+    }
+    
+    loadGameProgress() {
+        if (this.gameSession && this.gameSession.progress_data) {
+            const progress = this.gameSession.progress_data;
+            this.score = progress.score || 0;
+            this.artifactsCollected = progress.artifacts_collected || [];
+            this.exploredSpots = progress.explored_spots || [];
+            this.islandsExplored = progress.islands_explored || ['jawa'];
+            this.minigamesPlayed = progress.minigames_played || 0;
+            this.gameTime = progress.time_spent || 0;
+            
+            this.updateDisplay();
+        }
+    }
+    
+    startTimer() {
+        this.timer = setInterval(() => {
+            this.gameTime++;
+            this.updateTimer();
+        }, 1000);
+    }
+    
+    updateTimer() {
+        const minutes = Math.floor(this.gameTime / 60);
+        const seconds = this.gameTime % 60;
+        document.getElementById('game-timer').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    bindEvents() {
+        // Island navigation
+        document.querySelectorAll('.island-nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const island = e.currentTarget.dataset.island;
+                if (this.islandsExplored.includes(island) || this.artifactsCollected.length >= 3) {
+                    this.switchIsland(island);
+                } else {
+                    this.showMessage('Kumpulkan lebih banyak artefak untuk membuka pulau ini!', 'warning');
+                }
+            });
+        });
+        
+        // Game actions
+        document.getElementById('explore-btn').addEventListener('click', () => this.explore());
+        document.getElementById('minigame-btn').addEventListener('click', () => this.startMinigame());
+        document.getElementById('collection-btn').addEventListener('click', () => this.showCollection());
+        
+        // Modal events
+        document.getElementById('exploration-close').addEventListener('click', () => this.closeModal('exploration-modal'));
+        document.getElementById('minigame-close').addEventListener('click', () => this.closeModal('minigame-modal'));
+        document.getElementById('play-again').addEventListener('click', () => this.resetGame());
+    }
+    
+    switchIsland(islandKey) {
+        this.currentIsland = islandKey;
+        const island = this.islands[islandKey];
+        
+        // Update UI
+        document.getElementById('current-island-title').textContent = island.title;
+        document.getElementById('island-description').textContent = island.description;
+        
+        // Update navigation buttons
+        document.querySelectorAll('.island-nav-btn').forEach(btn => {
+            btn.classList.remove('active', 'bg-teal-600');
+            btn.classList.add('bg-gray-700');
+        });
+        document.querySelector(`[data-island="${islandKey}"]`).classList.add('active', 'bg-teal-600');
+        document.querySelector(`[data-island="${islandKey}"]`).classList.remove('bg-gray-700');
+        
+        this.generateExplorationGrid();
+        this.updateIslandProgress();
+    }
+    
+    generateExplorationGrid() {
+        const grid = document.getElementById('exploration-grid');
+        grid.innerHTML = '';
+        
+        for (let i = 0; i < 16; i++) {
+            const spot = document.createElement('div');
+            spot.className = 'exploration-spot bg-green-700 hover:bg-green-600 rounded-lg cursor-pointer transition-all flex items-center justify-center text-2xl';
+            spot.dataset.spotId = `${this.currentIsland}-${i}`;
+            
+            if (this.exploredSpots.includes(spot.dataset.spotId)) {
+                spot.classList.add('explored', 'bg-blue-600');
+                spot.textContent = '✓';
+            } else {
+                spot.textContent = '?';
+            }
+            
+            spot.addEventListener('click', () => this.exploreSpot(spot.dataset.spotId));
+            grid.appendChild(spot);
+        }
+    }
+    
+    explore() {
+        const unexploredSpots = document.querySelectorAll('.exploration-spot:not(.explored)');
+        if (unexploredSpots.length === 0) {
+            this.showMessage('Semua area di pulau ini sudah dieksplorasi!', 'info');
+            return;
+        }
+        
+        // Automatically explore a random spot
+        const randomSpot = unexploredSpots[Math.floor(Math.random() * unexploredSpots.length)];
+        this.exploreSpot(randomSpot.dataset.spotId);
+    }
+    
+    exploreSpot(spotId) {
+        if (this.exploredSpots.includes(spotId)) return;
+        
+        this.exploredSpots.push(spotId);
+        const spot = document.querySelector(`[data-spot-id="${spotId}"]`);
+        spot.classList.add('explored', 'bg-blue-600');
+        spot.textContent = '✓';
+        
+        // Random chance to find artifact
+        const island = this.islands[this.currentIsland];
+        const availableArtifacts = island.artifacts.filter(a => !this.artifactsCollected.includes(a.id));
+        
+        if (Math.random() < 0.3 && availableArtifacts.length > 0) {
+            const artifact = availableArtifacts[Math.floor(Math.random() * availableArtifacts.length)];
+            this.findArtifact(artifact);
+        } else {
+            this.score += 10;
+            this.showExploration('🌿', 'Area Terjelajahi', 'Anda menjelajahi area baru dan mendapat 10 poin!');
+        }
+        
+        this.updateIslandProgress();
+        this.updateDisplay();
+        this.saveProgress();
+    }
+    
+    findArtifact(artifact) {
+        this.artifactsCollected.push(artifact.id);
+        this.score += 50;
+        this.showExploration(artifact.icon, 'Artefak Ditemukan!', `${artifact.name}: ${artifact.description}`);
+        this.updateArtifactCollection();
+        
+        // Check if island is complete
+        const island = this.islands[this.currentIsland];
+        const islandArtifacts = island.artifacts.filter(a => this.artifactsCollected.includes(a.id));
+        if (islandArtifacts.length === island.artifacts.length) {
+            this.completeIsland();
+        }
+        
+        // Check if all artifacts collected
+        if (this.artifactsCollected.length >= 15) {
+            setTimeout(() => this.completeGame(), 1000);
+        }
+    }
+    
+    completeIsland() {
+        const nextIslands = {
+            'jawa': 'bali',
+            'bali': 'sumatera',
+            'sumatera': 'kalimantan',
+            'kalimantan': 'sulawesi'
+        };
+        
+        const nextIsland = nextIslands[this.currentIsland];
+        if (nextIsland && !this.islandsExplored.includes(nextIsland)) {
+            this.islandsExplored.push(nextIsland);
+            this.showMessage(`Pulau ${this.islands[nextIsland].name} telah terbuka!`, 'success');
+        }
+        
+        this.score += 100;
+        this.updateStats();
+    }
+    
+    startMinigame() {
+        const island = this.islands[this.currentIsland];
+        this.showMinigame(island.minigame);
+    }
+    
+    showMinigame(minigame) {
+        document.getElementById('minigame-description').textContent = minigame.description;
+        const content = document.getElementById('minigame-content');
+        
+        // Simple pattern matching minigame
+        content.innerHTML = `
+            <div class="text-center">
+                <p class="mb-4">Klik pola yang benar!</p>
+                <div class="grid grid-cols-3 gap-2 max-w-xs mx-auto mb-4" id="minigame-grid">
+                    ${Array.from({length: 9}, (_, i) => `
+                        <button class="minigame-btn w-16 h-16 bg-gray-600 hover:bg-gray-500 rounded-lg text-2xl transition-all" data-pattern="${i}">
+                            ${['🌸', '🍃', '⭐', '🌺', '🔸', '🌿', '✨', '🌼', '💫'][i]}
+                        </button>
+                    `).join('')}
+                </div>
+                <p class="text-sm text-gray-300">Target: 🌸 🍃 ⭐</p>
+            </div>
+        `;
+        
+        const targetPattern = [0, 1, 2]; // 🌸 🍃 ⭐
+        let selectedPattern = [];
+        
+        document.querySelectorAll('.minigame-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                if (selectedPattern.length < 3) {
+                    selectedPattern.push(index);
+                    btn.classList.add('bg-green-600', 'selected');
+                    btn.classList.remove('bg-gray-600');
+                    
+                    if (selectedPattern.length === 3) {
+                        setTimeout(() => {
+                            if (JSON.stringify(selectedPattern) === JSON.stringify(targetPattern)) {
+                                this.score += 30;
+                                this.minigamesPlayed++;
+                                this.showMessage('Benar! +30 poin', 'success');
+                                this.closeModal('minigame-modal');
+                            } else {
+                                this.showMessage('Salah! Coba lagi', 'error');
+                                selectedPattern = [];
+                                document.querySelectorAll('.minigame-btn').forEach(b => {
+                                    b.classList.remove('bg-green-600', 'selected');
+                                    b.classList.add('bg-gray-600');
+                                });
+                            }
+                            this.updateDisplay();
+                            this.saveProgress();
+                        }, 500);
+                    }
+                }
+            });
+        });
+        
+        this.showModal('minigame-modal');
+    }
+    
+    showExploration(icon, title, description) {
+        document.getElementById('exploration-icon').textContent = icon;
+        document.getElementById('exploration-title').textContent = title;
+        document.getElementById('exploration-description').textContent = description;
+        this.showModal('exploration-modal');
+    }
+    
+    showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+    }
+    
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+    }
+    
+    updateArtifactCollection() {
+        const container = document.getElementById('artifact-collection');
+        container.innerHTML = '';
+        
+        for (let i = 1; i <= 15; i++) {
+            const artifactDiv = document.createElement('div');
+            artifactDiv.className = 'artifact-slot w-12 h-12 rounded border-2 flex items-center justify-center text-lg';
+            
+            if (this.artifactsCollected.includes(i)) {
+                const artifact = this.findArtifactById(i);
+                artifactDiv.classList.add('border-teal-400', 'bg-teal-600');
+                artifactDiv.textContent = artifact.icon;
+                artifactDiv.title = artifact.name;
+            } else {
+                artifactDiv.classList.add('border-gray-600', 'bg-gray-800');
+                artifactDiv.textContent = '?';
+            }
+            
+            container.appendChild(artifactDiv);
+        }
+    }
+    
+    findArtifactById(id) {
+        for (const island of Object.values(this.islands)) {
+            const artifact = island.artifacts.find(a => a.id === id);
+            if (artifact) return artifact;
+        }
+        return null;
+    }
+    
+    updateIslandProgress() {
+        const island = this.islands[this.currentIsland];
+        const islandSpots = this.exploredSpots.filter(spot => spot.startsWith(this.currentIsland)).length;
+        const progress = (islandSpots / 16) * 100;
+        
+        document.getElementById('island-progress').style.width = `${progress}%`;
+        document.getElementById('island-progress-text').textContent = `${Math.round(progress)}%`;
+    }
+    
+    updateDisplay() {
+        document.getElementById('artifacts-collected').textContent = this.artifactsCollected.length;
+        document.getElementById('game-score').textContent = this.score;
+        this.updateStats();
+    }
+    
+    updateStats() {
+        document.getElementById('islands-explored').textContent = `${this.islandsExplored.length}/5`;
+        document.getElementById('minigames-played').textContent = this.minigamesPlayed;
+        document.getElementById('highest-score').textContent = Math.max(this.score, parseInt(localStorage.getItem('island_explorer_high_score') || '0'));
+    }
+    
+    showMessage(message, type = 'info') {
+        // Simple toast notification
+        const toast = document.createElement('div');
+        toast.className = `fixed top-20 right-4 z-50 px-4 py-2 rounded-lg text-white transition-all duration-300 ${
+            type === 'success' ? 'bg-green-600' : 
+            type === 'error' ? 'bg-red-600' : 
+            type === 'warning' ? 'bg-yellow-600' : 'bg-blue-600'
+        }`;
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-x-full');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    
+    saveProgress() {
+        if (!this.gameSession) return;
+        
+        const progressData = {
+            score: this.score,
+            time_spent: this.gameTime,
+            artifacts_collected: this.artifactsCollected,
+            explored_spots: this.exploredSpots,
+            islands_explored: this.islandsExplored,
+            minigames_played: this.minigamesPlayed,
+            current_island: this.currentIsland
+        };
+        
+        // Save to backend
+        fetch(`/game/${this.gameData.slug}/progress`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                progress_data: progressData,
+                score: this.score,
+                time_spent: this.gameTime
+            })
+        });
+        
+        // Save high score locally
+        const currentHighScore = parseInt(localStorage.getItem('island_explorer_high_score') || '0');
+        if (this.score > currentHighScore) {
+            localStorage.setItem('island_explorer_high_score', this.score.toString());
+        }
+    }
+    
+    completeGame() {
+        clearInterval(this.timer);
+        
+        document.getElementById('final-artifacts').textContent = this.artifactsCollected.length;
+        document.getElementById('final-score').textContent = this.score;
+        document.getElementById('final-time').textContent = document.getElementById('game-timer').textContent;
+        document.getElementById('final-islands').textContent = `${this.islandsExplored.length}/5`;
+        
+        this.showModal('complete-modal');
+        
+        // Complete game session
+        if (this.gameSession) {
+            fetch(`/game/${this.gameData.slug}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    final_score: this.score,
+                    final_time: this.gameTime,
+                    completion_data: {
+                        artifacts_collected: this.artifactsCollected,
+                        islands_explored: this.islandsExplored,
+                        minigames_played: this.minigamesPlayed
+                    }
+                })
+            });
+        }
+    }
+    
+    resetGame() {
+        this.currentIsland = 'jawa';
+        this.gameTime = 0;
+        this.score = 0;
+        this.artifactsCollected = [];
+        this.exploredSpots = [];
+        this.islandsExplored = ['jawa'];
+        this.minigamesPlayed = 0;
+        
+        clearInterval(this.timer);
+        this.startTimer();
+        
+        this.switchIsland('jawa');
+        this.updateDisplay();
+        this.updateArtifactCollection();
+        this.closeModal('complete-modal');
+        
+        // Reset session
+        window.location.reload();
+    }
+}
+
+// Initialize game when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new IslandExplorer();
+});
+</script>
 @endsection

@@ -1,33 +1,20 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen bg-gr            <h2 class="text-xl font-bold mb-4 text-secondary">📊 Progress Anda</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="text-center p-4 bg-primary/20 rounded-lg">
-                    <div class="text-2xl font-bold text-primary">{{ $userSession->completion_percentage }}%</div>
-                    <div class="text-sm text-red-200">Completion</div>
-                </div>
-                <div class="text-center p-4 bg-secondary/20 rounded-lg">
-                    <div class="text-2xl font-bold text-secondary">{{ $userSession->score }}</div>
-                    <div class="text-sm text-red-200">Current Score</div>
-                </div>
-                <div class="text-center p-4 bg-tertiary/20 rounded-lg">
-                    <div class="text-2xl font-bold text-tertiary">{{ $userSession->formatted_time_spent }}</div>
-                    <div class="text-sm text-orange-200">Time Played</div>
-                </div>rom-primary via-secondary to-quaternary/60 text-white">
+<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 pt-20 pb-8">
     <div class="max-w-6xl mx-auto px-4 py-4 md:py-8">
         <!-- Game Header -->
-        <div class="bg-black bg-opacity-50 rounded-xl md:rounded-2xl shadow-2xl border border-gray-600 p-4 md:p-6 lg:p-8 mb-6 md:mb-8">
+        <div class="bg-gradient-to-br from-white/95 to-quaternary/90 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-2xl border border-quaternary/30 p-4 md:p-6 lg:p-8 mb-6 md:mb-8 text-gray-800">
             <div class="flex flex-col sm:flex-row items-start justify-between mb-4 md:mb-6 space-y-4 sm:space-y-0">
-                <a href="{{ route('game.index') }}" class="text-red-200 hover:text-white transition-colors text-sm sm:text-base">
+                <a href="{{ route('game.index') }}" class="text-primary hover:text-secondary transition-colors text-sm sm:text-base font-medium">
                     ← Kembali ke Games
                 </a>
                 <div class="flex items-center space-x-4">
-                    <span class="px-4 py-2 bg-{{ $game->difficulty === 'easy' ? 'green' : ($game->difficulty === 'medium' ? 'yellow' : 'red') }}-600 rounded-full text-sm font-semibold">
+                    <span class="px-4 py-2 bg-{{ $game->difficulty === 'easy' ? 'green' : ($game->difficulty === 'medium' ? 'yellow' : 'red') }}-500 text-white rounded-full text-sm font-semibold">
                         {{ ucfirst($game->difficulty) }}
                     </span>
                     @if($game->is_active)
-                    <span class="px-4 py-2 bg-green-600 rounded-full text-sm font-semibold">
+                    <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-semibold">
                         ✅ Aktif
                     </span>
                     @endif
@@ -36,49 +23,49 @@
             
             <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
                 <!-- Game Icon -->
-                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br {{ $this->getGameGradient($game->game_type) }} rounded-xl md:rounded-2xl flex items-center justify-center text-3xl sm:text-4xl lg:text-5xl border-4 border-white border-opacity-20 mx-auto lg:mx-0 flex-shrink-0">
-                    {{ $this->getGameIcon($game->game_type) }}
+                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br {{ getGameGradient($game->game_type) }} rounded-xl md:rounded-2xl flex items-center justify-center text-3xl sm:text-4xl lg:text-5xl border-4 border-white shadow-lg mx-auto lg:mx-0 flex-shrink-0">
+                    {{ getGameIcon($game->game_type) }}
                 </div>
                 
                 <!-- Game Info -->
                 <div class="flex-1 text-center lg:text-left">
-                    <h1 class="text-2xl sm:text-3xl font-bold mb-4">{{ $game->title }}</h1>
-                    <p class="text-gray-300 text-base sm:text-lg mb-6 leading-relaxed">{{ $game->description }}</p>
+                    <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">{{ $game->title }}</h1>
+                    <p class="text-gray-700 text-base sm:text-lg mb-6 leading-relaxed">{{ $game->description }}</p>
                     
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                        <div class="text-center p-3 bg-blue-600 bg-opacity-30 rounded-lg">
-                            <div class="text-2xl font-bold">{{ $game->total_plays }}</div>
-                            <div class="text-sm text-blue-200">Total Dimainkan</div>
+                        <div class="text-center p-3 bg-blue-100 rounded-lg border border-blue-200">
+                            <div class="text-2xl font-bold text-blue-600">{{ $game->total_plays }}</div>
+                            <div class="text-sm text-blue-500">Total Dimainkan</div>
                         </div>
-                        <div class="text-center p-3 bg-green-600 bg-opacity-30 rounded-lg">
-                            <div class="text-2xl font-bold">{{ number_format($game->average_score, 1) }}</div>
-                            <div class="text-sm text-green-200">Skor Rata-rata</div>
+                        <div class="text-center p-3 bg-green-100 rounded-lg border border-green-200">
+                            <div class="text-2xl font-bold text-green-600">{{ number_format($game->average_score, 1) }}</div>
+                            <div class="text-sm text-green-500">Skor Rata-rata</div>
                         </div>
-                        <div class="text-center p-3 bg-purple-600 bg-opacity-30 rounded-lg">
-                            <div class="text-2xl font-bold">{{ ucfirst($game->difficulty) }}</div>
-                            <div class="text-sm text-purple-200">Kesulitan</div>
+                        <div class="text-center p-3 bg-purple-100 rounded-lg border border-purple-200">
+                            <div class="text-2xl font-bold text-purple-600">{{ ucfirst($game->difficulty) }}</div>
+                            <div class="text-sm text-purple-500">Kesulitan</div>
                         </div>
-                        <div class="text-center p-3 bg-yellow-600 bg-opacity-30 rounded-lg">
-                            <div class="text-2xl font-bold">{{ $game->game_type_display }}</div>
-                            <div class="text-sm text-yellow-200">Tipe Game</div>
+                        <div class="text-center p-3 bg-orange-100 rounded-lg border border-orange-200">
+                            <div class="text-2xl font-bold text-orange-600">{{ $game->game_type_display }}</div>
+                            <div class="text-sm text-orange-500">Tipe Game</div>
                         </div>
                     </div>
                     
                     <!-- Action Buttons -->
-                    <div class="flex space-x-4">
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
                         @auth
                         <a href="{{ route('game.play', $game->slug) }}" 
-                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 inline-block">
+                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
                             🎮 {{ $userSession ? 'Lanjutkan' : 'Mulai' }} Game
                         </a>
                         @else
                         <a href="{{ route('login') }}" 
-                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 inline-block">
+                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
                             🔐 Login untuk Bermain
                         </a>
                         @endauth
                         
-                        <button id="leaderboard-btn" class="bg-gray-600 hover:bg-gray-700 px-8 py-3 rounded-xl font-semibold transition-all">
+                        <button id="leaderboard-btn" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg">
                             🏆 Papan Skor
                         </button>
                     </div>
@@ -89,30 +76,30 @@
         <!-- User Progress (if logged in and has played) -->
         @auth
         @if($userSession)
-        <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6 mb-8">
-            <h2 class="text-xl font-bold mb-4 text-green-300">📊 Progress Anda</h2>
+        <div class="bg-gradient-to-br from-green-50 to-blue-50 backdrop-blur-sm rounded-2xl shadow-xl border border-green-200 p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4 text-green-700">📊 Progress Anda</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="text-center p-4 bg-blue-600 bg-opacity-20 rounded-lg">
-                    <div class="text-2xl font-bold text-blue-300">{{ $userSession->completion_percentage }}%</div>
-                    <div class="text-sm text-blue-200">Completion</div>
+                <div class="text-center p-4 bg-blue-100 rounded-lg border border-blue-200">
+                    <div class="text-2xl font-bold text-blue-600">{{ $userSession->completion_percentage }}%</div>
+                    <div class="text-sm text-blue-500">Completion</div>
                 </div>
-                <div class="text-center p-4 bg-green-600 bg-opacity-20 rounded-lg">
-                    <div class="text-2xl font-bold text-green-300">{{ $userSession->score }}</div>
-                    <div class="text-sm text-green-200">Current Score</div>
+                <div class="text-center p-4 bg-green-100 rounded-lg border border-green-200">
+                    <div class="text-2xl font-bold text-green-600">{{ $userSession->score }}</div>
+                    <div class="text-sm text-green-500">Current Score</div>
                 </div>
-                <div class="text-center p-4 bg-purple-600 bg-opacity-20 rounded-lg">
-                    <div class="text-2xl font-bold text-purple-300">{{ $userSession->formatted_time_spent }}</div>
-                    <div class="text-sm text-purple-200">Time Played</div>
+                <div class="text-center p-4 bg-purple-100 rounded-lg border border-purple-200">
+                    <div class="text-2xl font-bold text-purple-600">{{ $userSession->formatted_time_spent }}</div>
+                    <div class="text-sm text-purple-500">Time Played</div>
                 </div>
             </div>
             
             <!-- Progress Bar -->
             <div class="mt-4">
-                <div class="flex justify-between text-sm text-gray-300 mb-2">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
                     <span>Progress</span>
                     <span>{{ $userSession->completion_percentage }}%</span>
                 </div>
-                <div class="w-full bg-gray-700 rounded-full h-3">
+                <div class="w-full bg-gray-200 rounded-full h-3">
                     <div class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500" 
                          style="width: {{ $userSession->completion_percentage }}%"></div>
                 </div>
@@ -124,17 +111,17 @@
         <!-- User Achievements -->
         @auth
         @if($userAchievements->count() > 0)
-        <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6 mb-8">
-            <h2 class="text-xl font-bold mb-4 text-tertiary">🏆 Achievement Anda</h2>
+        <div class="bg-gradient-to-br from-yellow-50 to-orange-50 backdrop-blur-sm rounded-2xl shadow-xl border border-yellow-200 p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4 text-orange-700">🏆 Achievement Anda</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach($userAchievements as $achievement)
-                <div class="bg-tertiary/20 rounded-lg p-4 border border-tertiary/40">
+                <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-lg p-4 border border-yellow-300 shadow-md">
                     <div class="flex items-center space-x-3 mb-2">
                         <span class="text-2xl">{{ $achievement->icon }}</span>
-                        <h3 class="font-bold text-yellow-300">{{ $achievement->achievement_name }}</h3>
+                        <h3 class="font-bold text-orange-800">{{ $achievement->achievement_name }}</h3>
                     </div>
-                    <p class="text-yellow-200 text-sm">{{ $achievement->description }}</p>
-                    <p class="text-yellow-100 text-xs mt-2">{{ $achievement->created_at->format('d M Y') }}</p>
+                    <p class="text-orange-700 text-sm">{{ $achievement->description }}</p>
+                    <p class="text-orange-600 text-xs mt-2">{{ $achievement->created_at->format('d M Y') }}</p>
                 </div>
                 @endforeach
             </div>
@@ -145,8 +132,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             <!-- Game Details -->
             <div class="lg:col-span-2 space-y-6 md:space-y-8">
-                <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6 mb-8">
-                    <h2 class="text-2xl font-bold mb-6 text-blue-300">🎯 Fitur Game</h2>
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 backdrop-blur-sm rounded-2xl shadow-xl border border-blue-200 p-6 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-blue-700">🎯 Fitur Game</h2>
                     
                     @php
                         $features = [
@@ -191,16 +178,16 @@
                     <ul class="space-y-3">
                         @foreach($features[$game->game_type] ?? [] as $feature)
                         <li class="flex items-center space-x-3">
-                            <span class="text-green-400">✓</span>
-                            <span class="text-gray-300">{{ $feature }}</span>
+                            <span class="text-green-500 text-lg">✓</span>
+                            <span class="text-gray-700">{{ $feature }}</span>
                         </li>
                         @endforeach
                     </ul>
                 </div>
 
                 <!-- How to Play -->
-                <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6">
-                    <h2 class="text-2xl font-bold mb-6 text-purple-300">📚 Cara Bermain</h2>
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 backdrop-blur-sm rounded-2xl shadow-xl border border-purple-200 p-6">
+                    <h2 class="text-2xl font-bold mb-6 text-purple-700">📚 Cara Bermain</h2>
                     
                     @php
                         $instructions = [
@@ -240,8 +227,8 @@
                     <ol class="space-y-3">
                         @foreach($instructions[$game->game_type] ?? [] as $index => $instruction)
                         <li class="flex items-start space-x-3">
-                            <span class="bg-purple-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">{{ $index + 1 }}</span>
-                            <span class="text-gray-300">{{ $instruction }}</span>
+                            <span class="bg-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">{{ $index + 1 }}</span>
+                            <span class="text-gray-700">{{ $instruction }}</span>
                         </li>
                         @endforeach
                     </ol>
@@ -251,39 +238,39 @@
             <!-- Sidebar -->
             <div class="space-y-6">
                 <!-- Leaderboard -->
-                <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6">
-                    <h3 class="text-xl font-bold mb-4 text-yellow-300">🏆 Top Players</h3>
+                <div class="bg-gradient-to-br from-yellow-50 to-amber-50 backdrop-blur-sm rounded-2xl shadow-xl border border-yellow-200 p-6">
+                    <h3 class="text-xl font-bold mb-4 text-yellow-700">🏆 Top Players</h3>
                     <div id="leaderboard-content" class="space-y-3">
-                        <div class="text-center text-gray-400">Loading...</div>
+                        <div class="text-center text-gray-500">Loading...</div>
                     </div>
                 </div>
 
                 <!-- Game Stats -->
-                <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6">
-                    <h3 class="text-xl font-bold mb-4 text-green-300">📊 Statistics</h3>
+                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-200 p-6">
+                    <h3 class="text-xl font-bold mb-4 text-emerald-700">📊 Statistics</h3>
                     <div class="space-y-3">
                         <div class="flex justify-between">
-                            <span class="text-gray-300">Total Players:</span>
-                            <span class="font-semibold text-white">{{ $game->sessions->unique('user_id')->count() }}</span>
+                            <span class="text-gray-600">Total Players:</span>
+                            <span class="font-semibold text-gray-800">{{ $game->sessions->unique('user_id')->count() }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-300">Completed:</span>
-                            <span class="font-semibold text-green-400">{{ $game->sessions->where('status', 'completed')->count() }}</span>
+                            <span class="text-gray-600">Completed:</span>
+                            <span class="font-semibold text-green-600">{{ $game->sessions->where('status', 'completed')->count() }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-300">Average Score:</span>
-                            <span class="font-semibold text-blue-400">{{ number_format($game->average_score, 1) }}</span>
+                            <span class="text-gray-600">Average Score:</span>
+                            <span class="font-semibold text-blue-600">{{ number_format($game->average_score, 1) }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-300">Difficulty:</span>
-                            <span class="font-semibold text-{{ $game->difficulty === 'easy' ? 'green' : ($game->difficulty === 'medium' ? 'yellow' : 'red') }}-400">{{ ucfirst($game->difficulty) }}</span>
+                            <span class="text-gray-600">Difficulty:</span>
+                            <span class="font-semibold text-{{ $game->difficulty === 'easy' ? 'green' : ($game->difficulty === 'medium' ? 'yellow' : 'red') }}-600">{{ ucfirst($game->difficulty) }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Related Games -->
-                <div class="bg-black bg-opacity-50 rounded-2xl shadow-2xl border border-gray-600 p-6">
-                    <h3 class="text-xl font-bold mb-4 text-blue-300">🎮 Game Lainnya</h3>
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-50 backdrop-blur-sm rounded-2xl shadow-xl border border-indigo-200 p-6">
+                    <h3 class="text-xl font-bold mb-4 text-indigo-700">🎮 Game Lainnya</h3>
                     <div class="space-y-3">
                         @php
                             $relatedGames = \App\Models\Game::active()->public()
@@ -293,12 +280,12 @@
                         @endphp
                         
                         @foreach($relatedGames as $relatedGame)
-                        <a href="{{ route('game.show', $relatedGame->slug) }}" class="block p-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors">
+                        <a href="{{ route('game.show', $relatedGame->slug) }}" class="block p-3 bg-white bg-opacity-60 hover:bg-opacity-80 rounded-lg transition-all border border-indigo-100 shadow-sm">
                             <div class="flex items-center space-x-3">
-                                <span class="text-2xl">{{ $this->getGameIcon($relatedGame->game_type) }}</span>
+                                <span class="text-2xl">{{ getGameIcon($relatedGame->game_type) }}</span>
                                 <div>
-                                    <div class="font-semibold text-white">{{ $relatedGame->title }}</div>
-                                    <div class="text-sm text-gray-300">{{ ucfirst($relatedGame->difficulty) }}</div>
+                                    <div class="font-semibold text-gray-800">{{ $relatedGame->title }}</div>
+                                    <div class="text-sm text-gray-600">{{ ucfirst($relatedGame->difficulty) }}</div>
                                 </div>
                             </div>
                         </a>
@@ -325,29 +312,29 @@ async function loadLeaderboard() {
         container.innerHTML = '';
         
         if (leaderboard.length === 0) {
-            container.innerHTML = '<div class="text-center text-gray-400">Belum ada pemain</div>';
+            container.innerHTML = '<div class="text-center text-gray-500">Belum ada pemain</div>';
             return;
         }
         
         leaderboard.slice(0, 5).forEach((entry, index) => {
             const medal = index < 3 ? ['🥇', '🥈', '🥉'][index] : `#${index + 1}`;
             const entryDiv = document.createElement('div');
-            entryDiv.className = 'flex justify-between items-center p-2 bg-gray-700 rounded-lg';
+            entryDiv.className = 'flex justify-between items-center p-2 bg-white bg-opacity-60 rounded-lg border border-yellow-200';
             entryDiv.innerHTML = `
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">${medal}</span>
-                    <span class="font-semibold text-white">${entry.user.name}</span>
+                    <span class="font-semibold text-gray-800">${entry.user.name}</span>
                 </div>
                 <div class="text-right">
-                    <div class="font-bold text-yellow-300">${entry.score}</div>
-                    <div class="text-xs text-gray-400">${formatTime(entry.time_spent)}</div>
+                    <div class="font-bold text-yellow-600">${entry.score}</div>
+                    <div class="text-xs text-gray-500">${formatTime(entry.time_spent)}</div>
                 </div>
             `;
             container.appendChild(entryDiv);
         });
     } catch (error) {
         console.error('Error loading leaderboard:', error);
-        document.getElementById('leaderboard-content').innerHTML = '<div class="text-center text-red-400">Error loading data</div>';
+        document.getElementById('leaderboard-content').innerHTML = '<div class="text-center text-red-500">Error loading data</div>';
     }
 }
 
