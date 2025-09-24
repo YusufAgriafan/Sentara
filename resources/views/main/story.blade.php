@@ -31,8 +31,8 @@
     <!-- Story Content -->
     <section class="py-20 px-6 lg:px-8 bg-white">
         <div class="max-w-4xl mx-auto">
-            <div class="prose prose-lg prose-primary max-w-none fade-in-up">
-                {!! nl2br(e($story->content)) !!}
+            <div class="prose prose-lg prose-primary max-w-none fade-in-up prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-em:text-gray-700 prose-blockquote:border-primary prose-blockquote:text-gray-700 prose-code:text-primary prose-pre:bg-gray-100">
+                {!! Str::markdown($story->content) !!}
             </div>
         </div>
     </section>
