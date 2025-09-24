@@ -8,6 +8,8 @@ use App\Http\Controllers\Educator\StoryController;
 use App\Http\Controllers\Educator\ClassDiscussionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\GeographyContentController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Educator\EducatorController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\MainController;
@@ -22,6 +24,9 @@ Route::get('/sejarah', [MainController::class, 'sejarah'])->name('sejarah');
 // API Routes untuk peta
 Route::get('/api/places', [PlaceController::class, 'getPlacesForMap'])->name('api.places');
 Route::get('/api/places/era/{era}', [PlaceController::class, 'getPlacesByEra'])->name('api.places.era');
+
+// API Routes untuk geography content
+Route::get('/api/geography-content/{slug}', [MainController::class, 'getGeographyContent'])->name('api.geography-content');
 
 // Public story viewing
 Route::get('/story/{story}', [MainController::class, 'showStory'])->name('story.show');
@@ -61,6 +66,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::delete('/stories/{story}', [AdminController::class, 'deleteStory'])->name('stories.delete');
     Route::delete('/places/{place}', [AdminController::class, 'deletePlace'])->name('places.delete');
     
+    // Geography Content Management
+    Route::get('/geography-content', [GeographyContentController::class, 'index'])->name('geography-content.index');
+    Route::get('/geography-content/create', [GeographyContentController::class, 'create'])->name('geography-content.create');
+    Route::post('/geography-content', [GeographyContentController::class, 'store'])->name('geography-content.store');
+    Route::get('/geography-content/{geographyContent}/edit', [GeographyContentController::class, 'edit'])->name('geography-content.edit');
+    Route::put('/geography-content/{geographyContent}', [GeographyContentController::class, 'update'])->name('geography-content.update');
+    Route::delete('/geography-content/{geographyContent}', [GeographyContentController::class, 'destroy'])->name('geography-content.destroy');
+    
     // Class Management
     Route::get('/classes', [AdminController::class, 'classes'])->name('classes');
     Route::post('/classes', [AdminController::class, 'storeClass'])->name('classes.store');
@@ -77,6 +90,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     // Content Fallback Settings
     Route::post('/content-fallback', [AdminController::class, 'updateContentFallback'])->name('content-fallback.update');
     Route::get('/content-fallback/api', [AdminController::class, 'getContentFallbackSettings'])->name('content-fallback.api');
+    
+    // History Management
+    Route::resource('history', HistoryController::class);
+    Route::post('/history/upload-image', [HistoryController::class, 'uploadImage'])->name('history.upload-image');
 });
 
 // Educator routes - only accessible by educator and admin roles

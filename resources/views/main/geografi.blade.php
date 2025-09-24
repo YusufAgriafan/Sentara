@@ -24,6 +24,121 @@
         </div>
     </section>
 
+    <!-- Geography Content Section -->
+    @if(isset($geographyContents) && $geographyContents->count() > 0)
+    <section class="py-20 px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20 fade-in-up">
+                <h2 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">Penjelasan Geografi 📚</h2>
+                <p class="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto">
+                    Pilih topik geografi yang ingin dipelajari dari dropdown di bawah ini.
+                </p>
+            </div>
+
+            <!-- Geography Topic Selector -->
+            <div class="max-w-4xl mx-auto fade-in-up">
+                <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+                    <!-- Dropdown Header -->
+                    <div class="bg-gradient-to-r from-indigo-600 to-blue-600 p-6 text-white">
+                        <h3 class="text-2xl font-bold mb-2">Pilih Topik Geografi</h3>
+                        <p class="text-indigo-100">Klik dropdown untuk memilih materi yang ingin dipelajari</p>
+                    </div>
+
+                    <!-- Dropdown Selector -->
+                    <div class="p-6">
+                        <div class="relative">
+                            <select id="geography-selector" onchange="showSelectedGeographyContent()" 
+                                    class="w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-lg font-medium text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all duration-300">
+                                <option value="">-- Pilih Topik Geografi --</option>
+                                @foreach($geographyContents as $content)
+                                    <option value="{{ $content->slug }}" 
+                                            data-title="{{ $content->title }}"
+                                            data-description="{{ $content->description }}"
+                                            data-icon="{{ $content->icon }}"
+                                            data-order="{{ $content->order_index + 1 }}">
+                                        Materi {{ $content->order_index + 1 }}: {{ $content->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Display Area -->
+                <div id="geography-content-area" class="mt-8 hidden">
+                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+                        <!-- Content Header -->
+                        <div id="content-header" class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white">
+                            <div class="flex items-center mb-4">
+                                <div id="content-icon" class="text-6xl mr-4">🌍</div>
+                                <div>
+                                    <div class="flex items-center mb-2">
+                                        <span id="content-badge" class="bg-white/20 px-3 py-1 rounded-full text-sm font-medium mr-3">
+                                            Materi 1
+                                        </span>
+                                    </div>
+                                    <h3 id="content-title" class="text-3xl font-bold"></h3>
+                                </div>
+                            </div>
+                            <p id="content-description" class="text-blue-100 text-lg leading-relaxed"></p>
+                        </div>
+
+                        <!-- Content Body -->
+                        <div id="content-body" class="p-8">
+                            <div class="text-center py-12">
+                                <div class="text-6xl mb-4">📖</div>
+                                <p class="text-gray-500 text-lg">Memuat konten...</p>
+                            </div>
+                        </div>
+
+                        <!-- Content Actions -->
+                        <div class="bg-gray-50 px-8 py-6 flex items-center justify-between">
+                            <div class="text-sm text-gray-600">
+                                <i class="fas fa-lightbulb mr-2"></i>
+                                Konten pembelajaran geografi Indonesia
+                            </div>
+                            <button onclick="showFullContent()" 
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+                                <i class="fas fa-expand mr-2"></i>Baca Lengkap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Default State Message -->
+                <div id="default-message" class="mt-8 text-center bg-white rounded-3xl p-12 shadow-lg">
+                    <div class="text-8xl mb-6">🎯</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Siap untuk Belajar Geografi?</h3>
+                    <p class="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+                        Pilih salah satu topik dari dropdown di atas untuk memulai pembelajaran geografi Indonesia yang menarik dan interaktif.
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto text-sm text-gray-500">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <i class="fas fa-mountain text-green-600 mb-1"></i>
+                            <div class="font-medium">Topografi</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <i class="fas fa-water text-blue-600 mb-1"></i>
+                            <div class="font-medium">Hidrologi</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <i class="fas fa-cloud-sun text-orange-600 mb-1"></i>
+                            <div class="font-medium">Klimatologi</div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <i class="fas fa-seedling text-emerald-600 mb-1"></i>
+                            <div class="font-medium">Biogeografi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!-- 3D Geography Models Section -->
     @if(isset($geographyModels) && $geographyModels->count() > 0)
     <section id="models" class="py-20 px-6 lg:px-8 bg-white">
@@ -155,6 +270,43 @@
         </div>
     </div>
 
+    <!-- Geography Content Modal -->
+    <div id="geography-content-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl max-h-[90vh] w-full overflow-hidden shadow-2xl">
+            <!-- Modal Header -->
+            <div class="bg-indigo-600 text-white p-6 flex items-center justify-between">
+                <div>
+                    <h3 id="content-modal-title" class="text-2xl font-bold"></h3>
+                    <p class="text-indigo-100 mt-1">Penjelasan Materi Geografi</p>
+                </div>
+                <button onclick="closeGeographyContentModal()" class="text-white hover:text-gray-300 transition-colors">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div id="geography-modal-content" class="p-6 max-h-[60vh] overflow-y-auto">
+                <!-- Content will be loaded here -->
+                <div class="text-center py-8">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600">Memuat konten...</p>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-6 bg-gray-50 flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Konten ini disusun khusus untuk pembelajaran geografi Indonesia
+                </div>
+                <button onclick="closeGeographyContentModal()" 
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
     <style>
         .fade-in-up {
             opacity: 0;
@@ -276,6 +428,58 @@
             alert('Fitur ini akan menampilkan lebih banyak model 3D dalam versi lengkap aplikasi!');
         }
 
+        // Show Geography Content Modal
+        function showGeographyContent(slug) {
+            const modal = document.getElementById('geography-content-modal');
+            const modalContent = document.getElementById('geography-modal-content');
+            const modalTitle = document.getElementById('content-modal-title');
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Show loading state
+            modalContent.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600">Memuat konten...</p>
+                </div>
+            `;
+            
+            // Fetch content
+            fetch(`/api/geography-content/${slug}`)
+                .then(response => response.json())
+                .then(data => {
+                    modalTitle.textContent = data.title;
+                    modalContent.innerHTML = `
+                        <div class="prose prose-lg max-w-none">
+                            ${data.description ? `<div class="bg-indigo-50 border-l-4 border-indigo-400 p-4 mb-6">
+                                <p class="text-indigo-700 font-medium">${data.description}</p>
+                            </div>` : ''}
+                            <div class="text-gray-700 leading-relaxed">
+                                ${data.content}
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error loading geography content:', error);
+                    modalContent.innerHTML = `
+                        <div class="text-center py-8">
+                            <div class="text-6xl mb-4">⚠️</div>
+                            <h4 class="text-xl font-bold text-red-700 mb-2">Gagal Memuat Konten</h4>
+                            <p class="text-red-600">Silakan coba lagi nanti</p>
+                        </div>
+                    `;
+                });
+        }
+
+        // Close Geography Content Modal
+        function closeGeographyContentModal() {
+            document.getElementById('geography-content-modal').classList.add('hidden');
+            document.getElementById('geography-content-modal').classList.remove('flex');
+        }
+
         // Smooth scrolling function
         function scrollToSection(sectionId) {
             document.getElementById(sectionId).scrollIntoView({
@@ -289,11 +493,19 @@
                 close3DModal();
             }
         });
+        
+        // Close geography content modal when clicking outside
+        document.getElementById('geography-content-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGeographyContentModal();
+            }
+        });
 
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 close3DModal();
+                closeGeographyContentModal();
             }
         });
 
@@ -312,5 +524,74 @@
                 observer.observe(el);
             });
         });
+
+        // Show selected geography content
+        function showSelectedGeographyContent() {
+            const selector = document.getElementById('geography-selector');
+            const selectedOption = selector.options[selector.selectedIndex];
+            const contentArea = document.getElementById('geography-content-area');
+            const defaultMessage = document.getElementById('default-message');
+            
+            if (selectedOption.value === '') {
+                // Show default message, hide content area
+                contentArea.classList.add('hidden');
+                defaultMessage.classList.remove('hidden');
+                return;
+            }
+            
+            // Hide default message, show content area
+            defaultMessage.classList.add('hidden');
+            contentArea.classList.remove('hidden');
+            
+            // Update content header
+            document.getElementById('content-icon').innerHTML = selectedOption.dataset.icon || '🌍';
+            document.getElementById('content-badge').textContent = `Materi ${selectedOption.dataset.order}`;
+            document.getElementById('content-title').textContent = selectedOption.dataset.title;
+            document.getElementById('content-description').textContent = selectedOption.dataset.description || 'Pelajari lebih lanjut tentang topik geografi ini.';
+            
+            // Show loading in content body
+            document.getElementById('content-body').innerHTML = `
+                <div class="text-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                    <p class="text-gray-500 text-lg">Memuat konten...</p>
+                </div>
+            `;
+            
+            // Fetch content
+            fetch(`/api/geography-content/${selectedOption.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('content-body').innerHTML = `
+                        <div class="prose prose-lg max-w-none">
+                            <div class="text-gray-700 leading-relaxed">
+                                ${data.content ? data.content.substring(0, 500) + '...' : 'Konten sedang dalam pengembangan.'}
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error loading geography content:', error);
+                    document.getElementById('content-body').innerHTML = `
+                        <div class="text-center py-12">
+                            <div class="text-6xl mb-4">⚠️</div>
+                            <h4 class="text-xl font-bold text-red-700 mb-2">Gagal Memuat Konten</h4>
+                            <p class="text-red-600">Silakan coba lagi nanti</p>
+                        </div>
+                    `;
+                });
+            
+            // Smooth scroll to content area
+            contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Show full content in modal
+        function showFullContent() {
+            const selector = document.getElementById('geography-selector');
+            const selectedOption = selector.options[selector.selectedIndex];
+            
+            if (selectedOption.value) {
+                showGeographyContent(selectedOption.value);
+            }
+        }
     </script>
 @endsection

@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Story;
 use App\Models\Place;
 use App\Models\GeographyModel;
+use App\Models\GeographyContent;
 use App\Models\ClassModel;
 use App\Models\ClassList;
 use App\Models\AdminSetting;
+use App\Models\History;
 use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
@@ -23,6 +25,9 @@ class MainController extends Controller
         $user = Auth::user();
         $stories = collect();
         $places = collect();
+        
+        // Get histories data untuk dropdown
+        $histories = History::getHierarchy();
 
         // Check if user is student and has a class
         if ($user && $user->role === 'student') {
@@ -64,7 +69,7 @@ class MainController extends Controller
             $places = Place::orderBy('created_at', 'desc')->limit(6)->get();
         }
 
-        return view('main.sejarah', compact('stories', 'places'));
+        return view('main.sejarah', compact('stories', 'places', 'histories'));
     }
 
     public function geografi()
@@ -132,7 +137,10 @@ class MainController extends Controller
                 ->get();
         }
         
-        return view('main.geografi', compact('geographyModels', 'featuredPlaces'));
+        // Get active geography content for explanations
+        $geographyContents = GeographyContent::active()->ordered()->get();
+        
+        return view('main.geografi', compact('geographyModels', 'featuredPlaces', 'geographyContents'));
     }
 
     public function kelas()
@@ -232,5 +240,29 @@ class MainController extends Controller
         }
 
         return view('main.story', compact('story'));
+    }
+
+    /**
+     * Get geography content for API
+     */
+    public function getGeographyContent($slug)
+    {
+        $content = GeographyContent::where('slug', $slug)
+            ->where('is_active', true)
+            ->first();
+        
+        if (!$content) {
+            return response()->json([
+                'error' => 'Content not found'
+            ], 404);
+        }
+        
+        return response()->json([
+            'title' => $content->title,
+            'content' => $content->content,
+            'description' => $content->description,
+            'icon' => $content->icon,
+            'order_index' => $content->order_index
+        ]);
     }
 }

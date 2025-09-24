@@ -15,12 +15,17 @@ return new class extends Migration
             $table->string('name');
             $table->text('class_discussion_message')->nullable();
             $table->unsignedBigInteger('student_id')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
             $table->text('message')->nullable();
             $table->text('reply')->nullable();
             $table->foreign('class_id')->references('id')->on('class')->onDelete('cascade');
             $table->foreign('educator_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

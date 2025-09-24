@@ -19,6 +19,12 @@
 
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- jQuery (required for some plugins) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Additional Styles -->
+    @stack('styles')
 </head>
 <body class="font-inter antialiased bg-gradient-to-br from-gray-50 via-white to-gray-100">
     <div x-data="{ sidebarOpen: false }" class="min-h-screen">
@@ -54,35 +60,50 @@
                 <a href="{{ route('admin.users') }}" 
                    class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.users*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
                     <i class="fas fa-users mr-3"></i>
-                    Users
+                    Pengguna
+                </a>
+
+                
+                <!-- Classes -->
+                <a href="{{ route('admin.classes') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.classes*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
+                    <i class="fas fa-chalkboard-teacher mr-3"></i>
+                    Kelas
                 </a>
 
                 <!-- Content Management -->
                 <a href="{{ route('admin.content') }}" 
                    class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.content*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
                     <i class="fas fa-file-alt mr-3"></i>
-                    Content Management
+                    Pengelolaan Konten
+                </a>
+
+                <!-- Geography Content -->
+                <a href="{{ route('admin.geography-content.index') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.geography-content*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
+                    <i class="fas fa-globe-americas mr-3"></i>
+                    Konten Geografi
+                </a>
+
+                <!-- History Management -->
+                <a href="{{ route('admin.history.index') }}" 
+                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.history*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
+                    <i class="fas fa-history mr-3"></i>
+                    Konten Sejarah
                 </a>
 
                 <!-- Reports & Analytics -->
-                <a href="{{ route('admin.reports') }}" 
+                {{-- <a href="{{ route('admin.reports') }}" 
                    class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.reports*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
                     <i class="fas fa-chart-bar mr-3"></i>
-                    Reports & Analytics
-                </a>
-
-                <!-- Classes -->
-                <a href="{{ route('admin.classes') }}" 
-                   class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.classes*') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
-                    <i class="fas fa-chalkboard-teacher mr-3"></i>
-                    Classes
-                </a>
+                    Laporan & Analitik
+                </a> --}}
 
                 <!-- Settings -->
                 <a href="{{ route('admin.settings') }}" 
                    class="group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 {{ request()->routeIs('admin.settings') ? 'bg-quaternary text-primary shadow-lg' : 'text-white hover:bg-white hover:bg-opacity-20 hover:text-quaternary' }}">
                     <i class="fas fa-cog mr-3"></i>
-                    Settings
+                    Pengaturan
                 </a>
 
                 <!-- Divider -->
@@ -93,7 +114,7 @@
                     @csrf
                     <button type="submit" class="w-full group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 text-white hover:bg-red-500 hover:bg-opacity-90 hover:text-white hover:shadow-lg">
                         <i class="fas fa-sign-out-alt mr-3"></i>
-                        Logout
+                        Keluar
                     </button>
                 </form>
             </nav>
@@ -174,5 +195,8 @@
              class="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 lg:hidden"
              @click="sidebarOpen = false"></div>
     </div>
+    
+    <!-- Additional Scripts -->
+    @stack('scripts')
 </body>
 </html>

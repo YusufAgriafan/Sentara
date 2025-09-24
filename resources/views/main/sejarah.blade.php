@@ -28,6 +28,70 @@
         </div>
     </section>
 
+    <!-- Interactive History Content Section -->
+    <section id="history-content" class="py-20 px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">Eksplorasi Sejarah Indonesia 🔍</h2>
+                <p class="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto">Pilih topik sejarah untuk mempelajari lebih dalam</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl p-8 lg:p-12">
+                <!-- Dropdown Navigation -->
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                    <div>
+                        <label for="category-select" class="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
+                        <select id="category-select" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-white">
+                            <option value="">Pilih Kategori</option>
+                            @foreach($histories as $category => $categoryData)
+                                <option value="{{ $category }}">{{ $category }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="subcategory-select" class="block text-sm font-semibold text-gray-700 mb-2">Sub Kategori</label>
+                        <select id="subcategory-select" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-white">
+                            <option value="">Pilih Sub Kategori</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="subsubcategory-select" class="block text-sm font-semibold text-gray-700 mb-2">Detail</label>
+                        <select id="subsubcategory-select" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-white">
+                            <option value="">Pilih Detail</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex items-end">
+                        <button id="reset-btn" class="w-full bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-xl transition duration-300">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Display Area -->
+                <div id="content-display" class="mt-8">
+                    <div id="welcome-message" class="text-center py-16">
+                        <div class="text-8xl mb-6">📖</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Selamat Datang di Perpustakaan Sejarah</h3>
+                        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                            Pilih kategori di atas untuk mulai menjelajahi berbagai topik sejarah Indonesia yang menarik dan penuh makna.
+                        </p>
+                    </div>
+                    
+                    <div id="history-content-area" class="hidden">
+                        <div class="bg-gray-50 rounded-2xl p-8">
+                            <div id="content-breadcrumb" class="text-sm text-gray-500 mb-4"></div>
+                            <h3 id="content-title" class="text-2xl font-bold text-gray-900 mb-6"></h3>
+                            <div id="content-body" class="prose max-w-none text-gray-700 leading-relaxed"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Timeline Section -->
     <section id="timeline" class="py-20 px-6 lg:px-8 bg-white">
         <div class="max-w-7xl mx-auto">
@@ -37,27 +101,55 @@
             </div>
             
             <div class="space-y-16">
+                <!-- Era Prasejarah -->
+                <div class="fade-in-up">
+                    <div class="bg-green-500/10 rounded-3xl p-8 lg:p-12">
+                        <div class="grid lg:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <div class="text-6xl mb-6">🦕</div>
+                                <h3 class="text-3xl lg:text-4xl font-bold text-green-600 mb-6">Prasejarah Indonesia</h3>
+                                <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                                    Masa sebelum ada tulisan di Indonesia, dimulai dari kehidupan manusia purba hingga berkembangnya kebudayaan megalitik yang meninggalkan warisan berupa candi-candi dan alat-alat batu.
+                                </p>
+                                <div class="flex items-center space-x-4 text-green-600 font-semibold">
+                                    <span class="bg-green-500/20 px-4 py-2 rounded-full">2 Juta - 400 SM</span>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                                <h4 class="text-xl font-bold text-gray-900 mb-4">Periode Penting:</h4>
+                                <ul class="space-y-3 text-gray-700">
+                                    <li class="flex items-center"><i class="fas fa-bone text-green-600 mr-3"></i>Manusia Purba (2 juta tahun lalu)</li>
+                                    <li class="flex items-center"><i class="fas fa-fire text-green-600 mr-3"></i>Zaman Batu (500.000 - 2.500 SM)</li>
+                                    <li class="flex items-center"><i class="fas fa-hammer text-green-600 mr-3"></i>Zaman Perunggu (2.500 - 500 SM)</li>
+                                    <li class="flex items-center"><i class="fas fa-mountain text-green-600 mr-3"></i>Kebudayaan Megalitik (2.500 SM - 400 M)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Era Kerajaan -->
                 <div class="fade-in-up">
                     <div class="bg-primary/10 rounded-3xl p-8 lg:p-12">
                         <div class="grid lg:grid-cols-2 gap-12 items-center">
                             <div>
                                 <div class="text-6xl mb-6">👑</div>
-                                <h3 class="text-3xl lg:text-4xl font-bold text-primary mb-6">Era Kerajaan Kuno</h3>
+                                <h3 class="text-3xl lg:text-4xl font-bold text-primary mb-6">Era Kerajaan</h3>
                                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                                    Masa kejayaan kerajaan-kerajaan besar seperti Sriwijaya, Majapahit, dan Mataram yang menguasai Nusantara dengan kekuatan maritim dan perdagangan yang luar biasa.
+                                    Masa kejayaan kerajaan-kerajaan besar Nusantara yang menguasai perdagangan maritim dan menyebarkan pengaruh politik, budaya, serta agama ke seluruh Asia Tenggara.
                                 </p>
                                 <div class="flex items-center space-x-4 text-primary font-semibold">
-                                    <span class="bg-primary/20 px-4 py-2 rounded-full">7-16 Masehi</span>
+                                    <span class="bg-primary/20 px-4 py-2 rounded-full">7-16 Abad Masehi</span>
                                 </div>
                             </div>
                             <div class="bg-white rounded-2xl p-8 shadow-lg">
                                 <h4 class="text-xl font-bold text-gray-900 mb-4">Kerajaan Terkenal:</h4>
                                 <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Sriwijaya (7-13 M)</li>
-                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Majapahit (1293-1527)</li>
-                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Mataram (1586-1755)</li>
-                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kesultanan Demak (1475-1554)</li>
+                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Kutai (400-1635 M)</li>
+                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Sriwijaya (671-1377 M)</li>
+                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kerajaan Majapahit (1293-1527 M)</li>
+                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kesultanan Demak (1475-1554 M)</li>
+                                    <li class="flex items-center"><i class="fas fa-crown text-primary mr-3"></i>Kesultanan Mataram (1586-1755 M)</li>
                                 </ul>
                             </div>
                         </div>
@@ -70,9 +162,9 @@
                         <div class="grid lg:grid-cols-2 gap-12 items-center">
                             <div class="lg:order-2">
                                 <div class="text-6xl mb-6">⚔️</div>
-                                <h3 class="text-3xl lg:text-4xl font-bold text-secondary mb-6">Era Kolonial</h3>
+                                <h3 class="text-3xl lg:text-4xl font-bold text-secondary mb-6">Era Penjajahan</h3>
                                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                                    Periode penjajahan oleh bangsa Eropa yang membawa perubahan besar dalam sistem pemerintahan, ekonomi, dan sosial budaya masyarakat Indonesia.
+                                    Periode penjajahan oleh bangsa Eropa yang mengubah struktur politik, ekonomi, dan sosial budaya masyarakat Indonesia. Era ini melahirkan semangat nasionalisme dan perlawanan rakyat.
                                 </p>
                                 <div class="flex items-center space-x-4 text-secondary font-semibold">
                                     <span class="bg-secondary/20 px-4 py-2 rounded-full">1602-1945</span>
@@ -81,10 +173,11 @@
                             <div class="bg-white rounded-2xl p-8 shadow-lg lg:order-1">
                                 <h4 class="text-xl font-bold text-gray-900 mb-4">Periode Penting:</h4>
                                 <ul class="space-y-3 text-gray-700">
-                                    <li class="flex items-center"><i class="fas fa-ship text-secondary mr-3"></i>VOC (1602-1799)</li>
+                                    <li class="flex items-center"><i class="fas fa-ship text-secondary mr-3"></i>Kedatangan Portugis (1512)</li>
+                                    <li class="flex items-center"><i class="fas fa-building text-secondary mr-3"></i>VOC (1602-1799)</li>
                                     <li class="flex items-center"><i class="fas fa-flag text-secondary mr-3"></i>Hindia Belanda (1800-1942)</li>
                                     <li class="flex items-center"><i class="fas fa-exclamation-triangle text-secondary mr-3"></i>Pendudukan Jepang (1942-1945)</li>
-                                    <li class="flex items-center"><i class="fas fa-fist-raised text-secondary mr-3"></i>Perlawanan Rakyat</li>
+                                    <li class="flex items-center"><i class="fas fa-fist-raised text-secondary mr-3"></i>Pergerakan Nasional (1908-1945)</li>
                                 </ul>
                             </div>
                         </div>
@@ -99,7 +192,7 @@
                                 <div class="text-6xl mb-6">🇮🇩</div>
                                 <h3 class="text-3xl lg:text-4xl font-bold text-tertiary mb-6">Era Kemerdekaan</h3>
                                 <p class="text-lg text-gray-700 leading-relaxed mb-6">
-                                    Perjuangan mempertahankan kemerdekaan dan membangun bangsa Indonesia yang merdeka, bersatu, dan berdaulat hingga sekarang.
+                                    Masa perjuangan mempertahankan kemerdekaan dan membangun bangsa Indonesia yang merdeka, bersatu, dan berdaulat. Era pembangunan nasional dan transformasi Indonesia menjadi negara modern.
                                 </p>
                                 <div class="flex items-center space-x-4 text-tertiary font-semibold">
                                     <span class="bg-tertiary/20 px-4 py-2 rounded-full">1945-Sekarang</span>
@@ -109,9 +202,10 @@
                                 <h4 class="text-xl font-bold text-gray-900 mb-4">Momen Bersejarah:</h4>
                                 <ul class="space-y-3 text-gray-700">
                                     <li class="flex items-center"><i class="fas fa-calendar-day text-tertiary mr-3"></i>Proklamasi 17 Agustus 1945</li>
+                                    <li class="flex items-center"><i class="fas fa-sword text-tertiary mr-3"></i>Revolusi Fisik (1945-1949)</li>
                                     <li class="flex items-center"><i class="fas fa-handshake text-tertiary mr-3"></i>Pengakuan Kedaulatan 1949</li>
                                     <li class="flex items-center"><i class="fas fa-vote-yea text-tertiary mr-3"></i>Era Reformasi 1998</li>
-                                    <li class="flex items-center"><i class="fas fa-building text-tertiary mr-3"></i>Indonesia Modern</li>
+                                    <li class="flex items-center"><i class="fas fa-building text-tertiary mr-3"></i>Indonesia Modern (1998-Sekarang)</li>
                                 </ul>
                             </div>
                         </div>
@@ -196,6 +290,9 @@
                         <button id="btn-all" class="era-filter-btn bg-primary text-white px-4 py-2 lg:px-6 lg:py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 active text-sm lg:text-base">
                             <i class="fas fa-globe mr-1 lg:mr-2"></i>Semua Era
                         </button>
+                        <button id="btn-prasejarah" class="era-filter-btn bg-gray-200 text-gray-700 px-4 py-2 lg:px-6 lg:py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 text-sm lg:text-base">
+                            <i class="fas fa-bone mr-1 lg:mr-2"></i>Prasejarah
+                        </button>
                         <button id="btn-kerajaan" class="era-filter-btn bg-gray-200 text-gray-700 px-4 py-2 lg:px-6 lg:py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 text-sm lg:text-base">
                             <i class="fas fa-crown mr-1 lg:mr-2"></i>Era Kerajaan
                         </button>
@@ -211,7 +308,11 @@
                     <div id="map" class="w-full h-96 lg:h-[500px] rounded-2xl shadow-lg"></div>
                     
                     <!-- Map Legend -->
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="flex items-center justify-center space-x-2">
+                            <div class="w-4 h-4 bg-green-500 rounded-full shadow-sm"></div>
+                            <span class="text-gray-700 font-medium text-sm lg:text-base">Prasejarah</span>
+                        </div>
                         <div class="flex items-center justify-center space-x-2">
                             <div class="w-4 h-4 bg-yellow-500 rounded-full shadow-sm"></div>
                             <span class="text-gray-700 font-medium text-sm lg:text-base">Era Kerajaan</span>
@@ -239,10 +340,10 @@
     
     // Color mapping for different eras
     const eraColors = {
+        'prasejarah': '#10b981', // green-500
         'kerajaan': '#eab308', // yellow-500
         'penjajahan': '#ef4444', // red-500  
-        'kemerdekaan': '#3b82f6', // blue-500
-        'prasejarah': '#10b981' // green-500
+        'kemerdekaan': '#3b82f6' // blue-500
     };
     
     // Initialize the map when page loads
@@ -391,6 +492,134 @@
             behavior: 'smooth' 
         });
     }
+
+    // History dropdown functionality
+    const historiesData = @json($histories);
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category-select');
+        const subcategorySelect = document.getElementById('subcategory-select');
+        const subsubcategorySelect = document.getElementById('subsubcategory-select');
+        const resetBtn = document.getElementById('reset-btn');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const historyContentArea = document.getElementById('history-content-area');
+        const contentBreadcrumb = document.getElementById('content-breadcrumb');
+        const contentTitle = document.getElementById('content-title');
+        const contentBody = document.getElementById('content-body');
+
+        function updateSubcategories() {
+            const selectedCategory = categorySelect.value;
+            subcategorySelect.innerHTML = '<option value="">Pilih Sub Kategori</option>';
+            subsubcategorySelect.innerHTML = '<option value="">Pilih Detail</option>';
+            
+            if (selectedCategory && historiesData[selectedCategory]) {
+                Object.keys(historiesData[selectedCategory]).forEach(subcategory => {
+                    if (subcategory) {
+                        const option = document.createElement('option');
+                        option.value = subcategory;
+                        option.textContent = subcategory;
+                        subcategorySelect.appendChild(option);
+                    }
+                });
+            }
+        }
+
+        function updateSubSubcategories() {
+            const selectedCategory = categorySelect.value;
+            const selectedSubcategory = subcategorySelect.value;
+            subsubcategorySelect.innerHTML = '<option value="">Pilih Detail</option>';
+            
+            if (selectedCategory && selectedSubcategory && historiesData[selectedCategory][selectedSubcategory]) {
+                Object.keys(historiesData[selectedCategory][selectedSubcategory]).forEach(subsubcategory => {
+                    if (subsubcategory) {
+                        const option = document.createElement('option');
+                        option.value = subsubcategory;
+                        option.textContent = subsubcategory;
+                        subsubcategorySelect.appendChild(option);
+                    }
+                });
+            }
+        }
+
+        function displayContent() {
+            const selectedCategory = categorySelect.value;
+            const selectedSubcategory = subcategorySelect.value;
+            const selectedSubSubcategory = subsubcategorySelect.value;
+            
+            let content = null;
+            let breadcrumb = [];
+            
+            if (selectedCategory) {
+                breadcrumb.push(selectedCategory);
+                
+                if (selectedSubcategory) {
+                    breadcrumb.push(selectedSubcategory);
+                    
+                    if (selectedSubSubcategory) {
+                        breadcrumb.push(selectedSubSubcategory);
+                        
+                        // Get content from sub-subcategory
+                        const data = historiesData[selectedCategory][selectedSubcategory][selectedSubSubcategory];
+                        if (data && data[0]) {
+                            content = data[0];
+                        }
+                    } else {
+                        // Get content from subcategory (first item without sub-subcategory)
+                        const data = historiesData[selectedCategory][selectedSubcategory][''];
+                        if (data && data[0]) {
+                            content = data[0];
+                        }
+                    }
+                } else {
+                    // Get content from category (first item without subcategory)
+                    const data = historiesData[selectedCategory][''];
+                    if (data && data[0]) {
+                        content = data[0];
+                    }
+                }
+                
+                if (content) {
+                    welcomeMessage.classList.add('hidden');
+                    historyContentArea.classList.remove('hidden');
+                    
+                    contentBreadcrumb.textContent = breadcrumb.join(' › ');
+                    contentTitle.textContent = content.title;
+                    contentBody.innerHTML = content.content || '<p class="text-gray-500 italic">Konten belum tersedia</p>';
+                } else {
+                    resetDisplay();
+                }
+            } else {
+                resetDisplay();
+            }
+        }
+
+        function resetDisplay() {
+            welcomeMessage.classList.remove('hidden');
+            historyContentArea.classList.add('hidden');
+        }
+
+        function resetDropdowns() {
+            categorySelect.value = '';
+            subcategorySelect.innerHTML = '<option value="">Pilih Sub Kategori</option>';
+            subsubcategorySelect.innerHTML = '<option value="">Pilih Detail</option>';
+            resetDisplay();
+        }
+
+        // Event listeners
+        categorySelect.addEventListener('change', function() {
+            updateSubcategories();
+            displayContent();
+        });
+
+        subcategorySelect.addEventListener('change', function() {
+            updateSubSubcategories();
+            displayContent();
+        });
+
+        subsubcategorySelect.addEventListener('change', displayContent);
+        
+        resetBtn.addEventListener('click', resetDropdowns);
+    });
 </script>
 
 <style>
