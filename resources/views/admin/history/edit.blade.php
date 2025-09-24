@@ -3,11 +3,7 @@
 @section('page-title', 'Edit Data Sejarah')
 
 @section('content')
-<!-- Head                    <select name="subcategory" id="subcategory" 
-                            class="w-full px-3 sm:px-4 py-2 sm:py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-200 text-sm sm:text-base @error('subcategory') border-red-500 @else border-gray-300 @enderror"
-                            onchange="updateSubSubcategories()">
-                        <option value="">Pilih Sub Kategori</option>
-                    </select>rd -->
+<!-- Header Card -->
 <div class="bg-white rounded-xl shadow-lg border border-gray-200 mb-8">
     <div class="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 border-b border-gray-200">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
