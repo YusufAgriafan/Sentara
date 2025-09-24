@@ -42,9 +42,9 @@
             @endif
 
             <!-- Story Text -->
-            <div class="prose prose-lg lg:prose-xl max-w-none fade-in-up">
-                <div class="text-gray-700 leading-relaxed whitespace-pre-line text-lg lg:text-xl">
-                    {{ $story->content }}
+            <div class="prose prose-lg lg:prose-xl max-w-none fade-in-up prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary prose-strong:text-gray-900 prose-em:text-gray-700 prose-blockquote:border-primary prose-blockquote:text-gray-600 prose-code:text-primary prose-pre:bg-gray-50">
+                <div class="markdown-content leading-relaxed text-lg lg:text-xl">
+                    {!! \Illuminate\Support\Str::markdown($story->content) !!}
                 </div>
             </div>
 
@@ -127,7 +127,9 @@
                             @endif
                             <div class="p-6">
                                 <h3 class="font-bold text-lg text-gray-900 mb-2">{{ $relatedStory->title }}</h3>
-                                <p class="text-gray-600 mb-4 line-clamp-3">{{ Str::limit($relatedStory->content, 120) }}</p>
+                                <div class="text-gray-600 mb-4 line-clamp-3 prose prose-sm">
+                                    {!! \Illuminate\Support\Str::markdown(Str::limit(strip_tags($relatedStory->content), 120)) !!}
+                                </div>
                                 <a href="{{ route('story.show', $relatedStory->id) }}" 
                                    class="inline-flex items-center text-primary hover:text-primary-dark font-medium">
                                     Baca Selengkapnya

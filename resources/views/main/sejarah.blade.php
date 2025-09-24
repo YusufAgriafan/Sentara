@@ -229,7 +229,9 @@
                         <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: {{ $index * 0.2 }}s;">
                             <div class="text-5xl mb-6">📚</div>
                             <h3 class="text-2xl font-bold text-gray-900 mb-4">{{ $story->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed mb-6">{{ Str::limit($story->content, 120) }}</p>
+                            <div class="prose prose-lg text-gray-600 leading-relaxed mb-6">
+                                {!! \Illuminate\Support\Str::markdown(Str::limit($story->content, 120)) !!}
+                            </div>
                             <div class="flex items-center justify-between">
                                 <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">Cerita</span>
                                 <a href="{{ route('story.show', $story) }}" class="text-primary hover:text-primary/80 font-semibold">
@@ -241,9 +243,11 @@
                 @else
                     <!-- Default/Fallback Static Stories -->
                     <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up">
-                        <div class="text-5xl mb-6">�</div>
+                        <div class="text-5xl mb-6">📚</div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Ratu Kalinyamat: Wonder Woman Jawa</h3>
-                        <p class="text-gray-600 leading-relaxed mb-6">Kisah seorang ratu yang memimpin armada laut melawan Portugis. Keren banget kan?</p>
+                        <div class="prose prose-lg text-gray-600 leading-relaxed mb-6">
+                            {!! \Illuminate\Support\Str::markdown('Kisah seorang ratu yang memimpin armada laut melawan Portugis. Keren banget kan?') !!}
+                        </div>
                         <div class="flex items-center justify-between">
                             <span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">Trending</span>
                             <button class="text-primary hover:text-primary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
@@ -253,7 +257,9 @@
                     <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.2s;">
                         <div class="text-5xl mb-6">⚔️</div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Pangeran Diponegoro: Rebel with a Cause</h3>
-                        <p class="text-gray-600 leading-relaxed mb-6">Perjuangan seorang pangeran yang menentang kolonial demi rakyatnya. Inspiratif!</p>
+                        <div class="prose prose-lg text-gray-600 leading-relaxed mb-6">
+                            {!! \Illuminate\Support\Str::markdown('Perjuangan seorang pangeran yang menentang kolonial demi rakyatnya. Inspiratif!') !!}
+                        </div>
                         <div class="flex items-center justify-between">
                             <span class="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-sm font-medium">Popular</span>
                             <button class="text-secondary hover:text-secondary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
@@ -263,7 +269,9 @@
                     <div class="bg-white rounded-3xl p-8 shadow-lg hover-lift fade-in-up" style="animation-delay: 0.4s;">
                         <div class="text-5xl mb-6">🚢</div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Laksamana Cheng Ho: Admiral dari Tiongkok</h3>
-                        <p class="text-gray-600 leading-relaxed mb-6">Petualangan laksamana legendaris yang menjelajahi Nusantara. Epic!</p>
+                        <div class="prose prose-lg text-gray-600 leading-relaxed mb-6">
+                            {!! \Illuminate\Support\Str::markdown('Petualangan laksamana legendaris yang menjelajahi Nusantara. Epic!') !!}
+                        </div>
                         <div class="flex items-center justify-between">
                             <span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-sm font-medium">Epic</span>
                             <button class="text-tertiary hover:text-tertiary/80 font-semibold">Baca Selengkapnya <i class="fas fa-arrow-right ml-2"></i></button>
