@@ -1,0 +1,12 @@
+name: Call CI/CD Webhook
+on:
+  push:
+    branches:
+      - main
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Webhook
+        run: | 
+          curl -s -X POST -H "Content-Type: application/json" -d '{"repository": {"name": "sentara"}}' https://puller.widata.co.id/webhook
