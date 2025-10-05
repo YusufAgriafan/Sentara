@@ -192,36 +192,33 @@
     }
 </style>
 
-<div class="min-h-screen bg-gradient-to-br from-tertiary via-primary to-secondary text-white">
+<div class="min-h-screen bg-white text-gray-800">
     <!-- Game Header -->
-    <div class="bg-black bg-opacity-30 backdrop-blur-sm border-b border-tertiary/50">
+    <div class="bg-primary shadow-lg border-b-4 border-white">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('game.index') }}" class="text-orange-200 hover:text-white transition-colors text-sm sm:text-base">
+                    <a href="{{ route('game.index') }}" class="text-white hover:text-secondary transition-colors text-sm sm:text-base bg-white/20 px-3 py-1 rounded-lg">
                         ← Kembali ke Games
                     </a>
-                    <h1 class="text-lg sm:text-2xl font-bold">🔍 {{ $game->title }}</h1>
+                    <h1 class="text-lg sm:text-2xl font-bold text-white flex items-center">
+                        <span class="text-2xl mr-2">🔍</span>
+                        {{ $game->title }}
+                    </h1>
                 </div>
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('game.index') }}" class="text-yellow-300 hover:text-white transition-colors">
-                    ← Kembali ke Games
-                </a>
-                <h1 class="text-2xl font-bold">🔍 {{ $game->title }}</h1>
-            </div>
-            <div class="flex items-center space-x-6 text-sm">
-                <div class="flex items-center space-x-2">
-                    <span class="text-yellow-300">Skor:</span>
-                    <span id="current-score" class="font-bold">{{ $session->score }}</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-yellow-300">Waktu:</span>
-                    <span id="game-timer" class="font-bold">00:00</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-yellow-300">Kasus:</span>
-                    <span id="current-case" class="font-bold">1</span>/<span>{{ count($game->settings['cases']) }}</span>
+                <div class="flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Skor:</span>
+                        <span id="current-score" class="font-bold text-white">{{ $session->score }}</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Waktu:</span>
+                        <span id="game-timer" class="font-bold text-white">00:00</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Kasus:</span>
+                        <span id="current-case" class="font-bold text-white">1</span>/<span class="text-secondary">{{ count($game->settings['cases']) }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -242,21 +239,22 @@
                     </div>
                     
                     <!-- Investigation Progress -->
-                    <div class="mt-6 pt-4 border-t border-yellow-700">
+                    <div class="mt-6 pt-4 border-t border-gray-300">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="text-yellow-300 text-sm">Progress Investigasi:</span>
-                            <span id="investigation-progress" class="text-yellow-200 text-sm font-bold">0/12</span>
+                            <span class="text-primary text-sm">Progress Investigasi:</span>
+                            <span id="investigation-progress" class="text-tertiary text-sm font-bold">0/12</span>
                         </div>
-                        <div class="w-full bg-yellow-900 rounded-full h-2">
-                            <div id="progress-bar" class="bg-yellow-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        <div class="w-full bg-quaternary rounded-full h-2">
+                            <div id="progress-bar" class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Suspects Panel -->
-                <div class="bg-black bg-opacity-40 rounded-xl border border-orange-500 p-6 mt-4">
-                    <h3 class="text-xl font-bold text-orange-300 mb-4 flex items-center">
-                        🕵️ Daftar Saksi
+                <div class="bg-secondary rounded-3xl shadow-lg border border-yellow-200 p-6 mt-4">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="text-2xl mr-3">🕵️</span>
+                        Daftar Saksi
                     </h3>
                     <div id="suspects-list" class="space-y-2">
                         <!-- Suspects will be loaded here -->
@@ -267,16 +265,16 @@
             <!-- Center Panel - Main Investigation Area -->
             <div class="lg:col-span-2">
                 <!-- Case Introduction -->
-                <div id="case-intro" class="bg-black bg-opacity-40 rounded-xl border border-yellow-500 p-8 mb-6">
+                <div id="case-intro" class="bg-white rounded-3xl shadow-lg border border-quaternary p-8 mb-6">
                     <div class="text-center">
                         <div class="text-6xl mb-4">🏺</div>
-                        <h2 id="case-title" class="text-3xl font-bold text-yellow-300 mb-4">Hilangnya Pusaka Majapahit</h2>
-                        <p id="case-description" class="text-yellow-200 mb-6">
+                        <h2 id="case-title" class="text-3xl font-bold text-primary mb-4">Hilangnya Pusaka Majapahit</h2>
+                        <p id="case-description" class="text-gray-700 mb-6">
                             Sebuah pusaka berharga dari era Majapahit telah hilang dari museum. 
                             Sebagai detektif sejarah, Anda harus menyelidiki kasus ini dengan mengumpulkan bukti, 
                             mewawancarai saksi, dan memecahkan misteri yang tersembunyi.
                         </p>
-                        <button id="start-investigation" class="bg-yellow-600 hover:bg-yellow-700 px-8 py-3 rounded-xl font-semibold transition-all">
+                        <button id="start-investigation" class="bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg">
                             🔍 Mulai Investigasi
                         </button>
                     </div>
@@ -285,16 +283,22 @@
                 <!-- Investigation Interface (hidden initially) -->
                 <div id="investigation-interface" class="hidden">
                     <!-- Location Selection -->
-                    <div class="bg-black bg-opacity-40 rounded-xl border border-green-500 p-6 mb-6">
-                        <h3 class="text-xl font-bold text-green-300 mb-4">🗺️ Pilih Lokasi Investigasi</h3>
+                    <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-6 mb-6">
+                        <h3 class="text-xl font-bold text-primary mb-4 flex items-center">
+                            <span class="text-2xl mr-3">🗺️</span>
+                            Pilih Lokasi Investigasi
+                        </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="location-grid">
                             <!-- Locations will be loaded here -->
                         </div>
                     </div>
 
                     <!-- Investigation Results -->
-                    <div id="investigation-results" class="bg-black bg-opacity-40 rounded-xl border border-blue-500 p-6 mb-6 hidden">
-                        <h3 class="text-xl font-bold text-blue-300 mb-4">🔍 Hasil Investigasi</h3>
+                    <div id="investigation-results" class="bg-tertiary rounded-3xl shadow-lg border border-yellow-300 p-6 mb-6 hidden">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="text-2xl mr-3">🔍</span>
+                            Hasil Investigasi
+                        </h3>
                         <div id="results-content">
                             <!-- Investigation results will appear here -->
                         </div>

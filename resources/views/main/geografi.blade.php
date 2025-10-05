@@ -4,18 +4,18 @@
 
 @section('content')
     <!-- Hero Section for Geografi -->
-    <section class="pt-32 pb-20 px-6 lg:px-8 bg-gradient-to-br from-primary to-secondary text-white">
+    <section class="pt-32 pb-24 px-6 lg:px-8 bg-primary text-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center fade-in-up">
                 <div class="text-8xl mb-8">🌍</div>
                 <h1 class="text-5xl lg:text-7xl font-bold mb-8 leading-tight">
-                    Model 3D <span class="text-yellow-300">Geografi</span> Indonesia
+                    Model 3D <span class="text-secondary">Geografi</span> Indonesia
                 </h1>
                 <p class="text-xl lg:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
                     Jelajahi geografi Indonesia dengan teknologi 3D interaktif! Pembelajaran yang lebih mendalam dan menarik.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button onclick="scrollToSection('models')" class="bg-white hover:bg-gray-100 text-primary px-8 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+                    <button onclick="scrollToSection('models')" class="bg-white hover:bg-secondary text-primary px-10 py-5 rounded-3xl text-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg">
                         <i class="fas fa-cube mr-3"></i>
                         Lihat Model 3D
                     </button>
@@ -26,7 +26,7 @@
 
     <!-- Geography Content Section -->
     @if(isset($geographyContents) && $geographyContents->count() > 0)
-    <section class="py-20 px-6 lg:px-8 bg-gradient-to-br from-quaternary/20 to-quaternary/40">
+    <section class="py-24 px-6 lg:px-8 bg-quaternary">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-20 fade-in-up">
                 <h2 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">Penjelasan Geografi 📚</h2>
@@ -37,18 +37,18 @@
 
             <!-- Geography Topic Selector -->
             <div class="max-w-4xl mx-auto fade-in-up">
-                <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                     <!-- Dropdown Header -->
-                    <div class="bg-gradient-to-r from-tertiary to-primary p-6 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Pilih Topik Geografi</h3>
-                        <p class="text-orange-100">Klik dropdown untuk memilih materi yang ingin dipelajari</p>
+                    <div class="bg-tertiary p-8">
+                        <h3 class="text-2xl font-bold mb-3 text-gray-900">Pilih Topik Geografi</h3>
+                        <p class="text-gray-700">Klik dropdown untuk memilih materi yang ingin dipelajari</p>
                     </div>
 
                     <!-- Dropdown Selector -->
-                    <div class="p-6">
+                    <div class="p-8">
                         <div class="relative">
                             <select id="geography-selector" onchange="showSelectedGeographyContent()" 
-                                    class="w-full bg-white border-2 border-gray-300 rounded-xl px-4 py-3 text-lg font-medium text-gray-700 focus:border-tertiary focus:outline-none focus:ring-2 focus:ring-tertiary/20 transition-all duration-300">
+                                    class="w-full bg-quaternary border-2 border-gray-300 rounded-2xl px-6 py-4 text-lg font-medium text-gray-700 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all duration-300">
                                 <option value="">-- Pilih Topik Geografi --</option>
                                 @foreach($geographyContents as $content)
                                     <option value="{{ $content->slug }}" 
@@ -56,52 +56,52 @@
                                             data-description="{{ $content->description }}"
                                             data-icon="{{ $content->icon }}"
                                             data-order="{{ $content->order_index + 1 }}">
-                                        Materi {{ $content->order_index + 1 }}: {{ $content->title }}
+                                    {{ $content->title }}
                                     </option>
                                 @endforeach
                             </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
-                                <i class="fas fa-chevron-down text-gray-400"></i>
+                            <div class="absolute inset-y-0 right-0 flex items-center px-6 pointer-events-none">
+                                <i class="fas fa-chevron-down text-primary text-xl"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Content Display Area -->
-                <div id="geography-content-area" class="mt-8 hidden">
-                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
+                <div id="geography-content-area" class="mt-10 hidden">
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                         <!-- Content Header -->
-                        <div id="content-header" class="bg-gradient-to-r from-tertiary to-primary p-6 text-white">
-                            <div class="flex items-center mb-4">
-                                <div id="content-icon" class="text-6xl mr-4">🌍</div>
+                        <div id="content-header" class="bg-secondary p-8">
+                            <div class="flex items-center mb-6">
+                                <div id="content-icon" class="text-6xl mr-6">🌍</div>
                                 <div>
-                                    <div class="flex items-center mb-2">
-                                        <span id="content-badge" class="bg-white/20 px-3 py-1 rounded-full text-sm font-medium mr-3">
+                                    <div class="flex items-center mb-3">
+                                        <span id="content-badge" class="bg-primary text-white px-4 py-2 rounded-full text-sm font-bold mr-4">
                                             Materi 1
                                         </span>
                                     </div>
-                                    <h3 id="content-title" class="text-3xl font-bold"></h3>
+                                    <h3 id="content-title" class="text-3xl font-bold text-gray-900"></h3>
                                 </div>
                             </div>
-                            <p id="content-description" class="text-blue-100 text-lg leading-relaxed"></p>
+                            <p id="content-description" class="text-gray-700 text-lg leading-relaxed"></p>
                         </div>
 
                         <!-- Content Body -->
-                        <div id="content-body" class="p-8">
-                            <div class="text-center py-12">
-                                <div class="text-6xl mb-4">📖</div>
+                        <div id="content-body" class="p-10">
+                            <div class="text-center py-16">
+                                <div class="text-6xl mb-6">📖</div>
                                 <p class="text-gray-500 text-lg">Memuat konten...</p>
                             </div>
                         </div>
 
                         <!-- Content Actions -->
-                        <div class="bg-gray-50 px-8 py-6 flex items-center justify-between">
-                            <div class="text-sm text-gray-600">
-                                <i class="fas fa-lightbulb mr-2"></i>
+                        <div class="bg-quaternary px-8 py-6 flex items-center justify-between">
+                            <div class="text-sm text-gray-600 flex items-center">
+                                <i class="fas fa-lightbulb mr-2 text-primary"></i>
                                 Konten pembelajaran geografi Indonesia
                             </div>
                             <button onclick="showFullContent()" 
-                                    class="bg-tertiary hover:bg-primary text-white px-6 py-2 rounded-lg font-medium transition-all duration-300 hover:scale-105">
+                                    class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-2xl font-bold transition-all duration-300 hover:scale-105">
                                 <i class="fas fa-expand mr-2"></i>Baca Lengkap
                             </button>
                         </div>
@@ -109,28 +109,28 @@
                 </div>
 
                 <!-- Default State Message -->
-                <div id="default-message" class="mt-8 text-center bg-white rounded-3xl p-12 shadow-lg">
-                    <div class="text-8xl mb-6">🎯</div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Siap untuk Belajar Geografi?</h3>
-                    <p class="text-gray-600 text-lg mb-6 max-w-2xl mx-auto">
+                <div id="default-message" class="mt-10 text-center bg-white rounded-3xl p-16 shadow-xl border border-gray-100">
+                    <div class="text-8xl mb-8">🎯</div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6">Siap untuk Belajar Geografi?</h3>
+                    <p class="text-gray-600 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
                         Pilih salah satu topik dari dropdown di atas untuk memulai pembelajaran geografi Indonesia yang menarik dan interaktif.
                     </p>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto text-sm text-gray-500">
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-mountain text-primary mb-1"></i>
-                            <div class="font-medium">Topografi</div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+                        <div class="bg-quaternary rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
+                            <i class="fas fa-mountain text-primary mb-3 text-2xl"></i>
+                            <div class="font-bold text-gray-800">Topografi</div>
                         </div>
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-water text-secondary mb-1"></i>
-                            <div class="font-medium">Hidrologi</div>
+                        <div class="bg-quaternary rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
+                            <i class="fas fa-water text-primary mb-3 text-2xl"></i>
+                            <div class="font-bold text-gray-800">Hidrologi</div>
                         </div>
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-cloud-sun text-tertiary mb-1"></i>
-                            <div class="font-medium">Klimatologi</div>
+                        <div class="bg-quaternary rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
+                            <i class="fas fa-cloud-sun text-primary mb-3 text-2xl"></i>
+                            <div class="font-bold text-gray-800">Klimatologi</div>
                         </div>
-                        <div class="bg-gray-50 rounded-lg p-3">
-                            <i class="fas fa-seedling text-primary mb-1"></i>
-                            <div class="font-medium">Biogeografi</div>
+                        <div class="bg-quaternary rounded-2xl p-6 hover:scale-105 transition-transform duration-300">
+                            <i class="fas fa-seedling text-primary mb-3 text-2xl"></i>
+                            <div class="font-bold text-gray-800">Biogeografi</div>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@
 
     <!-- 3D Geography Models Section -->
     @if(isset($geographyModels) && $geographyModels->count() > 0)
-    <section id="models" class="py-20 px-6 lg:px-8 bg-white">
+    <section id="models" class="py-24 px-6 lg:px-8 bg-white">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-20 fade-in-up">
                 <h2 class="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">Model 3D Interaktif 🌍</h2>
@@ -150,17 +150,17 @@
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
                 @foreach($geographyModels as $model)
-                    <div class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 fade-in-up" style="animation-delay: {{ $loop->index * 0.2 }}s;">
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 fade-in-up border border-gray-100" style="animation-delay: {{ $loop->index * 0.2 }}s;">
                         <!-- 3D Model Embed Display -->
-                        <div class="relative h-64 bg-gray-100 overflow-hidden">
+                        <div class="relative h-64 bg-quaternary overflow-hidden">
                             @if($model->embed_code)
                                 <div class="w-full h-full">
                                     {!! $model->safe_embed_code !!}
                                 </div>
                             @else
-                                <div class="bg-gradient-to-br from-emerald-400 to-teal-500 h-full flex items-center justify-center text-white">
+                                <div class="bg-secondary h-full flex items-center justify-center text-gray-900">
                                     <div class="text-center z-10">
                                         <div class="text-6xl mb-4">🌐</div>
                                         <h3 class="text-xl font-bold">{{ $model->title }}</h3>
@@ -169,38 +169,38 @@
                             @endif
                         </div>
                         
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-4">
+                        <div class="p-8">
+                            <div class="flex items-center justify-between mb-6">
                                 @if($model->category)
-                                    <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-medium capitalize">
+                                    <span class="bg-tertiary text-gray-900 px-4 py-2 rounded-full text-sm font-bold capitalize">
                                         {{ str_replace('_', ' ', $model->category) }}
                                     </span>
                                 @endif
-                                <div class="flex items-center text-gray-500 text-sm">
-                                    <i class="fas fa-eye mr-1"></i>
+                                <div class="flex items-center text-gray-500 text-sm font-medium">
+                                    <i class="fas fa-eye mr-2"></i>
                                     <span>{{ $model->views }}</span>
                                 </div>
                             </div>
                             
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $model->title }}</h3>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3">{{ $model->title }}</h3>
                             
-                            <p class="text-gray-600 leading-relaxed mb-4">
+                            <p class="text-gray-600 leading-relaxed mb-6">
                                 {{ Str::limit($model->description, 100) }}
                             </p>
                             
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="text-sm text-gray-500">
-                                    <i class="fas fa-user mr-1"></i>
+                            <div class="flex items-center justify-between mb-6 text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user mr-2"></i>
                                     {{ $model->educator->name }}
                                 </div>
-                                <div class="text-sm text-gray-500">
+                                <div>
                                     {{ $model->created_at->diffForHumans() }}
                                 </div>
                             </div>
                             
                             <button onclick="view3DModel({{ $model->id }}, '{{ addslashes($model->title) }}', '{{ addslashes($model->description) }}')" 
-                                    class="w-full bg-primary hover:bg-secondary text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105">
-                                <i class="fas fa-expand mr-2"></i>Tampilkan Fullscreen
+                                    class="w-full bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 hover:scale-105">
+                                <i class="fas fa-expand mr-3"></i>Tampilkan Fullscreen
                             </button>
                         </div>
                     </div>
@@ -208,9 +208,9 @@
             </div>
             
             <!-- View All Models Button -->
-            <div class="text-center mt-12 fade-in-up">
-                <p class="text-gray-600 mb-6">Ada lebih banyak model 3D menarik lainnya!</p>
-                <button onclick="loadMore3DModels()" class="bg-primary hover:bg-secondary text-white px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+            <div class="text-center mt-16 fade-in-up">
+                <p class="text-gray-600 mb-8 text-lg">Ada lebih banyak model 3D menarik lainnya!</p>
+                <button onclick="loadMore3DModels()" class="bg-primary hover:bg-primary/90 text-white px-12 py-5 rounded-3xl text-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg">
                     <i class="fas fa-plus mr-3"></i>Lihat Semua Model 3D
                 </button>
             </div>
@@ -218,19 +218,19 @@
     </section>
     @else
     <!-- No Models Available -->
-    <section id="models" class="py-20 px-6 lg:px-8 bg-white">
+    <section id="models" class="py-24 px-6 lg:px-8 bg-white">
         <div class="max-w-7xl mx-auto text-center">
-            <div class="bg-gradient-to-br from-quaternary/20 to-quaternary/40 rounded-3xl p-12">
-                <div class="text-8xl mb-6">🌍</div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Model 3D Segera Hadir!</h2>
-                <p class="text-xl text-gray-600 mb-8">Tim educator kami sedang mempersiapkan model 3D geografi yang menarik untuk pembelajaran yang lebih interaktif.</p>
-                <div class="bg-white rounded-2xl p-6 shadow-lg max-w-md mx-auto">
-                    <h3 class="text-lg font-bold text-gray-900 mb-3">Yang Akan Datang:</h3>
-                    <ul class="text-left text-gray-600 space-y-2">
-                        <li><i class="fas fa-mountain text-primary mr-2"></i>Model 3D Gunung Berapi</li>
-                        <li><i class="fas fa-water text-secondary mr-2"></i>Ekosistem Laut Indonesia</li>
-                        <li><i class="fas fa-tree text-tertiary mr-2"></i>Hutan Hujan Tropis</li>
-                        <li><i class="fas fa-globe-asia text-primary mr-2"></i>Formasi Geologis</li>
+            <div class="bg-quaternary rounded-3xl p-16">
+                <div class="text-8xl mb-8">🌍</div>
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Model 3D Segera Hadir!</h2>
+                <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">Tim educator kami sedang mempersiapkan model 3D geografi yang menarik untuk pembelajaran yang lebih interaktif.</p>
+                <div class="bg-white rounded-3xl p-8 shadow-lg max-w-md mx-auto">
+                    <h3 class="text-lg font-bold text-gray-900 mb-6">Yang Akan Datang:</h3>
+                    <ul class="text-left text-gray-600 space-y-3">
+                        <li class="flex items-center"><i class="fas fa-mountain text-primary mr-3"></i>Model 3D Gunung Berapi</li>
+                        <li class="flex items-center"><i class="fas fa-water text-primary mr-3"></i>Ekosistem Laut Indonesia</li>
+                        <li class="flex items-center"><i class="fas fa-tree text-primary mr-3"></i>Hutan Hujan Tropis</li>
+                        <li class="flex items-center"><i class="fas fa-globe-asia text-primary mr-3"></i>Formasi Geologis</li>
                     </ul>
                 </div>
             </div>
@@ -242,28 +242,28 @@
     <div id="model3d-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-6xl max-h-[90vh] w-full overflow-hidden shadow-2xl">
             <!-- Modal Header -->
-            <div class="bg-primary text-white p-6 flex items-center justify-between">
+            <div class="bg-primary text-white p-8 flex items-center justify-between">
                 <div>
                     <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                    <p id="modal-description" class="text-red-100 mt-1"></p>
+                    <p id="modal-description" class="text-white/90 mt-2"></p>
                 </div>
-                <button onclick="close3DModal()" class="text-white hover:text-gray-300 transition-colors">
+                <button onclick="close3DModal()" class="text-white hover:text-white/70 transition-colors">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
             
             <!-- Modal Content -->
-            <div id="modal-content" class="h-96 lg:h-[500px] bg-gray-100">
+            <div id="modal-content" class="h-96 lg:h-[500px] bg-quaternary">
                 <!-- 3D Model will be loaded here -->
             </div>
             
             <!-- Modal Footer -->
-            <div class="p-6 bg-gray-50 flex items-center justify-between">
-                <div class="text-sm text-gray-600">
-                    <i class="fas fa-info-circle mr-2"></i>
+            <div class="p-6 bg-quaternary flex items-center justify-between">
+                <div class="text-sm text-gray-600 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-primary"></i>
                     Gunakan mouse untuk merotasi dan zoom model 3D
                 </div>
-                <button onclick="close3DModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+                <button onclick="close3DModal()" class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-2xl font-bold transition-colors">
                     Tutup
                 </button>
             </div>
@@ -274,33 +274,33 @@
     <div id="geography-content-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-4xl max-h-[90vh] w-full overflow-hidden shadow-2xl">
             <!-- Modal Header -->
-            <div class="bg-tertiary text-white p-6 flex items-center justify-between">
+            <div class="bg-tertiary p-8 flex items-center justify-between">
                 <div>
-                    <h3 id="content-modal-title" class="text-2xl font-bold"></h3>
-                    <p class="text-orange-100 mt-1">Penjelasan Materi Geografi</p>
+                    <h3 id="content-modal-title" class="text-2xl font-bold text-gray-900"></h3>
+                    <p class="text-gray-700 mt-2">Penjelasan Materi Geografi</p>
                 </div>
-                <button onclick="closeGeographyContentModal()" class="text-white hover:text-gray-300 transition-colors">
+                <button onclick="closeGeographyContentModal()" class="text-gray-900 hover:text-gray-700 transition-colors">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
             </div>
             
             <!-- Modal Content -->
-            <div id="geography-modal-content" class="p-6 max-h-[60vh] overflow-y-auto">
+            <div id="geography-modal-content" class="p-8 max-h-[60vh] overflow-y-auto">
                 <!-- Content will be loaded here -->
-                <div class="text-center py-8">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+                <div class="text-center py-12">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-6"></div>
                     <p class="text-gray-600">Memuat konten...</p>
                 </div>
             </div>
             
             <!-- Modal Footer -->
-            <div class="p-6 bg-gray-50 flex items-center justify-between">
-                <div class="text-sm text-gray-600">
-                    <i class="fas fa-info-circle mr-2"></i>
+            <div class="p-6 bg-quaternary flex items-center justify-between">
+                <div class="text-sm text-gray-600 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-primary"></i>
                     Konten ini disusun khusus untuk pembelajaran geografi Indonesia
                 </div>
                 <button onclick="closeGeographyContentModal()" 
-                        class="bg-tertiary hover:bg-primary text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        class="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-2xl font-bold transition-colors">
                     Tutup
                 </button>
             </div>
@@ -335,12 +335,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgb(106, 38, 52); /* primary color */
+            background: #3396D3; /* primary color */
             border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgb(148, 57, 57); /* secondary color */
+            background: #2A7BB8; /* darker primary */
         }
     </style>
 
@@ -355,16 +355,16 @@
             
             // Loading state
             document.getElementById('modal-content').innerHTML = `
-                <div class="w-full h-full bg-gradient-to-br from-quaternary/20 to-quaternary/40 rounded-xl flex items-center justify-center">
+                <div class="w-full h-full bg-quaternary rounded-xl flex items-center justify-center">
                     <div class="text-center">
-                        <div class="text-6xl mb-4 animate-spin">🌐</div>
-                        <h4 class="text-xl font-bold text-gray-700 mb-2">Loading 3D Model...</h4>
+                        <div class="text-6xl mb-6 animate-spin">🌐</div>
+                        <h4 class="text-xl font-bold text-gray-700 mb-3">Loading 3D Model...</h4>
                         <p class="text-gray-600">Model "${title}" sedang dimuat</p>
-                        <div class="mt-4 bg-white rounded-lg p-3 shadow-sm">
-                            <div class="flex items-center justify-center space-x-2">
-                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
-                                <div class="w-2 h-2 bg-primary rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                        <div class="mt-6 bg-white rounded-2xl p-4 shadow-sm">
+                            <div class="flex items-center justify-center space-x-3">
+                                <div class="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+                                <div class="w-3 h-3 bg-primary rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                                <div class="w-3 h-3 bg-primary rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
                             </div>
                         </div>
                     </div>
@@ -380,20 +380,20 @@
                     } else {
                         // Fallback content
                         document.getElementById('modal-content').innerHTML = `
-                            <div class="w-full h-full bg-gradient-to-br from-quaternary/10 to-quaternary/30 rounded-xl flex items-center justify-center border-2 border-dashed border-primary/30">
+                            <div class="w-full h-full bg-secondary rounded-xl flex items-center justify-center border-2 border-dashed border-primary/30">
                                 <div class="text-center max-w-md">
-                                    <div class="text-8xl mb-4">🌍</div>
-                                    <h4 class="text-2xl font-bold text-emerald-700 mb-2">${title}</h4>
-                                    <p class="text-emerald-600 mb-6">${description}</p>
-                                    <div class="bg-white rounded-lg p-4 shadow-sm">
-                                        <p class="text-sm text-gray-600 mb-2">
-                                            <i class="fas fa-mouse-pointer mr-2"></i>Klik dan drag untuk merotasi
+                                    <div class="text-8xl mb-6">🌍</div>
+                                    <h4 class="text-2xl font-bold text-gray-900 mb-3">${title}</h4>
+                                    <p class="text-gray-700 mb-8">${description}</p>
+                                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                                        <p class="text-sm text-gray-600 mb-3 flex items-center">
+                                            <i class="fas fa-mouse-pointer mr-3 text-primary"></i>Klik dan drag untuk merotasi
                                         </p>
-                                        <p class="text-sm text-gray-600">
-                                            <i class="fas fa-search-plus mr-2"></i>Scroll untuk zoom in/out
+                                        <p class="text-sm text-gray-600 flex items-center">
+                                            <i class="fas fa-search-plus mr-3 text-primary"></i>Scroll untuk zoom in/out
                                         </p>
                                     </div>
-                                    <div class="mt-4 text-sm text-gray-500">
+                                    <div class="mt-6 text-sm text-gray-500 bg-quaternary rounded-xl p-3">
                                         Model 3D sedang dalam proses pengembangan
                                     </div>
                                 </div>
@@ -407,8 +407,8 @@
                     document.getElementById('modal-content').innerHTML = `
                         <div class="w-full h-full bg-red-50 rounded-xl flex items-center justify-center">
                             <div class="text-center">
-                                <div class="text-6xl mb-4">⚠️</div>
-                                <h4 class="text-xl font-bold text-red-700 mb-2">Gagal Memuat Model</h4>
+                                <div class="text-6xl mb-6">⚠️</div>
+                                <h4 class="text-xl font-bold text-red-700 mb-3">Gagal Memuat Model</h4>
                                 <p class="text-red-600">Silakan coba lagi nanti</p>
                             </div>
                         </div>

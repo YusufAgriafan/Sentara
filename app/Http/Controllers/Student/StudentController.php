@@ -54,7 +54,7 @@ class StudentController extends Controller
             $recentActivities = $this->getRecentActivities($currentClass);
         }
         
-        return view('student.dashboard', compact(
+        return view('main.classes.dashboard', compact(
             'currentClass',
             'assignedPlaces',
             'assignedStories', 
@@ -223,7 +223,7 @@ class StudentController extends Controller
         
         // Recent places
         $recentPlaces = $class->places()
-            ->orderBy('pivot_created_at', 'desc')
+            ->orderByPivot('created_at', 'desc')
             ->take(2)
             ->get();
             
@@ -241,5 +241,32 @@ class StudentController extends Controller
         });
         
         return array_slice($activities, 0, 5);
+    }
+
+    /**
+     * Store a new discussion posted by a student
+     */
+    public function storeDiscussion(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $currentClass = $this->getCurrentClass($user);
+
+        if (!$currentClass) {
+            return redirect()->back()->with('error', 'Anda harus bergabung dengan kelas untuk membuat diskusi');
+        }
+
+        ClassDiscussion::create([
+            'class_id' => $currentClass->id,
+            'student_id' => $user->id,
+            'name' => $request->input('title'),
+            'message' => $request->input('content'),
+        ]);
+
+        return redirect()->route('student.discussions')->with('success', 'Diskusi berhasil dibuat');
     }
 }

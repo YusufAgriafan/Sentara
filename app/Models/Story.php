@@ -39,7 +39,8 @@ class Story extends Model
     public function classes()
     {
         // Relasi many-to-many langsung dengan classes
-        return $this->belongsToMany(ClassModel::class, 'class_stories', 'story_id', 'class_id');
+        return $this->belongsToMany(ClassModel::class, 'class_stories', 'story_id', 'class_id')
+            ->withTimestamps();
     }
 
     // Scope untuk filter stories berdasarkan class

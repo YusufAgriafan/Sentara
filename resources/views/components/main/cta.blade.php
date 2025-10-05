@@ -13,7 +13,7 @@
                 </a>
             @endif
             @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="bg-white/20 hover:bg-white/30 text-white px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-300 backdrop-blur-sm border border-white/30">
+                <a href="{{ route('register') }}" class="bg-secondary hover:bg-secondary/90 text-primary px-10 py-5 rounded-2xl text-xl font-bold transition-all duration-300 hover:scale-105 shadow-lg">
                     <i class="fas fa-chalkboard-teacher mr-3"></i>
                     Daftar Sebagai Guru
                 </a>

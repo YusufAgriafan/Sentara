@@ -2,7 +2,11 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#ffffff">
     <title>@yield('title', config('app.name', 'Sentara')) - Jelajahi Sejarah Indonesia</title>
     
     <!-- Fonts -->
@@ -26,6 +30,51 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* Prevent bounce effect on iOS and Android */
+            overscroll-behavior: none;
+            /* Prevent text selection on mobile */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Improve touch handling */
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Fix for Android viewport issues */
+        html {
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* Improve touch targets for mobile */
+        button, a {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Fix for mobile menu positioning on Android */
+        .mobile-menu {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            height: 100vh !important;
+            height: calc(var(--vh, 1vh) * 100) !important; /* Use custom viewport height variable */
+            height: 100dvh !important; /* Use dynamic viewport height for mobile */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Fix backdrop positioning */
+        .mobile-backdrop {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            height: calc(var(--vh, 1vh) * 100) !important;
+            height: 100dvh !important;
         }
         
         .fade-in-up {
@@ -59,16 +108,45 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
         
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+        /* Fallback for older Android browsers */
+        @supports not (height: 100dvh) {
+            .mobile-menu {
+                height: calc(var(--vh, 1vh) * 100) !important;
+            }
+            .mobile-backdrop {
+                height: calc(var(--vh, 1vh) * 100) !important;
+            }
         }
         
-        .mobile-menu.open {
-            transform: translateX(0);
+        @supports not (height: calc(var(--vh, 1vh) * 100)) {
+            .mobile-menu {
+                height: 100vh !important;
+            }
+            .mobile-backdrop {
+                height: 100vh !important;
+            }
+        }
+        
+        /* Fix for older Android WebView - Remove conflicting mobile-menu styles */
+        /* Let Tailwind handle the transforms */
+        
+        /* Improve performance on mobile */
+        .mobile-menu, .mobile-backdrop {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+        
+        /* Ensure hamburger button is clickable */
+        .hamburger {
+            z-index: 10000;
+            position: relative;
+            cursor: pointer;
         }
         
         .hamburger span {
+            display: block;
             transition: all 0.3s ease;
         }
         
@@ -100,6 +178,70 @@
 
     <!-- Footer -->
     <x-main.footer />
+
+    <!-- Mobile/Android compatibility polyfills -->
+    <script>
+        // Polyfill for older Android browsers
+        (function() {
+            // Touch events polyfill
+            if (!('ontouchstart' in window) && !window.navigator.msPointerEnabled) {
+                // Add basic touch event support for older browsers
+                var addTouchEvent = function(el, event, handler) {
+                    if (el.addEventListener) {
+                        el.addEventListener(event.replace('touch', 'mouse').replace('start', 'down').replace('end', 'up'), handler, false);
+                    }
+                };
+                
+                window.addTouchEvent = addTouchEvent;
+            }
+            
+            // Viewport height fix for older mobile browsers
+            function fixViewportHeight() {
+                var vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', vh + 'px');
+            }
+            
+            window.addEventListener('resize', fixViewportHeight);
+            window.addEventListener('orientationchange', function() {
+                setTimeout(fixViewportHeight, 100);
+            });
+            fixViewportHeight();
+            
+            // classList polyfill for older Android
+            if (!("classList" in document.documentElement)) {
+                Object.defineProperty(HTMLElement.prototype, 'classList', {
+                    get: function() {
+                        var self = this;
+                        function update(fn) {
+                            return function(value) {
+                                var classes = self.className.split(/\s+/g),
+                                    index = classes.indexOf(value);
+                                fn(classes, index, value);
+                                self.className = classes.join(" ");
+                            };
+                        }
+                        return {
+                            add: update(function(classes, index, value) {
+                                if (!~index) classes.push(value);
+                            }),
+                            remove: update(function(classes, index) {
+                                if (~index) classes.splice(index, 1);
+                            }),
+                            toggle: update(function(classes, index, value) {
+                                if (~index)
+                                    classes.splice(index, 1);
+                                else
+                                    classes.push(value);
+                            }),
+                            contains: function(value) {
+                                return !!~self.className.split(/\s+/g).indexOf(value);
+                            }
+                        };
+                    }
+                });
+            }
+        })();
+    </script>
 
     <!-- JavaScript for Interactivity -->
     <script>
@@ -207,7 +349,6 @@
 
         // Initialize all functions
         document.addEventListener('DOMContentLoaded', () => {
-            initMobileMenu();
             observeElements();
             handleNavbarScroll();
             initBounceAnimations();
@@ -217,8 +358,8 @@
 
         // Add some fun interactions
         document.addEventListener('DOMContentLoaded', () => {
-            // Add click effect to buttons
-            const buttons = document.querySelectorAll('button, .bg-primary, .bg-secondary');
+            // Add click effect to buttons (but exclude mobile menu button)
+            const buttons = document.querySelectorAll('button:not(#mobile-menu-btn), .bg-primary, .bg-secondary');
             buttons.forEach(button => {
                 button.addEventListener('click', function() {
                     this.style.transform = 'scale(0.95)';
@@ -227,6 +368,23 @@
                     }, 150);
                 });
             });
+            
+            // Test mobile menu functionality
+            setTimeout(() => {
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileBackdrop = document.getElementById('mobile-backdrop');
+                
+                if (mobileMenuBtn && mobileMenu && mobileBackdrop) {
+                    console.log('✅ Mobile menu elements found and ready');
+                } else {
+                    console.error('❌ Mobile menu elements missing:', {
+                        btn: !!mobileMenuBtn,
+                        menu: !!mobileMenu, 
+                        backdrop: !!mobileBackdrop
+                    });
+                }
+            }, 1000);
         });
 
         @yield('scripts')

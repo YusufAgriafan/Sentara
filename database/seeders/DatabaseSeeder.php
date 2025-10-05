@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             ClassPlacesSeeder::class,
             PlaceSeeder::class,
             GeographyModelSeeder::class,
-            GeographyContentSeeder::class,
+            // GeographyContentSeeder::class,
             AdminSettingSeeder::class,
             AdminDataSeeder::class,
             GameSeeder::class,

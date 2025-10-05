@@ -50,8 +50,8 @@ class AuthenticatedSessionController extends Controller
         return match($user->role) {
             'admin' => redirect()->route('admin.dashboard'),
             'educator' => redirect()->route('educator.dashboard'),
-            'student' => redirect()->route('dashboard'),
-            default => redirect()->route('dashboard'),
+            'student' => redirect()->route('index'),
+            default => redirect()->route('index'),
         };
     }
 

@@ -192,6 +192,8 @@ Route::middleware(['auth', 'verified', 'role:student'])->prefix('student')->name
     Route::get('/discussions', [StudentController::class, 'discussions'])->name('discussions')->middleware('class.access');
     Route::get('/discussions/{discussion}', [StudentController::class, 'showDiscussion'])->name('discussions.show')->middleware('class.access');
     Route::post('/discussions/{discussion}/reply', [StudentController::class, 'replyDiscussion'])->name('discussions.reply')->middleware('class.access');
+    // Allow students to create new discussions for their current class
+    Route::post('/discussions', [StudentController::class, 'storeDiscussion'])->name('discussions.store')->middleware('class.access');
     
     // Class joining routes (no middleware needed as they handle the joining process)
     Route::get('/classes/join', [ClassJoinController::class, 'showJoinForm'])->name('classes.join');
@@ -214,6 +216,10 @@ Route::prefix('game')->name('game.')->group(function () {
 // API Routes for Geography Models (public access)
 Route::prefix('api')->name('api.')->group(function () {
     Route::get('/geography-models/{model}/embed', [MainController::class, 'getGeographyModelEmbed'])->name('geography-models.embed');
+
+    // Chat AI endpoints
+    Route::post('/chat/send', [App\Http\Controllers\GeminiController::class, 'chatSend'])->middleware('auth')->name('chat.send');
+    Route::get('/chat/history', [App\Http\Controllers\GeminiController::class, 'chatHistory'])->middleware('auth')->name('chat.history');
 });
 
 require __DIR__.'/auth.php';

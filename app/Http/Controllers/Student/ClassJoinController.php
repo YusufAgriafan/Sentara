@@ -25,7 +25,7 @@ class ClassJoinController extends Controller
         // Get semua kelas yang tersedia (untuk display saja, tidak bisa join langsung)
         $availableClasses = ClassModel::with(['educator', 'classLists'])->get();
         
-        return view('student.classes.join', compact('currentClass', 'availableClasses'));
+        return view('main.classes.join', compact('currentClass', 'availableClasses'));
     }
 
     /**
@@ -113,6 +113,6 @@ class ClassJoinController extends Controller
         $class = $classListEntry->class;
         $classmates = $class->getStudents();
         
-        return view('student.classes.details', compact('class', 'classmates'));
+        return view('main.classes.details', compact('class', 'classmates'));
     }
 }

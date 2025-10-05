@@ -1,104 +1,157 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 text-white">
+<div class="min-h-screen bg-white">
+    <!-- Mobile Menu Toggle -->
+    <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button id="mobile-menu-toggle" class="bg-primary text-white p-3 rounded-xl shadow-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="lg:hidden fixed inset-y-0 left-0 w-80 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-40">
+        <div class="p-6 border-b border-quaternary">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-800">Game Info</h2>
+                <button id="close-drawer" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="bg-secondary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Chapter</div>
+                <div id="mobile-chapter" class="text-2xl font-bold text-primary">1</div>
+            </div>
+            <div class="bg-tertiary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Skor</div>
+                <div id="mobile-score" class="text-2xl font-bold text-gray-800">{{ $session->score }}</div>
+            </div>
+            <div class="bg-quaternary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Waktu</div>
+                <div id="mobile-timer" class="text-2xl font-bold text-gray-800">00:00</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Game Header -->
-    <div class="bg-black bg-opacity-30 backdrop-blur-sm border-b border-primary/50">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('game.index') }}" class="text-quaternary/80 hover:text-quaternary transition-colors text-sm sm:text-base">
-                        ← Kembali ke Games
-                    </a>
-                    <h1 class="text-lg sm:text-2xl font-bold">🕰️ {{ $game->title }}</h1>
+    <div class="bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 py-6">
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
+                <div class="ml-16 lg:ml-0">
+                    <div class="flex items-center space-x-4 mb-2">
+                        <a href="{{ route('game.index') }}" class="text-white hover:text-secondary transition-colors font-medium">
+                            ← Kembali ke Games
+                        </a>
+                    </div>
+                    <h1 class="text-2xl lg:text-3xl font-bold">🕰️ {{ $game->title }}</h1>
+                    <p class="text-blue-100 mt-2">Jelajahi sejarah Indonesia dan ubah masa depan</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-quaternary/80">Skor:</span>
-                        <span id="current-score" class="font-bold">{{ $session->score }}</span>
+                <div class="hidden lg:flex items-center space-x-6">
+                    <div class="bg-white bg-opacity-20 rounded-xl px-4 py-3">
+                        <span class="text-sm opacity-80">Chapter: </span>
+                        <span id="current-chapter" class="font-bold text-lg">1</span>
+                        <span class="text-sm opacity-80">/{{ count($game->settings['scenarios']) }}</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-quaternary/80">Waktu:</span>
-                        <span id="game-timer" class="font-bold">00:00</span>
+                    <div class="bg-white bg-opacity-20 rounded-xl px-4 py-3">
+                        <span class="text-sm opacity-80">Skor: </span>
+                        <span id="current-score" class="font-bold text-lg">{{ $session->score }}</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-quaternary/80">Chapter:</span>
-                        <span id="current-chapter" class="font-bold">1</span>/<span>{{ count($game->settings['scenarios']) }}</span>
+                    <div class="bg-white bg-opacity-20 rounded-xl px-4 py-3">
+                        <span class="text-sm opacity-80">⏱️ </span>
+                        <span id="game-timer" class="font-bold text-lg">00:00</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="max-w-6xl mx-auto px-4 py-4 md:py-8">
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 py-8">
         <!-- Game Progress Bar -->
-        <div class="mb-6 md:mb-8">
-            <div class="flex justify-between text-xs sm:text-sm text-quaternary/80 mb-2">
-                <span>Progress Petualangan</span>
-                <span id="progress-percentage">0%</span>
+        <div class="mb-8">
+            <div class="flex justify-between text-sm text-gray-600 mb-3">
+                <span class="font-medium">Progress Petualangan</span>
+                <span id="progress-percentage" class="font-bold text-primary">0%</span>
             </div>
-            <div class="w-full bg-primary/50 rounded-full h-2 sm:h-3 border border-primary">
-                <div id="progress-bar" class="bg-gradient-to-r from-tertiary to-quaternary h-2 sm:h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+            <div class="w-full bg-quaternary rounded-full h-4 overflow-hidden">
+                <div id="progress-bar" class="bg-primary h-4 rounded-full transition-all duration-500" style="width: 0%"></div>
             </div>
         </div>
 
         <!-- Game Container -->
-        <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-lg border border-quaternary overflow-hidden">
             <!-- Story Display Area -->
-            <div id="story-container" class="p-8">
+            <div id="story-container" class="p-8 lg:p-12">
                 <!-- Chapter Introduction -->
                 <div id="chapter-intro" class="text-center mb-8">
-                    <h2 class="text-3xl font-bold mb-4 text-tertiary">Selamat Datang, Penjelajah Waktu!</h2>
-                    <p class="text-lg text-quaternary/90 max-w-3xl mx-auto">
-                        Anda akan mengalami momen-momen bersejarah Indonesia dan membuat keputusan yang dapat mengubah jalannya sejarah.
-                        Setiap pilihan Anda akan mempengaruhi skor dan alur cerita selanjutnya.
-                    </p>
-                    <button id="start-adventure" class="mt-6 bg-gradient-to-r from-secondary to-tertiary hover:from-primary hover:to-secondary px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105">
-                        🚀 Mulai Petualangan
-                    </button>
+                    <div class="w-24 h-24 bg-secondary rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                        🕰️
+                    </div>
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-6 text-gray-800">Selamat Datang, Penjelajah Waktu!</h2>
+                    <div class="max-w-3xl mx-auto">
+                        <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                            Anda akan mengalami momen-momen bersejarah Indonesia dan membuat keputusan yang dapat mengubah jalannya sejarah.
+                            Setiap pilihan Anda akan mempengaruhi skor dan alur cerita selanjutnya.
+                        </p>
+                        <button id="start-adventure" class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg transition-all transform hover:scale-105 shadow-lg">
+                            🚀 Mulai Petualangan
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Story Scene (Hidden initially) -->
                 <div id="story-scene" class="hidden">
                     <!-- Character Avatar -->
-                    <div class="flex justify-center mb-6">
-                        <div id="character-avatar" class="w-24 h-24 rounded-full bg-gradient-to-r from-tertiary to-quaternary flex items-center justify-center text-3xl border-4 border-tertiary/70">
+                    <div class="flex justify-center mb-8">
+                        <div id="character-avatar" class="w-32 h-32 rounded-full bg-tertiary flex items-center justify-center text-5xl border-4 border-white shadow-lg">
                             👤
                         </div>
                     </div>
 
                     <!-- Character Name -->
-                    <div class="text-center mb-4">
-                        <h3 id="character-name" class="text-xl font-bold text-tertiary"></h3>
-                        <p id="character-role" class="text-quaternary/80"></p>
+                    <div class="text-center mb-8">
+                        <h3 id="character-name" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+                        <p id="character-role" class="text-gray-600 text-lg"></p>
                     </div>
 
                     <!-- Story Text -->
-                    <div id="story-text" class="bg-black bg-opacity-50 rounded-xl p-6 mb-6 border border-primary/60">
-                        <p class="text-lg leading-relaxed"></p>
+                    <div id="story-text" class="bg-quaternary rounded-2xl p-8 mb-8 border border-gray-100">
+                        <p class="text-lg leading-relaxed text-gray-700"></p>
                     </div>
 
                     <!-- Historical Context -->
-                    <div id="historical-context" class="bg-primary/30 rounded-xl p-4 mb-6 border border-primary/60">
-                        <h4 class="font-bold text-secondary mb-2">📚 Konteks Sejarah:</h4>
-                        <p class="text-quaternary/90 text-sm"></p>
+                    <div id="historical-context" class="bg-secondary rounded-2xl p-6 mb-8 border border-yellow-100">
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center">
+                            <span class="text-2xl mr-2">📚</span>
+                            Konteks Sejarah:
+                        </h4>
+                        <p class="text-gray-700 leading-relaxed"></p>
                     </div>
 
                     <!-- Decision Options -->
-                    <div id="decision-options" class="space-y-3">
+                    <div id="decision-options" class="space-y-4">
                         <!-- Options will be populated by JavaScript -->
                     </div>
                 </div>
 
                 <!-- Chapter Complete -->
                 <div id="chapter-complete" class="hidden text-center">
-                    <h3 class="text-2xl font-bold text-tertiary mb-4">✅ Chapter Selesai!</h3>
-                    <p class="text-quaternary/90 mb-6">Selamat! Anda telah menyelesaikan chapter ini dengan baik.</p>
-                    <div class="flex justify-center space-x-4">
-                        <button id="next-chapter" class="bg-secondary hover:bg-primary px-6 py-3 rounded-xl font-semibold transition-all">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                        ✅
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6">Chapter Selesai!</h3>
+                    <p class="text-gray-600 mb-8 text-lg">Selamat! Anda telah menyelesaikan chapter ini dengan baik.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button id="next-chapter" class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all">
                             ➡️ Chapter Selanjutnya
                         </button>
-                        <button id="review-choices" class="bg-primary hover:bg-secondary px-6 py-3 rounded-xl font-semibold transition-all">
+                        <button id="review-choices" class="bg-tertiary hover:bg-yellow-400 text-gray-800 px-8 py-4 rounded-2xl font-semibold transition-all">
                             📊 Tinjau Pilihan
                         </button>
                     </div>
@@ -106,27 +159,32 @@
 
                 <!-- Game Complete -->
                 <div id="game-complete" class="hidden text-center">
-                    <h2 class="text-3xl font-bold text-tertiary mb-4">🏆 Petualangan Selesai!</h2>
-                    <p class="text-quaternary/90 mb-6">Anda telah menyelesaikan seluruh petualangan waktu!</p>
-                    <div class="grid grid-cols-3 gap-4 mb-6 text-center">
-                        <div class="bg-primary/70 rounded-lg p-4">
-                            <div class="text-2xl font-bold" id="final-score">0</div>
-                            <div class="text-sm text-quaternary/80">Skor Total</div>
+                    <div class="w-32 h-32 bg-yellow-100 rounded-full flex items-center justify-center text-6xl mx-auto mb-6">
+                        🏆
+                    </div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-6">Petualangan Selesai!</h2>
+                    <p class="text-gray-600 mb-8 text-lg">Anda telah menyelesaikan seluruh petualangan waktu!</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 max-w-2xl mx-auto">
+                        <div class="bg-primary text-white rounded-2xl p-6">
+                            <div class="text-3xl font-bold" id="final-score">0</div>
+                            <div class="text-sm opacity-90">Skor Total</div>
                         </div>
-                        <div class="bg-primary/70 rounded-lg p-4">
-                            <div class="text-2xl font-bold" id="final-time">00:00</div>
-                            <div class="text-sm text-quaternary/80">Waktu</div>
+                        <div class="bg-secondary text-gray-800 rounded-2xl p-6">
+                            <div class="text-3xl font-bold" id="final-time">00:00</div>
+                            <div class="text-sm">Waktu</div>
                         </div>
-                        <div class="bg-primary/70 rounded-lg p-4">
-                            <div class="text-2xl font-bold" id="final-rank">-</div>
-                            <div class="text-sm text-quaternary/80">Peringkat</div>
+                        <div class="bg-tertiary text-gray-800 rounded-2xl p-6">
+                            <div class="text-3xl font-bold" id="final-rank">-</div>
+                            <div class="text-sm">Peringkat</div>
                         </div>
                     </div>
-                    <div class="space-x-4">
-                        <button id="play-again" class="bg-gradient-to-r from-secondary to-tertiary hover:from-primary hover:to-secondary px-6 py-3 rounded-xl font-semibold transition-all">
+                    
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button id="play-again" class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all">
                             🔄 Main Lagi
                         </button>
-                        <a href="{{ route('game.index') }}" class="bg-primary/80 hover:bg-primary px-6 py-3 rounded-xl font-semibold transition-all inline-block">
+                        <a href="{{ route('game.index') }}" class="bg-quaternary hover:bg-gray-300 text-gray-800 px-8 py-4 rounded-2xl font-semibold transition-all inline-block">
                             🏠 Kembali ke Menu
                         </a>
                     </div>
@@ -134,33 +192,78 @@
             </div>
         </div>
 
-        <!-- Game Instructions (Sidebar) -->
-        <div class="mt-8 bg-black bg-opacity-40 rounded-xl border border-primary/50 p-6">
-            <h3 class="text-xl font-bold mb-4 text-tertiary">📖 Cara Bermain</h3>
-            <ul class="space-y-2 text-quaternary/90">
-                <li class="flex items-start space-x-2">
-                    <span class="text-secondary">•</span>
-                    <span>Baca cerita dengan saksama dan pahami konteks sejarahnya</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-secondary">•</span>
-                    <span>Pilih keputusan yang menurut Anda paling tepat</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-secondary">•</span>
-                    <span>Setiap pilihan akan mempengaruhi skor dan alur cerita</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-secondary">•</span>
-                    <span>Selesaikan semua chapter untuk mendapatkan achievement</span>
-                </li>
-            </ul>
+        <!-- Game Instructions -->
+        <div class="mt-8 bg-white rounded-3xl shadow-lg border border-quaternary p-8">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                <span class="text-3xl mr-3">📖</span>
+                Cara Bermain
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
+                    <span class="text-gray-700">Baca cerita dengan saksama dan pahami konteks sejarahnya</span>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
+                    <span class="text-gray-700">Pilih keputusan yang menurut Anda paling tepat</span>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">3</div>
+                    <span class="text-gray-700">Setiap pilihan akan mempengaruhi skor dan alur cerita</span>
+                </div>
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">4</div>
+                    <span class="text-gray-700">Selesaikan semua chapter untuk mendapatkan achievement</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @push('scripts')
 <script>
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileDrawer = document.getElementById('mobile-drawer');
+    const closeDrawer = document.getElementById('close-drawer');
+    
+    // Toggle mobile menu
+    mobileMenuToggle?.addEventListener('click', function() {
+        mobileDrawer.classList.remove('-translate-x-full');
+    });
+    
+    // Close mobile menu
+    closeDrawer?.addEventListener('click', function() {
+        mobileDrawer.classList.add('-translate-x-full');
+    });
+    
+    // Close on backdrop click
+    mobileDrawer?.addEventListener('click', function(e) {
+        if (e.target === mobileDrawer) {
+            mobileDrawer.classList.add('-translate-x-full');
+        }
+    });
+    
+    // Update mobile drawer with current stats
+    function updateMobileStats() {
+        const mobileChapter = document.getElementById('mobile-chapter');
+        const mobileScore = document.getElementById('mobile-score');
+        const mobileTimer = document.getElementById('mobile-timer');
+        
+        const currentChapter = document.getElementById('current-chapter')?.textContent || '1';
+        const currentScore = document.getElementById('current-score')?.textContent || '0';
+        const gameTimer = document.getElementById('game-timer')?.textContent || '00:00';
+        
+        if (mobileChapter) mobileChapter.textContent = currentChapter;
+        if (mobileScore) mobileScore.textContent = currentScore;
+        if (mobileTimer) mobileTimer.textContent = gameTimer;
+    }
+    
+    // Update mobile stats periodically
+    setInterval(updateMobileStats, 1000);
+});
+
 class TimeTravelGame {
     constructor() {
         this.gameData = @json($game->settings) || {};
@@ -170,6 +273,7 @@ class TimeTravelGame {
         this.score = {{ $session->score ?? 0 }};
         this.startTime = new Date();
         this.timer = null;
+        this.gameTime = 0;
         
         // Ensure scenarios exist
         if (!this.gameData.scenarios || !Array.isArray(this.gameData.scenarios)) {
@@ -206,51 +310,6 @@ class TimeTravelGame {
                         ]
                     }
                 ]
-            },
-            perang_diponegoro: {
-                title: "Perang Diponegoro 1825-1830",
-                character: { name: "Pangeran Diponegoro", role: "Pemimpin Perlawanan", avatar: "⚔️" },
-                scenes: [
-                    {
-                        text: "Belanda telah memasang tiang di tanah leluhur tanpa izin. Rakyat mulai gelisah dan meminta Anda memimpin perlawanan. Sebagai Pangeran Diponegoro, apa strategi Anda?",
-                        context: "Perang Diponegoro adalah perang terbesar yang dialami Belanda di Jawa. Dipimpin oleh Pangeran Diponegoro, perang ini berlangsung dari 1825-1830 dan menguras keuangan kolonial Belanda.",
-                        options: [
-                            { text: "Gunakan strategi gerilya dengan bantuan rakyat", points: 100, feedback: "Strategi gerilya terbukti efektif melawan tentara Belanda yang lebih modern." },
-                            { text: "Serang langsung benteng Belanda", points: 60, feedback: "Serangan frontal berisiko tinggi menghadapi persenjataan modern Belanda." },
-                            { text: "Cari dukungan dari kerajaan lain terlebih dahulu", points: 80, feedback: "Diplomasi penting, tapi momentum perlawanan bisa hilang." }
-                        ]
-                    }
-                ]
-            },
-            majapahit_era: {
-                title: "Era Kejayaan Majapahit",
-                character: { name: "Gajah Mada", role: "Mahapatih", avatar: "👑" },
-                scenes: [
-                    {
-                        text: "Anda adalah Gajah Mada yang baru saja mengucapkan Sumpah Palapa. Raja memberikan kepercayaan untuk mempersatukan Nusantara. Langkah strategis apa yang akan Anda ambil?",
-                        context: "Gajah Mada adalah Mahapatih Kerajaan Majapahit yang terkenal dengan Sumpah Palapa-nya untuk mempersatukan seluruh Nusantara di bawah kekuasaan Majapahit.",
-                        options: [
-                            { text: "Kirim armada laut untuk menguasai jalur perdagangan", points: 100, feedback: "Menguasai jalur perdagangan adalah kunci kekuatan ekonomi dan politik." },
-                            { text: "Fokus memperkuat pasukan darat terlebih dahulu", points: 70, feedback: "Pasukan darat penting, tapi kontrol laut lebih strategis untuk Nusantara." },
-                            { text: "Bangun aliansi dengan kerajaan kecil melalui diplomasi", points: 90, feedback: "Diplomasi efektif untuk memperluas pengaruh tanpa konflik besar." }
-                        ]
-                    }
-                ]
-            },
-            sriwijaya_kingdom: {
-                title: "Kerajaan Sriwijaya",
-                character: { name: "Balaputradewa", role: "Raja Sriwijaya", avatar: "🚢" },
-                scenes: [
-                    {
-                        text: "Kapal-kapal dagang dari Tiongkok dan India semakin ramai melewati Selat Malaka. Sebagai raja Sriwijaya, bagaimana Anda memanfaatkan posisi strategis ini?",
-                        context: "Kerajaan Sriwijaya adalah kerajaan maritim yang menguasai jalur perdagangan di Asia Tenggara. Kejayaannya bertumpu pada penguasaan Selat Malaka sebagai jalur perdagangan internasional.",
-                        options: [
-                            { text: "Terapkan sistem pajak dan perlindungan bagi pedagang", points: 100, feedback: "Sistem ini membuat Sriwijaya menjadi pusat perdagangan yang aman dan menguntungkan." },
-                            { text: "Bangun armada laut yang kuat untuk patroli", points: 85, feedback: "Armada kuat penting untuk keamanan, tapi sistem ekonomi perlu diatur juga." },
-                            { text: "Monopoli perdagangan dengan menutup akses bagi kompetitor", points: 60, feedback: "Monopoli berisiko menciptakan musuh dan mengurangi volume perdagangan." }
-                        ]
-                    }
-                ]
             }
         };
         
@@ -265,30 +324,39 @@ class TimeTravelGame {
     
     startTimer() {
         this.timer = setInterval(() => {
-            const elapsed = Math.floor((new Date() - this.startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60);
-            const seconds = elapsed % 60;
-            document.getElementById('game-timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            this.gameTime = Math.floor((Date.now() - this.startTime) / 1000);
+            this.updateTimer();
         }, 1000);
     }
     
+    updateTimer() {
+        const minutes = Math.floor(this.gameTime / 60);
+        const seconds = this.gameTime % 60;
+        const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        const timerEl = document.getElementById('game-timer');
+        const mobileTimerEl = document.getElementById('mobile-timer');
+        
+        if (timerEl) timerEl.textContent = timeStr;
+        if (mobileTimerEl) mobileTimerEl.textContent = timeStr;
+    }
+    
     setupEventListeners() {
-        document.getElementById('start-adventure').addEventListener('click', () => {
+        document.getElementById('start-adventure')?.addEventListener('click', () => {
             this.startGame();
         });
         
-        document.getElementById('next-chapter').addEventListener('click', () => {
+        document.getElementById('next-chapter')?.addEventListener('click', () => {
             this.nextChapter();
         });
         
-        document.getElementById('play-again').addEventListener('click', () => {
+        document.getElementById('play-again')?.addEventListener('click', () => {
             this.resetGame();
         });
     }
     
     startGame() {
-        document.getElementById('chapter-intro').classList.add('hidden');
+        document.getElementById('chapter-intro')?.classList.add('hidden');
         this.loadChapter(0);
     }
     
@@ -312,12 +380,14 @@ class TimeTravelGame {
         
         // Update UI elements safely
         const currentChapterEl = document.getElementById('current-chapter');
+        const mobileChapterEl = document.getElementById('mobile-chapter');
         const characterNameEl = document.getElementById('character-name');
         const characterRoleEl = document.getElementById('character-role');
         const characterAvatarEl = document.getElementById('character-avatar');
         const storySceneEl = document.getElementById('story-scene');
         
         if (currentChapterEl) currentChapterEl.textContent = chapterIndex + 1;
+        if (mobileChapterEl) mobileChapterEl.textContent = chapterIndex + 1;
         if (characterNameEl && scenario.character) characterNameEl.textContent = scenario.character.name || '';
         if (characterRoleEl && scenario.character) characterRoleEl.textContent = scenario.character.role || '';
         if (characterAvatarEl && scenario.character) characterAvatarEl.textContent = scenario.character.avatar || '👤';
@@ -360,11 +430,11 @@ class TimeTravelGame {
         if (scene.options && Array.isArray(scene.options)) {
             scene.options.forEach((option, index) => {
                 const button = document.createElement('button');
-                button.className = 'w-full text-left bg-primary/70 hover:bg-secondary p-4 rounded-xl border-2 border-transparent hover:border-tertiary/60 transition-all transform hover:scale-102';
+                button.className = 'w-full bg-white hover:bg-quaternary border-2 border-quaternary hover:border-primary text-gray-800 p-6 rounded-2xl text-left transition-all transform hover:scale-[1.02] shadow-sm hover:shadow-md';
                 button.innerHTML = `
                     <div class="flex items-center justify-between">
-                        <span>${option.text || 'Option ' + (index + 1)}</span>
-                        <span class="text-quaternary/80">+${option.points || 0} pts</span>
+                        <span class="text-lg font-medium">${option.text || 'Option ' + (index + 1)}</span>
+                        <div class="bg-primary text-white px-3 py-1 rounded-full text-sm font-bold">+${option.points || 0}</div>
                     </div>
                 `;
                 
@@ -385,10 +455,11 @@ class TimeTravelGame {
         
         this.score += (option.points || 0);
         
+        // Update score displays
         const currentScoreEl = document.getElementById('current-score');
-        if (currentScoreEl) {
-            currentScoreEl.textContent = this.score;
-        }
+        const mobileScoreEl = document.getElementById('mobile-score');
+        if (currentScoreEl) currentScoreEl.textContent = this.score;
+        if (mobileScoreEl) mobileScoreEl.textContent = this.score;
         
         // Show feedback
         this.showFeedback(option.feedback || 'Pilihan dibuat!', option.points || 0);
@@ -411,13 +482,15 @@ class TimeTravelGame {
         }
         
         const feedbackDiv = document.createElement('div');
-        feedbackDiv.className = 'fixed top-4 right-4 bg-secondary text-white p-4 rounded-xl shadow-lg z-50 transform translate-x-full';
+        feedbackDiv.className = 'fixed top-4 right-4 bg-primary text-white p-6 rounded-2xl shadow-xl z-50 transform translate-x-full transition-transform duration-300 max-w-sm';
         feedbackDiv.innerHTML = `
-            <div class="flex items-center space-x-2">
-                <span class="text-2xl">✅</span>
+            <div class="flex items-start space-x-3">
+                <div class="bg-white bg-opacity-20 rounded-full p-2">
+                    <span class="text-2xl">💡</span>
+                </div>
                 <div>
-                    <div class="font-bold">+${points} points</div>
-                    <div class="text-sm">${feedback}</div>
+                    <div class="font-bold text-lg mb-1">+${points} Poin</div>
+                    <div class="text-blue-100">${feedback}</div>
                 </div>
             </div>
         `;
@@ -483,97 +556,31 @@ class TimeTravelGame {
         const gameCompleteEl = document.getElementById('game-complete');
         const finalScoreEl = document.getElementById('final-score');
         const finalTimeEl = document.getElementById('final-time');
-        const gameTimerEl = document.getElementById('game-timer');
+        const finalRankEl = document.getElementById('final-rank');
         
         if (storySceneEl) storySceneEl.classList.add('hidden');
         if (chapterCompleteEl) chapterCompleteEl.classList.add('hidden');
         
         if (finalScoreEl) finalScoreEl.textContent = this.score || 0;
-        if (finalTimeEl && gameTimerEl) {
-            finalTimeEl.textContent = gameTimerEl.textContent || '00:00';
+        if (finalTimeEl) {
+            const minutes = Math.floor(this.gameTime / 60);
+            const seconds = this.gameTime % 60;
+            finalTimeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
         
-        // Save completion to server
-        try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]');
-            if (!csrfToken) {
-                console.error('CSRF token not found');
-                if (gameCompleteEl) gameCompleteEl.classList.remove('hidden');
-                return;
-            }
-            
-            const response = await fetch(`/game/{{ $game->slug }}/complete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken.getAttribute('content')
-                },
-                body: JSON.stringify({
-                    final_score: this.score || 0,
-                    final_time: Math.floor((new Date() - this.startTime) / 1000),
-                    completion_data: {
-                        chapters_completed: this.gameData.scenarios ? this.gameData.scenarios.length : 0,
-                        game_type: 'time_travel'
-                    }
-                })
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                if (result.success) {
-                    // Show achievements if any
-                    if (result.achievements && result.achievements.length > 0) {
-                        this.showAchievements(result.achievements);
-                    }
-                }
-            } else {
-                console.error('Failed to save game completion:', response.status);
-            }
-        } catch (error) {
-            console.error('Error saving game completion:', error);
-        }
+        // Calculate rank based on score
+        let rank = 'C';
+        if (this.score >= 120) rank = 'A+';
+        else if (this.score >= 100) rank = 'A';
+        else if (this.score >= 80) rank = 'B+';
+        else if (this.score >= 60) rank = 'B';
+        
+        if (finalRankEl) finalRankEl.textContent = rank;
         
         if (gameCompleteEl) gameCompleteEl.classList.remove('hidden');
-    }
-    
-    showAchievements(achievements) {
-        if (!achievements || !Array.isArray(achievements)) {
-            console.warn('Invalid achievements data');
-            return;
-        }
         
-        achievements.forEach((achievement, index) => {
-            if (!achievement) return;
-            
-            const achievementDiv = document.createElement('div');
-            achievementDiv.className = 'fixed bottom-4 right-4 bg-tertiary text-white p-4 rounded-xl shadow-lg z-50';
-            achievementDiv.style.transform = 'translateY(100%)';
-            achievementDiv.innerHTML = `
-                <div class="flex items-center space-x-2">
-                    <span class="text-2xl">🏆</span>
-                    <div>
-                        <div class="font-bold">${achievement.achievement_name || 'Achievement Unlocked!'}</div>
-                        <div class="text-sm">${achievement.description || 'Congratulations!'}</div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(achievementDiv);
-            
-            // Stagger animations if multiple achievements
-            setTimeout(() => {
-                achievementDiv.style.transform = 'translateY(0)';
-            }, index * 500);
-            
-            setTimeout(() => {
-                achievementDiv.style.transform = 'translateY(100%)';
-                setTimeout(() => {
-                    if (achievementDiv.parentNode) {
-                        achievementDiv.parentNode.removeChild(achievementDiv);
-                    }
-                }, 300);
-            }, 4000 + (index * 500));
-        });
+        // Save completion
+        await this.saveProgress();
     }
     
     async saveProgress() {
@@ -593,16 +600,14 @@ class TimeTravelGame {
                 body: JSON.stringify({
                     progress_data: {
                         current_chapter: this.currentChapter,
-                        completed_steps: this.currentChapter + 1,
-                        total_steps: this.gameData.scenarios ? this.gameData.scenarios.length : 0
-                    },
-                    score: this.score || 0,
-                    time_spent: Math.floor((new Date() - this.startTime) / 1000)
+                        score: this.score,
+                        game_time: this.gameTime
+                    }
                 })
             });
             
             if (!response.ok) {
-                console.error('Failed to save progress:', response.status);
+                console.error('Failed to save progress');
             }
         } catch (error) {
             console.error('Error saving progress:', error);
@@ -611,31 +616,34 @@ class TimeTravelGame {
     
     resetGame() {
         this.currentChapter = 0;
+        this.currentScene = 0;
         this.score = 0;
         this.startTime = new Date();
+        this.gameTime = 0;
         
-        const currentScoreEl = document.getElementById('current-score');
+        // Reset UI
         const gameCompleteEl = document.getElementById('game-complete');
         const chapterIntroEl = document.getElementById('chapter-intro');
         
-        if (currentScoreEl) currentScoreEl.textContent = '0';
         if (gameCompleteEl) gameCompleteEl.classList.add('hidden');
         if (chapterIntroEl) chapterIntroEl.classList.remove('hidden');
         
-        this.updateProgress();
+        // Reset displays
+        const currentScoreEl = document.getElementById('current-score');
+        const mobileScoreEl = document.getElementById('mobile-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const progressPercentageEl = document.getElementById('progress-percentage');
         
-        // Restart timer if it was cleared
-        if (this.timer) {
-            clearInterval(this.timer);
-        }
-        this.startTimer();
+        if (currentScoreEl) currentScoreEl.textContent = '0';
+        if (mobileScoreEl) mobileScoreEl.textContent = '0';
+        if (progressBarEl) progressBarEl.style.width = '0%';
+        if (progressPercentageEl) progressPercentageEl.textContent = '0%';
+        
+        this.updateUI();
     }
     
     updateUI() {
-        if (this.sessionData && this.sessionData.progress_data && this.sessionData.progress_data.current_chapter !== undefined) {
-            this.currentChapter = this.sessionData.progress_data.current_chapter;
-            this.updateProgress();
-        }
+        this.updateProgress();
     }
 }
 
@@ -648,9 +656,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @push('styles')
 <style>
+/* Custom animations for smooth interactions */
 .transform { transition: transform 0.2s ease; }
 .hover\:scale-105:hover { transform: scale(1.05); }
-.hover\:scale-102:hover { transform: scale(1.02); }
+.hover\:scale-\[1\.02\]:hover { transform: scale(1.02); }
+
+/* Mobile drawer backdrop */
+@media (max-width: 1023px) {
+    .mobile-drawer-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 30;
+    }
+}
+
+/* Smooth transitions for all interactive elements */
+button, a {
+    transition: all 0.2s ease;
+}
+
+/* Progress bar animation */
+#progress-bar {
+    transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar for mobile drawer */
+#mobile-drawer {
+    scrollbar-width: thin;
+    scrollbar-color: #3396D3 #EEEEEE;
+}
+
+#mobile-drawer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#mobile-drawer::-webkit-scrollbar-track {
+    background: #EEEEEE;
+}
+
+#mobile-drawer::-webkit-scrollbar-thumb {
+    background: #3396D3;
+    border-radius: 3px;
+}
 </style>
 @endpush
 @endsection

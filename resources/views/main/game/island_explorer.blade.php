@@ -1,29 +1,32 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 text-white" id="game-container">
+<div class="min-h-screen bg-white text-gray-800" id="game-container">
     <!-- Game Header -->
-    <div class="bg-black bg-opacity-30 backdrop-blur-sm border-b border-primary/50">
+    <div class="bg-primary shadow-lg border-b-4 border-white">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('game.index') }}" class="text-red-200 hover:text-white transition-colors text-sm sm:text-base">
+                    <a href="{{ route('game.index') }}" class="text-white hover:text-secondary transition-colors text-sm sm:text-base bg-white/20 px-3 py-1 rounded-lg">
                         ← Kembali ke Games
                     </a>
-                    <h1 class="text-lg sm:text-2xl font-bold">🏝️ {{ $game->title }}</h1>
+                    <h1 class="text-lg sm:text-2xl font-bold text-white flex items-center">
+                        <span class="text-2xl mr-2">🏝️</span>
+                        {{ $game->title }}
+                    </h1>
                 </div>
                 <div class="flex items-center space-x-4 sm:space-x-6 text-xs sm:text-sm">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-teal-300">Artefak:</span>
-                        <span id="artifacts-collected" class="font-bold">0</span>/<span id="total-artifacts">15</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Artefak:</span>
+                        <span id="artifacts-collected" class="font-bold text-white">0</span>/<span id="total-artifacts" class="text-secondary">15</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-teal-300">Skor:</span>
-                        <span id="game-score" class="font-bold">0</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Skor:</span>
+                        <span id="game-score" class="font-bold text-white">0</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-teal-300">Waktu:</span>
-                        <span id="game-timer" class="font-bold">00:00</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">Waktu:</span>
+                        <span id="game-timer" class="font-bold text-white">00:00</span>
                     </div>
                 </div>
             </div>
@@ -35,20 +38,23 @@
             <!-- Game Area -->
             <div class="lg:col-span-3">
                 <!-- Current Island Display -->
-                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-6 mb-6">
+                <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-6 mb-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-bold" id="current-island-title">🏛️ Pulau Jawa</h2>
+                        <h2 class="text-2xl font-bold text-primary flex items-center" id="current-island-title">
+                            <span class="text-3xl mr-3">🏛️</span>
+                            Pulau Jawa
+                        </h2>
                         <div class="flex items-center space-x-2">
-                            <span class="text-sm text-teal-300">Progress:</span>
-                            <div class="w-32 bg-gray-700 rounded-full h-2">
-                                <div class="bg-teal-500 h-2 rounded-full transition-all duration-300" id="island-progress" style="width: 0%"></div>
+                            <span class="text-sm text-gray-600">Progress:</span>
+                            <div class="w-32 bg-quaternary rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full transition-all duration-300" id="island-progress" style="width: 0%"></div>
                             </div>
-                            <span class="text-sm text-white" id="island-progress-text">0%</span>
+                            <span class="text-sm text-gray-800 font-semibold" id="island-progress-text">0%</span>
                         </div>
                     </div>
                     
                     <!-- Island Map Area -->
-                    <div class="relative bg-gradient-to-br from-green-800 to-blue-800 rounded-xl p-8 mb-4" id="island-map">
+                    <div class="relative bg-primary rounded-xl p-8 mb-4" id="island-map">
                         <div class="grid grid-cols-4 gap-4 h-64" id="exploration-grid">
                             <!-- Exploration spots will be generated by JavaScript -->
                         </div>
@@ -58,8 +64,8 @@
                     </div>
                     
                     <!-- Island Description -->
-                    <div class="bg-secondary/20 rounded-lg p-4 mb-4">
-                        <p class="text-red-100" id="island-description">
+                    <div class="bg-secondary rounded-2xl p-4 mb-4 border border-yellow-200">
+                        <p class="text-gray-800" id="island-description">
                             Jelajahi Pulau Jawa, pulau paling padat penduduknya di Indonesia. Temukan candi-candi bersejarah, 
                             pelajari budaya Jawa yang kaya, dan kumpulkan artefak budaya yang berharga!
                         </p>
@@ -67,15 +73,15 @@
 
                     <!-- Action Buttons -->
                     <div class="flex flex-wrap gap-3">
-                        <button id="explore-btn" class="bg-teal-600 hover:bg-teal-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                        <button id="explore-btn" class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2 shadow-lg">
                             <span>🔍</span>
                             <span>Jelajahi Area</span>
                         </button>
-                        <button id="minigame-btn" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                        <button id="minigame-btn" class="bg-tertiary hover:bg-yellow-500 text-gray-800 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2 shadow-lg">
                             <span>🎮</span>
                             <span>Mini Game</span>
                         </button>
-                        <button id="collection-btn" class="bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2">
+                        <button id="collection-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center space-x-2 shadow-lg">
                             <span>🏺</span>
                             <span>Koleksi</span>
                         </button>
@@ -86,18 +92,18 @@
             <!-- Sidebar -->
             <div class="lg:col-span-1">
                 <!-- Island Navigator -->
-                <div class="bg-black bg-opacity-40 rounded-2xl shadow-2xl border border-primary/50 p-4 mb-6">
-                    <h3 class="text-lg font-bold mb-3 flex items-center space-x-2">
+                <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-4 mb-6">
+                    <h3 class="text-lg font-bold mb-3 flex items-center space-x-2 text-primary">
                         <span>🗺️</span>
                         <span>Navigator</span>
                     </h3>
                     <div class="space-y-2" id="island-navigator">
-                        <button class="island-nav-btn active w-full text-left p-3 rounded-lg bg-teal-600 hover:bg-teal-700 transition-all" data-island="jawa">
+                        <button class="island-nav-btn active w-full text-left p-3 rounded-lg bg-primary hover:bg-blue-600 text-white transition-all" data-island="jawa">
                             <div class="flex items-center space-x-3">
                                 <span class="text-2xl">🏛️</span>
                                 <div>
                                     <div class="font-semibold">Jawa</div>
-                                    <div class="text-xs text-teal-200">Candi & Budaya</div>
+                                    <div class="text-xs text-blue-200">Candi & Budaya</div>
                                 </div>
                             </div>
                         </button>

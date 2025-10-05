@@ -56,13 +56,15 @@ class ClassModel extends Model
 
     public function places()
     {
-        return $this->belongsToMany(Place::class, 'class_places', 'class_id', 'place_id');
+        return $this->belongsToMany(Place::class, 'class_places', 'class_id', 'place_id')
+            ->withTimestamps();
     }
 
     public function stories()
     {
         // Relasi many-to-many langsung dengan stories
-        return $this->belongsToMany(Story::class, 'class_stories', 'class_id', 'story_id');
+        return $this->belongsToMany(Story::class, 'class_stories', 'class_id', 'story_id')
+            ->withTimestamps();
     }
 
     // Helper method untuk mendapatkan semua stories yang tersedia dari places yang terkait dengan class ini

@@ -1,10 +1,47 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-primary via-secondary to-quaternary/60 pt-20 pb-8">
-    <div class="max-w-6xl mx-auto px-4 py-4 md:py-8">
+<div class="min-h-screen bg-white">
+    <!-- Mobile Menu Toggle -->
+    <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button id="mobile-menu-toggle" class="bg-primary text-white p-3 rounded-xl shadow-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-drawer" class="lg:hidden fixed inset-y-0 left-0 w-80 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-40">
+        <div class="p-6 border-b border-quaternary">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-gray-800">Game Info</h2>
+                <button id="close-drawer" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="bg-secondary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Kesulitan</div>
+                <div class="text-2xl font-bold text-primary">{{ ucfirst($game->difficulty) }}</div>
+            </div>
+            <div class="bg-tertiary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Total Dimainkan</div>
+                <div class="text-2xl font-bold text-gray-800">{{ $game->total_plays }}</div>
+            </div>
+            <div class="bg-quaternary p-4 rounded-xl">
+                <div class="text-sm text-gray-600 mb-1">Skor Rata-rata</div>
+                <div class="text-2xl font-bold text-gray-800">{{ number_format($game->average_score, 1) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-8 pt-20">
         <!-- Game Header -->
-        <div class="bg-gradient-to-br from-white/95 to-quaternary/90 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-2xl border border-quaternary/30 p-4 md:p-6 lg:p-8 mb-6 md:mb-8 text-gray-800">
+        <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-8 mb-8 text-gray-800">
             <div class="flex flex-col sm:flex-row items-start justify-between mb-4 md:mb-6 space-y-4 sm:space-y-0">
                 <a href="{{ route('game.index') }}" class="text-primary hover:text-secondary transition-colors text-sm sm:text-base font-medium">
                     ← Kembali ke Games
@@ -23,7 +60,7 @@
             
             <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
                 <!-- Game Icon -->
-                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br {{ getGameGradient($game->game_type) }} rounded-xl md:rounded-2xl flex items-center justify-center text-3xl sm:text-4xl lg:text-5xl border-4 border-white shadow-lg mx-auto lg:mx-0 flex-shrink-0">
+                <div class="w-32 h-32 bg-secondary rounded-3xl flex items-center justify-center text-5xl border-4 border-white shadow-lg mx-auto lg:mx-0 flex-shrink-0">
                     {{ getGameIcon($game->game_type) }}
                 </div>
                 
@@ -52,20 +89,20 @@
                     </div>
                     
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                         @auth
                         <a href="{{ route('game.play', $game->slug) }}" 
-                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
+                           class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
                             🎮 {{ $userSession ? 'Lanjutkan' : 'Mulai' }} Game
                         </a>
                         @else
                         <a href="{{ route('login') }}" 
-                           class="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
+                           class="bg-primary hover:bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all transform hover:scale-105 text-center shadow-lg">
                             🔐 Login untuk Bermain
                         </a>
                         @endauth
                         
-                        <button id="leaderboard-btn" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg">
+                        <button id="leaderboard-btn" class="bg-tertiary hover:bg-yellow-400 text-gray-800 px-8 py-4 rounded-2xl font-semibold transition-all shadow-lg">
                             🏆 Papan Skor
                         </button>
                     </div>
@@ -76,8 +113,11 @@
         <!-- User Progress (if logged in and has played) -->
         @auth
         @if($userSession)
-        <div class="bg-gradient-to-br from-green-50 to-blue-50 backdrop-blur-sm rounded-2xl shadow-xl border border-green-200 p-6 mb-8">
-            <h2 class="text-xl font-bold mb-4 text-green-700">📊 Progress Anda</h2>
+        <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                <span class="text-3xl mr-3">📊</span>
+                Progress Anda
+            </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="text-center p-4 bg-blue-100 rounded-lg border border-blue-200">
                     <div class="text-2xl font-bold text-blue-600">{{ $userSession->completion_percentage }}%</div>
@@ -111,17 +151,20 @@
         <!-- User Achievements -->
         @auth
         @if($userAchievements->count() > 0)
-        <div class="bg-gradient-to-br from-yellow-50 to-orange-50 backdrop-blur-sm rounded-2xl shadow-xl border border-yellow-200 p-6 mb-8">
-            <h2 class="text-xl font-bold mb-4 text-orange-700">🏆 Achievement Anda</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-tertiary flex items-center">
+                <span class="text-3xl mr-3">🏆</span>
+                Achievement Anda
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($userAchievements as $achievement)
-                <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-lg p-4 border border-yellow-300 shadow-md">
-                    <div class="flex items-center space-x-3 mb-2">
-                        <span class="text-2xl">{{ $achievement->icon }}</span>
-                        <h3 class="font-bold text-orange-800">{{ $achievement->achievement_name }}</h3>
+                <div class="bg-secondary rounded-2xl p-6 border border-yellow-200 shadow-sm">
+                    <div class="flex items-center space-x-4 mb-3">
+                        <span class="text-3xl">{{ $achievement->icon }}</span>
+                        <h3 class="font-bold text-gray-800">{{ $achievement->achievement_name }}</h3>
                     </div>
-                    <p class="text-orange-700 text-sm">{{ $achievement->description }}</p>
-                    <p class="text-orange-600 text-xs mt-2">{{ $achievement->created_at->format('d M Y') }}</p>
+                    <p class="text-gray-700 mb-3">{{ $achievement->description }}</p>
+                    <p class="text-gray-600 text-sm">{{ $achievement->created_at->format('d M Y') }}</p>
                 </div>
                 @endforeach
             </div>
@@ -236,18 +279,24 @@
             </div>
 
             <!-- Sidebar -->
-            <div class="space-y-6">
+            <div class="space-y-8">
                 <!-- Leaderboard -->
-                <div class="bg-gradient-to-br from-yellow-50 to-amber-50 backdrop-blur-sm rounded-2xl shadow-xl border border-yellow-200 p-6">
-                    <h3 class="text-xl font-bold mb-4 text-yellow-700">🏆 Top Players</h3>
+                <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-6">
+                    <h3 class="text-xl font-bold mb-4 text-primary flex items-center">
+                        <span class="text-2xl mr-2">🏆</span>
+                        Top Players
+                    </h3>
                     <div id="leaderboard-content" class="space-y-3">
                         <div class="text-center text-gray-500">Loading...</div>
                     </div>
                 </div>
 
                 <!-- Game Stats -->
-                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 backdrop-blur-sm rounded-2xl shadow-xl border border-emerald-200 p-6">
-                    <h3 class="text-xl font-bold mb-4 text-emerald-700">📊 Statistics</h3>
+                <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-6">
+                    <h3 class="text-xl font-bold mb-4 text-secondary flex items-center">
+                        <span class="text-2xl mr-2">📊</span>
+                        Statistics
+                    </h3>
                     <div class="space-y-3">
                         <div class="flex justify-between">
                             <span class="text-gray-600">Total Players:</span>

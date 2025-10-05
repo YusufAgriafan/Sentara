@@ -45,7 +45,8 @@ class Place extends Model
 
     public function classes()
     {
-        return $this->belongsToMany(ClassModel::class, 'class_places', 'place_id', 'class_id');
+        return $this->belongsToMany(ClassModel::class, 'class_places', 'place_id', 'class_id')
+            ->withTimestamps();
     }
 
     // Scope untuk filter places berdasarkan class

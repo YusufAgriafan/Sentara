@@ -1,11 +1,11 @@
-<nav class="fixed top-0 w-full z-50 bg-gradient-to-r from-primary via-secondary to-tertiary shadow-lg">
+<nav class="fixed top-0 w-full z-[9999] bg-white shadow-lg border-b-4 border-primary">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
             <!-- Logo -->
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <h1 class="text-3xl font-bold text-white">
-                        <i class="fas fa-location-crosshairs mr-2 text-quaternary"></i>
+                    <h1 class="text-3xl font-bold text-primary">
+                        <i class="fas fa-location-crosshairs mr-2 text-secondary"></i>
                         Sentara
                     </h1>
                 </div>
@@ -13,14 +13,14 @@
             
             <!-- Desktop Menu -->
             <div class="hidden lg:block">
-                <div class="ml-10 flex items-center space-x-8">
-                    <a href="{{ route('index') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('index') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Beranda</a>
-                    <a href="{{ route('sejarah') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('sejarah') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Sejarah</a>
-                    <a href="{{ route('geografi') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('geografi') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Geografi</a>
+                <div class="ml-10 flex items-center space-x-2">
+                    <a href="{{ route('index') }}" class="nav-link text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('index') ? 'bg-primary text-white font-bold' : '' }}">Beranda</a>
+                    <a href="{{ route('sejarah') }}" class="nav-link text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('sejarah') ? 'bg-primary text-white font-bold' : '' }}">Sejarah</a>
+                    <a href="{{ route('geografi') }}" class="nav-link text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('geografi') ? 'bg-primary text-white font-bold' : '' }}">Geografi</a>
                     @if (Route::has('login'))
-                        <a href="{{ route('game.index') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('game.*') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Game</a>
+                        <a href="{{ route('game.index') }}" class="nav-link text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('game.*') ? 'bg-primary text-white font-bold' : '' }}">Game</a>
                     @endif
-                    <a href="{{ route('kelas') }}" class="nav-link text-white hover:text-quaternary px-4 py-2 rounded-xl text-lg font-medium transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('kelas') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Kelas</a>
+                    <a href="{{ route('kelas') }}" class="nav-link text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('kelas') ? 'bg-primary text-white font-bold' : '' }}">Kelas</a>
                 </div>
             </div>
             
@@ -28,11 +28,19 @@
             <div class="hidden lg:flex items-center space-x-4">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-xl text-lg font-medium transition-all duration-300 hover:scale-105">Dashboard</a>
+                        @php
+                            $dashboardRoute = match(auth()->user()->role) {
+                                'admin' => route('admin.dashboard'),
+                                'educator' => route('educator.dashboard'),
+                                'student' => route('dashboard'),
+                                default => route('dashboard'),
+                            };
+                        @endphp
+                        <a href="{{ $dashboardRoute }}" class="bg-primary text-white hover:bg-primary/90 px-6 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:scale-105 shadow-lg">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="text-white hover:text-quaternary px-4 py-3 rounded-xl text-lg font-medium transition-colors">Masuk</a>
+                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-primary px-5 py-3 rounded-2xl text-lg font-medium transition-colors">Masuk</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="bg-white hover:bg-white/90 text-primary px-6 py-3 rounded-xl text-lg font-medium transition-all duration-300 hover:scale-105">Daftar</a>
+                            <a href="{{ route('register') }}" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-2xl text-lg font-medium transition-all duration-300 hover:scale-105 shadow-lg">Daftar</a>
                         @endif
                     @endauth
                 @endif
@@ -40,34 +48,47 @@
             
             <!-- Mobile Menu Button -->
             <div class="lg:hidden">
-                <button id="mobile-menu-btn" class="hamburger p-2">
-                    <span class="block w-6 h-0.5 bg-white mb-1"></span>
-                    <span class="block w-6 h-0.5 bg-white mb-1"></span>
-                    <span class="block w-6 h-0.5 bg-white"></span>
+                <button id="mobile-menu-btn" class="hamburger p-3 rounded-2xl hover:bg-quaternary transition-colors">
+                    <span class="block w-6 h-0.5 bg-gray-700 mb-1.5 rounded-full transition-all duration-300"></span>
+                    <span class="block w-6 h-0.5 bg-gray-700 mb-1.5 rounded-full transition-all duration-300"></span>
+                    <span class="block w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300"></span>
                 </button>
             </div>
         </div>
     </div>
     
     <!-- Mobile Menu Drawer -->
-    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-primary via-secondary to-tertiary shadow-2xl lg:hidden z-40">
+    <div id="mobile-menu" class="fixed top-0 right-0 h-screen w-80 bg-white shadow-2xl lg:hidden z-[9998] transform translate-x-full transition-transform duration-300 ease-in-out overflow-y-auto">
         <div class="p-8 pt-24">
-            <div class="space-y-6">
-                <a href="{{ route('index') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('index') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Beranda</a>
-                <a href="{{ route('sejarah') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('sejarah') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Sejarah</a>
-                <a href="{{ route('geografi') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('geografi') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Geografi</a>
-                <a href="{{ route('game.index') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('game.*') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Game</a>
-                <a href="{{ route('kelas') }}" class="mobile-nav-link block text-white hover:text-quaternary text-xl font-medium py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 {{ request()->routeIs('kelas') ? 'bg-white/20 text-quaternary font-bold' : '' }}">Kelas</a>
+            <!-- Close Button -->
+            <button id="close-mobile-menu" class="absolute top-6 right-6 p-2 rounded-2xl hover:bg-quaternary transition-colors">
+                <i class="fas fa-times text-2xl text-gray-700"></i>
+            </button>
+            
+            <div class="space-y-4">
+                <a href="{{ route('index') }}" class="mobile-nav-link block text-gray-700 hover:text-primary text-xl font-medium py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('index') ? 'bg-primary text-white font-bold' : '' }}">Beranda</a>
+                <a href="{{ route('sejarah') }}" class="mobile-nav-link block text-gray-700 hover:text-primary text-xl font-medium py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('sejarah') ? 'bg-primary text-white font-bold' : '' }}">Sejarah</a>
+                <a href="{{ route('geografi') }}" class="mobile-nav-link block text-gray-700 hover:text-primary text-xl font-medium py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('geografi') ? 'bg-primary text-white font-bold' : '' }}">Geografi</a>
+                <a href="{{ route('game.index') }}" class="mobile-nav-link block text-gray-700 hover:text-primary text-xl font-medium py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('game.*') ? 'bg-primary text-white font-bold' : '' }}">Game</a>
+                <a href="{{ route('kelas') }}" class="mobile-nav-link block text-gray-700 hover:text-primary text-xl font-medium py-4 px-6 rounded-2xl transition-all duration-300 hover:bg-quaternary {{ request()->routeIs('kelas') ? 'bg-primary text-white font-bold' : '' }}">Kelas</a>
             </div>
             
-            <div class="mt-12 space-y-4">
+            <div class="mt-8 space-y-4">
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="block bg-white text-primary hover:bg-gray-100 px-6 py-4 rounded-xl text-lg font-medium text-center transition-all duration-300">Dashboard</a>
+                        @php
+                            $dashboardRoute = match(auth()->user()->role) {
+                                'admin' => route('admin.dashboard'),
+                                'educator' => route('educator.dashboard'),
+                                'student' => route('index'),
+                                default => route('index'),
+                            };
+                        @endphp
+                        <a href="{{ $dashboardRoute }}" class="block bg-primary text-white hover:bg-primary/90 px-6 py-4 rounded-2xl text-lg font-medium text-center transition-all duration-300 shadow-lg">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}" class="block text-white hover:text-quaternary px-6 py-4 rounded-xl text-lg font-medium text-center transition-colors border border-white/20">Masuk</a>
+                        <a href="{{ route('login') }}" class="block text-gray-700 hover:text-primary px-6 py-4 rounded-2xl text-lg font-medium text-center transition-colors border-2 border-quaternary hover:border-primary">Masuk</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="block bg-white hover:bg-white/90 text-primary px-6 py-4 rounded-xl text-lg font-medium text-center transition-all duration-300">Daftar</a>
+                            <a href="{{ route('register') }}" class="block bg-primary hover:bg-primary/90 text-white px-6 py-4 rounded-2xl text-lg font-medium text-center transition-all duration-300 shadow-lg">Daftar</a>
                         @endif
                     @endauth
                 @endif
@@ -76,46 +97,114 @@
     </div>
     
     <!-- Mobile Menu Backdrop -->
-    <div id="mobile-backdrop" class="fixed inset-0 bg-black/50 z-30 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobile-backdrop" class="fixed inset-0 bg-black/50 z-[9997] lg:hidden opacity-0 pointer-events-none transition-opacity duration-300"></div>
 </nav>
-
-<style>
-.nav-link.active,
-.mobile-nav-link.active {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    color: var(--quaternary-color) !important;
-    font-weight: bold !important;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Navigation script loaded'); // Debug log
+    
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMobileMenu = document.getElementById('close-mobile-menu');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileBackdrop = document.getElementById('mobile-backdrop');
     
-    // Toggle mobile menu
-    mobileMenuBtn?.addEventListener('click', function() {
-        mobileMenu.classList.toggle('translate-x-full');
-        mobileBackdrop.classList.toggle('opacity-0');
-        mobileBackdrop.classList.toggle('pointer-events-none');
+    // Debug: Check if elements exist
+    console.log('Elements found:', {
+        mobileMenuBtn: !!mobileMenuBtn,
+        closeMobileMenu: !!closeMobileMenu,
+        mobileMenu: !!mobileMenu,
+        mobileBackdrop: !!mobileBackdrop
     });
     
-    // Close mobile menu when backdrop is clicked
-    mobileBackdrop?.addEventListener('click', function() {
+    if (!mobileMenuBtn || !mobileMenu || !mobileBackdrop) {
+        console.error('Required elements not found!');
+        return;
+    }
+    
+    // Simple toggle function
+    function toggleMobileMenu() {
+        console.log('Toggle menu clicked'); // Debug log
+        
+        const isHidden = mobileMenu.classList.contains('translate-x-full');
+        
+        if (isHidden) {
+            // Show menu
+            mobileMenu.classList.remove('translate-x-full');
+            mobileBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+            
+            // Animate hamburger to X
+            const spans = mobileMenuBtn.querySelectorAll('span');
+            spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+            
+            console.log('Menu opened');
+        } else {
+            // Hide menu
+            closeMobileMenuHandler();
+        }
+    }
+    
+    // Close mobile menu
+    function closeMobileMenuHandler() {
+        console.log('Closing menu'); // Debug log
+        
         mobileMenu.classList.add('translate-x-full');
-        mobileBackdrop.classList.add('opacity-0');
-        mobileBackdrop.classList.add('pointer-events-none');
+        mobileBackdrop.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+        
+        // Reset hamburger
+        const spans = mobileMenuBtn.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+        
+        console.log('Menu closed');
+    }
+    
+    // Event listeners
+    mobileMenuBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Mobile menu button clicked');
+        toggleMobileMenu();
     });
     
-    // Close mobile menu when a link is clicked
+    // Close menu when backdrop is clicked
+    mobileBackdrop.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('Backdrop clicked');
+        closeMobileMenuHandler();
+    });
+    
+    // Close menu when close button is clicked
+    if (closeMobileMenu) {
+        closeMobileMenu.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Close button clicked');
+            closeMobileMenuHandler();
+        });
+    }
+    
+    // Close menu when a link is clicked
     const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', function() {
-            mobileMenu.classList.add('translate-x-full');
-            mobileBackdrop.classList.add('opacity-0');
-            mobileBackdrop.classList.add('pointer-events-none');
+            console.log('Nav link clicked');
+            closeMobileMenuHandler();
         });
+    });
+    
+    // Handle orientation change and resize
+    window.addEventListener('orientationchange', function() {
+        setTimeout(closeMobileMenuHandler, 100);
+    });
+    
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 1024) { // lg breakpoint
+            closeMobileMenuHandler();
+        }
     });
 });
 </script>

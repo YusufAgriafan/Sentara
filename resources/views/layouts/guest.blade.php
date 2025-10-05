@@ -22,207 +22,283 @@
                 font-family: 'Inter', sans-serif;
             }
             
-            /* Custom animations */
-            @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-10px); }
+            /* Mobile drawer animation */
+            .mobile-drawer {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
             }
             
-            @keyframes shimmer {
-                0% { background-position: -200% 0; }
-                100% { background-position: 200% 0; }
+            .mobile-drawer.open {
+                transform: translateX(0);
+            }
+            
+            /* Hamburger animation */
+            .hamburger span {
+                transition: all 0.3s ease;
+                transform-origin: center;
+            }
+            
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+            
+            /* Smooth button hover */
+            .btn-hover {
+                transition: all 0.2s ease;
+            }
+            
+            .btn-hover:hover {
+                transform: translateY(-1px);
+            }
+            
+            /* Fun floating animation for decorative elements */
+            @keyframes float {
+                0%, 100% { 
+                    transform: translateY(0px) rotate(0deg); 
+                }
+                50% { 
+                    transform: translateY(-8px) rotate(2deg); 
+                }
             }
             
             .animate-float {
-                animation: float 6s ease-in-out infinite;
+                animation: float 4s ease-in-out infinite;
             }
             
-            .shimmer {
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-                background-size: 200% 100%;
-                animation: shimmer 2s infinite;
-            }
-            
-            /* Enhanced input focus effects */
-            .input-group:focus-within .input-icon {
-                color: #6A2634;
-                transform: scale(1.1);
-            }
-            
-            /* Gradient text animation */
-            .gradient-text {
-                background: linear-gradient(-45deg, #6A2634, #943939, #E18237, #FFE0A3);
-                background-size: 400% 400%;
-                animation: gradient 4s ease infinite;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
-            
-            @keyframes gradient {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-            
-            /* Button hover effects */
-            .btn-primary {
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .btn-primary::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-                transition: left 0.5s;
-            }
-            
-            .btn-primary:hover::before {
-                left: 100%;
+            .animate-float-delayed {
+                animation: float 4s ease-in-out infinite;
+                animation-delay: 2s;
             }
         </style>
     </head>
     <body class="font-sans antialiased bg-white min-h-screen">
-        <!-- Enhanced Background Pattern -->
-        <div class="fixed inset-0 bg-gradient-to-br from-quaternary/30 via-white to-primary/5">
-            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmOWZhZmIiIGZpbGwtb3BhY2l0eT0iMC4zIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-40"></div>
-            <!-- Add floating historical elements -->
-            <div class="absolute top-10 left-10 text-quaternary/20 animate-pulse">
-                <i class="fas fa-scroll text-4xl transform rotate-12"></i>
-            </div>
-            <div class="absolute top-32 right-16 text-quaternary/20 animate-pulse delay-1000">
-                <i class="fas fa-location-crosshairs text-3xl transform -rotate-12"></i>
-            </div>
-            <div class="absolute bottom-20 left-20 text-quaternary/20 animate-pulse delay-2000">
-                <i class="fas fa-crown text-3xl transform rotate-6"></i>
-            </div>
-            <div class="absolute bottom-32 right-10 text-quaternary/20 animate-pulse delay-500">
-                <i class="fas fa-feather text-2xl transform -rotate-6"></i>
+        <!-- Clean Background -->
+        <div class="fixed inset-0 bg-white">
+            <!-- Fun decorative elements with flat colors -->
+            <div class="absolute top-8 left-8 w-24 h-24 bg-secondary rounded-full opacity-60 animate-float"></div>
+            <div class="absolute top-32 right-12 w-16 h-16 bg-tertiary rounded-2xl opacity-40 animate-float-delayed"></div>
+            <div class="absolute bottom-20 left-16 w-20 h-20 bg-primary/20 rounded-full opacity-50 animate-float"></div>
+            <div class="absolute bottom-40 right-8 w-12 h-12 bg-quaternary rounded-xl opacity-60 animate-float-delayed"></div>
+        </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden"></div>
+        
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-drawer" class="mobile-drawer fixed top-0 left-0 h-full w-80 bg-white z-50 shadow-2xl lg:hidden">
+            <div class="p-6">
+                <!-- Mobile Logo -->
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                            <i class="fas fa-map-marked-alt text-white text-lg"></i>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-900">Sentara</h1>
+                    </div>
+                    <button id="close-drawer" class="text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <!-- Mobile Navigation Items -->
+                <nav class="space-y-4">
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-quaternary transition-colors">
+                        <i class="fas fa-home text-primary w-5"></i>
+                        <span class="font-medium text-gray-700">Beranda</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-quaternary transition-colors">
+                        <i class="fas fa-map text-primary w-5"></i>
+                        <span class="font-medium text-gray-700">Peta Sejarah</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-quaternary transition-colors">
+                        <i class="fas fa-book text-primary w-5"></i>
+                        <span class="font-medium text-gray-700">Cerita</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-quaternary transition-colors">
+                        <i class="fas fa-info-circle text-primary w-5"></i>
+                        <span class="font-medium text-gray-700">Tentang</span>
+                    </a>
+                </nav>
             </div>
         </div>
 
-        <!-- Main Content with Split Layout -->
-        <main class="relative z-10 min-h-screen flex">
-            <!-- Left Side - Welcome Content -->
-            <div class="hidden lg:flex lg:w-1/2 xl:w-3/5 relative overflow-hidden">
-                <!-- Background Image/Pattern -->
-                <div class="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-tertiary">
-                    <div class="absolute inset-0 bg-black/20"></div>
-                    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48ZyBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-30"></div>
-                </div>
-                
-                <!-- Content -->
-                <div class="relative flex flex-col justify-center px-12 xl:px-16 text-white">
-                    <!-- Logo -->
-                    <div class="mb-8">
-                        <div class="inline-flex items-center space-x-4">
-                            <div class="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                                <i class="fas fa-location-crosshairs text-white text-2xl"></i>
-                            </div>
-                            <h1 class="text-4xl font-bold">Sentara</h1>
+        <!-- Main Content -->
+        <main class="relative z-10 min-h-screen">
+            <!-- Mobile Header -->
+            <header class="lg:hidden bg-white border-b border-quaternary p-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-map-marked-alt text-white text-sm"></i>
                         </div>
+                        <h1 class="text-lg font-bold text-gray-900">Sentara</h1>
                     </div>
                     
-                    <!-- Welcome Text -->
-                    <div class="space-y-6">
-                        <h2 class="text-5xl xl:text-6xl font-bold leading-tight">
-                            Jelajahi<br/>
-                            <span class="text-quaternary">Sejarah</span><br/>
-                            Indonesia
-                        </h2>
-                        <p class="text-xl text-white/80 leading-relaxed max-w-lg">
-                            Temukan kisah-kisah menarik dari masa lalu Indonesia melalui pengalaman interaktif yang tak terlupakan.
-                        </p>
-                        
-                        <!-- Features -->
-                        <div class="space-y-4 mt-8">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-quaternary/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-map-marked-alt text-quaternary text-sm"></i>
-                                </div>
-                                <span class="text-white/90">Peta interaktif tempat bersejarah</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-quaternary/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-book-open text-quaternary text-sm"></i>
-                                </div>
-                                <span class="text-white/90">Cerita sejarah yang menarik</span>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-quaternary/20 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-users text-quaternary text-sm"></i>
-                                </div>
-                                <span class="text-white/90">Komunitas pembelajar sejarah</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Historical Quote -->
-                    <div class="mt-12 p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
-                        <div class="flex items-start space-x-4">
-                            <i class="fas fa-quote-left text-quaternary text-2xl mt-1"></i>
-                            <div>
-                                <p class="text-white/90 font-medium italic leading-relaxed">
-                                    "Bangsa yang besar adalah bangsa yang menghargai sejarahnya"
-                                </p>
-                                <p class="text-quaternary font-semibold mt-2">- Ir. Soekarno</p>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Hamburger Menu -->
+                    <button id="hamburger" class="hamburger flex flex-col space-y-1 p-2 transition-all">
+                        <span class="w-6 h-0.5 bg-gray-700 rounded"></span>
+                        <span class="w-6 h-0.5 bg-gray-700 rounded"></span>
+                        <span class="w-6 h-0.5 bg-gray-700 rounded"></span>
+                    </button>
                 </div>
-                
-                <!-- Decorative Elements -->
-                <div class="absolute top-10 right-10 text-white/10 animate-float">
-                    <i class="fas fa-scroll text-6xl transform rotate-12"></i>
-                </div>
-                <div class="absolute bottom-20 right-20 text-white/10 animate-float" style="animation-delay: 2s;">
-                    <i class="fas fa-crown text-4xl transform -rotate-12"></i>
-                </div>
-            </div>
-            
-            <!-- Right Side - Login Form -->
-            <div class="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-                <div class="w-full max-w-md">
-                    <!-- Mobile Logo (Hidden on Desktop) -->
-                    <div class="lg:hidden text-center mb-8">
-                        <div class="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                            <i class="fas fa-location-crosshairs text-white text-2xl"></i>
-                        </div>
-                        <h1 class="text-2xl font-bold text-gray-900">Sentara</h1>
-                    </div>
-                    
-                    <!-- Form Container -->
-                    <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl shadow-gray-200/50 p-8 lg:p-10 border border-gray-100 relative overflow-hidden">
-                        <!-- Decorative corner elements -->
-                        <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-quaternary/20 to-transparent rounded-bl-3xl"></div>
-                        <div class="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-quaternary/20 to-transparent rounded-tr-3xl"></div>
-                        
-                        {{ $slot }}
-                    </div>
+            </header>
 
-                    <!-- Footer Links -->
-                    <div class="text-center mt-8">
-                        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-gray-100 shadow-lg">
-                            <p class="text-sm text-gray-500 leading-relaxed">
-                                <i class="fas fa-shield-alt text-primary mr-1"></i>
-                                Dengan masuk, Anda menyetujui 
-                                <a href="#" class="text-primary hover:text-secondary transition-colors duration-300 font-medium underline decoration-dotted">
-                                    Syarat & Ketentuan
-                                </a> 
-                                dan 
-                                <a href="#" class="text-primary hover:text-secondary transition-colors duration-300 font-medium underline decoration-dotted">
-                                    Kebijakan Privasi
-                                </a>
+            <!-- Content Area -->
+            <div class="flex min-h-screen lg:min-h-auto">
+                <!-- Left Side - Welcome Content (Desktop Only) -->
+                <div class="hidden lg:flex lg:w-1/2 xl:w-3/5 bg-primary relative overflow-hidden">
+                    <!-- Content -->
+                    <div class="relative flex flex-col justify-center px-12 xl:px-16 text-white w-full">
+                        <!-- Logo -->
+                        <div class="mb-12">
+                            <div class="inline-flex items-center space-x-4">
+                                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-map-marked-alt text-primary text-2xl"></i>
+                                </div>
+                                <h1 class="text-4xl font-bold">Sentara</h1>
+                            </div>
+                        </div>
+                        
+                        <!-- Welcome Text -->
+                        <div class="space-y-8 max-w-lg">
+                            <h2 class="text-5xl xl:text-6xl font-bold leading-tight">
+                                Jelajahi<br/>
+                                <span class="text-secondary">Sejarah</span><br/>
+                                Indonesia
+                            </h2>
+                            <p class="text-xl text-white/90 leading-relaxed">
+                                Temukan kisah-kisah menarik dari masa lalu Indonesia melalui pengalaman interaktif yang tak terlupakan.
                             </p>
+                            
+                            <!-- Features -->
+                            <div class="space-y-6 mt-12">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-map-marked-alt text-secondary text-lg"></i>
+                                    </div>
+                                    <span class="text-white/90 font-medium">Peta interaktif tempat bersejarah</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-book-open text-secondary text-lg"></i>
+                                    </div>
+                                    <span class="text-white/90 font-medium">Cerita sejarah yang menarik</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                                        <i class="fas fa-users text-secondary text-lg"></i>
+                                    </div>
+                                    <span class="text-white/90 font-medium">Komunitas pembelajar sejarah</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Historical Quote -->
+                        <div class="mt-16 p-8 bg-white/10 backdrop-blur-sm rounded-3xl border border-white/20">
+                            <div class="flex items-start space-x-4">
+                                <i class="fas fa-quote-left text-secondary text-3xl mt-1"></i>
+                                <div>
+                                    <p class="text-white/95 font-medium italic leading-relaxed text-lg">
+                                        "Bangsa yang besar adalah bangsa yang menghargai sejarahnya"
+                                    </p>
+                                    <p class="text-secondary font-semibold mt-3 text-lg">- Ir. Soekarno</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Elements -->
+                    <div class="absolute top-12 right-12 text-white/10 animate-float">
+                        <i class="fas fa-scroll text-5xl"></i>
+                    </div>
+                    <div class="absolute bottom-24 right-24 text-white/10 animate-float-delayed">
+                        <i class="fas fa-crown text-4xl"></i>
+                    </div>
+                </div>
+                
+                <!-- Right Side - Form Area -->
+                <div class="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-6 lg:p-12">
+                    <div class="w-full max-w-md">
+                        <!-- Mobile Welcome (Hidden on Desktop) -->
+                        <div class="lg:hidden text-center mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                                Selamat Datang di 
+                                <span class="text-primary">Sentara</span>
+                            </h2>
+                            <p class="text-gray-600">Jelajahi sejarah Indonesia dengan cara yang menyenangkan</p>
+                        </div>
+                        
+                        <!-- Form Container -->
+                        <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-8 lg:p-10 relative overflow-hidden">
+                            <!-- Decorative corner elements -->
+                            <div class="absolute top-0 right-0 w-16 h-16 bg-secondary/30 rounded-bl-3xl"></div>
+                            <div class="absolute bottom-0 left-0 w-16 h-16 bg-tertiary/30 rounded-tr-3xl"></div>
+                            
+                            {{ $slot }}
+                        </div>
+
+                        <!-- Footer Links -->
+                        <div class="text-center mt-8">
+                            <div class="bg-quaternary/50 rounded-2xl p-4">
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    <i class="fas fa-shield-alt text-primary mr-2"></i>
+                                    Dengan masuk, Anda menyetujui 
+                                    <a href="#" class="text-primary hover:text-primary/80 transition-colors font-medium underline decoration-dotted">
+                                        Syarat & Ketentuan
+                                    </a> 
+                                    dan 
+                                    <a href="#" class="text-primary hover:text-primary/80 transition-colors font-medium underline decoration-dotted">
+                                        Kebijakan Privasi
+                                    </a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
+        <!-- JavaScript for Mobile Navigation -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const hamburger = document.getElementById('hamburger');
+                const mobileDrawer = document.getElementById('mobile-drawer');
+                const mobileOverlay = document.getElementById('mobile-overlay');
+                const closeDrawer = document.getElementById('close-drawer');
+
+                function openDrawer() {
+                    mobileDrawer.classList.add('open');
+                    mobileOverlay.classList.remove('hidden');
+                    hamburger.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeDrawerFunc() {
+                    mobileDrawer.classList.remove('open');
+                    mobileOverlay.classList.add('hidden');
+                    hamburger.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                hamburger.addEventListener('click', function() {
+                    if (mobileDrawer.classList.contains('open')) {
+                        closeDrawerFunc();
+                    } else {
+                        openDrawer();
+                    }
+                });
+
+                closeDrawer.addEventListener('click', closeDrawerFunc);
+                mobileOverlay.addEventListener('click', closeDrawerFunc);
+            });
+        </script>
     </body>
 </html>

@@ -1,29 +1,32 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-secondary to-quaternary/60 text-white">
+<div class="min-h-screen bg-white text-gray-800">
     <!-- Game Header -->
-    <div class="bg-primary/90 backdrop-blur-sm border-b border-secondary/50">
+    <div class="bg-primary shadow-lg border-b-4 border-white">
         <div class="max-w-7xl mx-auto px-4 py-4">
             <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-3 lg:space-y-0">
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('game.index') }}" class="text-quaternary hover:text-white transition-colors text-sm lg:text-base bg-secondary/20 px-3 py-1 rounded-lg backdrop-blur-sm border border-secondary/30">
+                    <a href="{{ route('game.index') }}" class="text-white hover:text-secondary transition-colors text-sm lg:text-base bg-white/20 px-3 py-1 rounded-lg">
                         ← Kembali ke Games
                     </a>
-                    <h1 class="text-xl lg:text-2xl font-bold text-white">🧩 {{ $game->title }}</h1>
+                    <h1 class="text-xl lg:text-2xl font-bold text-white flex items-center">
+                        <span class="text-2xl mr-2">🧩</span>
+                        {{ $game->title }}
+                    </h1>
                 </div>
                 <div class="flex items-center space-x-6 text-sm lg:text-base">
-                    <div class="flex items-center space-x-2 bg-secondary/20 px-3 py-2 rounded-lg backdrop-blur-sm border border-secondary/30">
-                        <span class="text-tertiary">📊 Skor:</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">📊 Skor:</span>
                         <span id="current-score" class="font-bold text-white">{{ $session->score }}</span>
                     </div>
-                    <div class="flex items-center space-x-2 bg-secondary/20 px-3 py-2 rounded-lg backdrop-blur-sm border border-secondary/30">
-                        <span class="text-quaternary">⏱️ Waktu:</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">⏱️ Waktu:</span>
                         <span id="game-timer" class="font-bold text-white">00:00</span>
                     </div>
-                    <div class="flex items-center space-x-2 bg-secondary/20 px-3 py-2 rounded-lg backdrop-blur-sm border border-secondary/30">
-                        <span class="text-tertiary">🎯 Level:</span>
-                        <span id="current-level" class="font-bold text-white">1</span>/<span class="text-quaternary/80">{{ count($game->settings['levels']) }}</span>
+                    <div class="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
+                        <span class="text-secondary">🎯 Level:</span>
+                        <span id="current-level" class="font-bold text-white">1</span>/<span class="text-secondary">{{ count($game->settings['levels']) }}</span>
                     </div>
                 </div>
             </div>
@@ -33,30 +36,33 @@
     <div class="max-w-7xl mx-auto px-4 py-4 md:py-8">
         <!-- Game Progress -->
         <div class="mb-6 lg:mb-8">
-            <div class="flex justify-between items-center text-sm lg:text-base text-white mb-3">
+            <div class="flex justify-between items-center text-sm lg:text-base text-gray-700 mb-3">
                 <div class="flex items-center space-x-2">
-                    <span class="text-tertiary">📈 Progress Level</span>
-                    <span class="text-quaternary/80">•</span>
-                    <span id="progress-text" class="font-semibold text-white">0/5</span>
+                    <span class="text-primary font-semibold">📈 Progress Level</span>
+                    <span class="text-gray-500">•</span>
+                    <span id="progress-text" class="font-semibold text-tertiary">0/5</span>
                 </div>
-                <span id="progress-percentage" class="text-tertiary font-bold">0%</span>
+                <span id="progress-percentage" class="text-primary font-bold">0%</span>
             </div>
-            <div class="w-full bg-primary/30 rounded-full h-3 lg:h-4 shadow-inner border border-secondary/40">
-                <div id="progress-bar" class="bg-gradient-to-r from-tertiary via-secondary to-quaternary h-3 lg:h-4 rounded-full transition-all duration-700 ease-in-out shadow-sm" style="width: 0%"></div>
+            <div class="w-full bg-quaternary rounded-full h-3 lg:h-4 shadow-inner border border-gray-300">
+                <div id="progress-bar" class="bg-primary h-3 lg:h-4 rounded-full transition-all duration-700 ease-in-out shadow-sm" style="width: 0%"></div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
             <!-- Game Area -->
             <div class="xl:col-span-3 order-2 xl:order-1">
-                <div class="bg-primary/40 rounded-2xl shadow-2xl border border-secondary/30 p-4 lg:p-6 backdrop-blur-sm">
+                <div class="bg-white rounded-3xl shadow-lg border border-quaternary p-4 lg:p-6">
                     <!-- Level Introduction -->
                     <div id="level-intro" class="text-center">
-                        <h2 class="text-xl lg:text-2xl font-bold mb-4 text-quaternary">🗺️ Puzzle Peta Nusantara</h2>
-                        <p class="text-white/90 mb-6 text-sm lg:text-base">
+                        <h2 class="text-xl lg:text-2xl font-bold mb-4 text-primary flex items-center justify-center">
+                            <span class="text-3xl mr-3">🗺️</span>
+                            Puzzle Peta Nusantara
+                        </h2>
+                        <p class="text-gray-700 mb-6 text-sm lg:text-base">
                             Susun potongan-potongan peta Indonesia dengan benar! Semakin cepat Anda menyelesaikan, semakin tinggi skor yang didapat.
                         </p>
-                        <button id="start-puzzle" class="bg-gradient-to-r from-tertiary to-secondary hover:from-tertiary/80 hover:to-secondary/80 px-6 lg:px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg text-white">
+                        <button id="start-puzzle" class="bg-primary hover:bg-blue-600 text-white px-6 lg:px-8 py-3 rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg">
                             🚀 Mulai Puzzle
                         </button>
                     </div>
@@ -65,12 +71,12 @@
                     <div id="puzzle-area" class="hidden">
                         <!-- Level Info -->
                         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0 mb-6">
-                            <h3 id="level-title" class="text-lg lg:text-xl font-bold text-quaternary"></h3>
+                            <h3 id="level-title" class="text-lg lg:text-xl font-bold text-primary"></h3>
                             <div class="flex items-center space-x-2 sm:space-x-4">
-                                <div id="time-limit" class="bg-secondary px-2 lg:px-3 py-1 rounded-lg text-sm lg:text-base text-white">
+                                <div id="time-limit" class="bg-secondary px-2 lg:px-3 py-1 rounded-lg text-sm lg:text-base text-gray-800 border border-yellow-200">
                                     ⏱️ <span id="countdown">00:00</span>
                                 </div>
-                                <button id="hint-button" class="bg-tertiary hover:bg-tertiary/80 px-2 lg:px-3 py-1 rounded-lg transition-colors text-sm lg:text-base text-white">
+                                <button id="hint-button" class="bg-tertiary hover:bg-yellow-500 px-2 lg:px-3 py-1 rounded-lg transition-colors text-sm lg:text-base text-gray-800 border border-yellow-300">
                                     💡 Hint (<span id="hint-count">3</span>)
                                 </button>
                             </div>
@@ -79,16 +85,16 @@
                         <!-- Puzzle Container -->
                         <div class="relative">
                             <!-- Drop Zone (Map Outline) -->
-                            <div id="drop-zone" class="relative w-full bg-secondary/20 border-2 border-dashed border-tertiary rounded-xl p-3 lg:p-4 min-h-64 lg:min-h-96">
-                                <div class="absolute inset-0 flex items-center justify-center text-quaternary pointer-events-none">
+                            <div id="drop-zone" class="relative w-full bg-quaternary border-2 border-dashed border-primary rounded-xl p-3 lg:p-4 min-h-64 lg:min-h-96">
+                                <div class="absolute inset-0 flex items-center justify-center text-gray-600 pointer-events-none">
                                     <span id="drop-instruction" class="text-sm lg:text-base text-center px-4">Seret potongan peta ke sini</span>
                                 </div>
                                 <!-- Correct positions will be generated by JavaScript -->
                             </div>
 
                             <!-- Puzzle Pieces Container -->
-                            <div id="puzzle-pieces" class="mt-4 lg:mt-6 bg-primary/20 rounded-xl p-3 lg:p-4">
-                                <h4 class="text-quaternary font-semibold mb-3 text-sm lg:text-base">Potongan Peta:</h4>
+                            <div id="puzzle-pieces" class="mt-4 lg:mt-6 bg-secondary rounded-xl p-3 lg:p-4 border border-yellow-200">
+                                <h4 class="text-gray-800 font-semibold mb-3 text-sm lg:text-base">Potongan Peta:</h4>
                                 <div id="pieces-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 lg:gap-3">
                                     <!-- Pieces will be generated by JavaScript -->
                                 </div>
@@ -97,10 +103,10 @@
 
                         <!-- Controls -->
                         <div class="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 mt-4 lg:mt-6">
-                            <button id="reset-puzzle" class="bg-primary/80 hover:bg-primary px-4 py-2 rounded-lg transition-colors text-sm lg:text-base text-white">
+                            <button id="reset-puzzle" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors text-sm lg:text-base">
                                 🔄 Reset
                             </button>
-                            <button id="check-answer" class="bg-tertiary hover:bg-tertiary/80 px-4 py-2 rounded-lg transition-colors text-sm lg:text-base text-white">
+                            <button id="check-answer" class="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors text-sm lg:text-base">
                                 ✅ Periksa Jawaban
                             </button>
                         </div>
